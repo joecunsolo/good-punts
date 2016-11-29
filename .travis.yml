@@ -3,3 +3,4 @@ deploy:
   provider: gae
   keyfile: client-secret.json
   project: good-punts
+  skip_cleanup: true
