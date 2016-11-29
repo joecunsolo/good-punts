@@ -4,3 +4,4 @@ deploy:
   keyfile: client-secret.json
   project: good-punts
   skip_cleanup: true
+  config: gp-gae-app\src\main\webapp\WEB-INF\appengine-web.xml
