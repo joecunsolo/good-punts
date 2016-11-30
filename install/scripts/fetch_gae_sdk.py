@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# Hi There -
 # Retrieved from https://github.com/Google/oauth2client
 """Fetch the most recent GAE SDK and decompress it in the current directory.
 Usage:
@@ -94,4 +94,4 @@ def main(argv):
         return 1
 
 if __name__ == '__main__':
-sys.exit(main(sys.argv[:]))
+    sys.exit(main(sys.argv[:]))
