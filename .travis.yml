@@ -34,5 +34,6 @@ before_install:
 install:
 #not sure about this
 - gcloud components install app-engine-java
+- gcloud config set project good-punts
 script:
 - mvn gcloud:deploy
