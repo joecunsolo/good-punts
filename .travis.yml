@@ -26,6 +26,7 @@ before_install:
 - echo $PATH
 - ls /home/travis
 - ls /home/travis/.cache
+- ls /home/travis/google-cloud-sdk
 - ls ${HOME}/google-cloud-sdk/bin
 - gcloud auth activate-service-account --key-file client-secret.json
 # [END auth]
