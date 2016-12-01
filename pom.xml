@@ -12,7 +12,8 @@
        <module>gp-gae-app</module>
   	</modules>
 	
-	</plugins>
+	<build>
+		<plugins>
 			<plugin>
 			 <groupId>com.google.cloud.tools</groupId>
 			 <artifactId>appengine-maven-plugin</artifactId>
@@ -26,6 +27,7 @@
                     <promote>true</promote>
                 </configuration>
             </plugin>
-	</plugins>
+		</plugins>
+	</build>
 
 </project>
