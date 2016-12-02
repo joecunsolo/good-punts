@@ -36,5 +36,6 @@ install:
 - gcloud components install app-engine-java
 - gcloud config set project good-punts
 script:
+- mvn package
 - cd gp-gae-app
 - mvn gcloud:deploy
