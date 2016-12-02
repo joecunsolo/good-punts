@@ -10,6 +10,7 @@
 
     <modules>
        <module>gp-gae-app</module>
+       <module>gp-gae-dao</module>
   	</modules>
 	
 	<build>

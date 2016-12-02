@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <name>Good Punts Google App Engine DAO</name>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.goodpunts</groupId>
+	<version>1.0</version>
+    <artifactId>gp-gae-dao</artifactId>
+    <packaging>jar</packaging>
+
+	<properties>
+      <objectify.version>5.1.13</objectify.version>
+	  <guava.version>18.0</guava.version>
+	  <appengine.target.version>1.9.46</appengine.target.version>
+    </properties>
+	
+	<dependencies>
+		<dependency>
+		  <groupId>com.google.guava</groupId>
+		  <artifactId>guava</artifactId>
+		  <version>${guava.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.googlecode.objectify/objectify -->
+		<dependency>
+		  <groupId>com.googlecode.objectify</groupId>
+		  <artifactId>objectify</artifactId>
+		  <version>${objectify.version}</version>
+		</dependency>
+		<dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${appengine.target.version}</version>
+        </dependency>
+		
+	</dependencies>
+</project>
