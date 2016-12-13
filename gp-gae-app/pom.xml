@@ -48,6 +48,11 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+            <groupId>com.goodpunts</groupId>
+            <artifactId>spring-racing</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
             <version>${appengine.target.version}</version>
