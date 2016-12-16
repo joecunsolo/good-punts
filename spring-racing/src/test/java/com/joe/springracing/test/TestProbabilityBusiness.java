@@ -62,33 +62,33 @@ public class TestProbabilityBusiness extends TestCase {
 	}
 
 	
-	public static void testLongAndShortHistoryOdds() {
-		int[][] array = new int[][]{{5,5,9,7,9,4,6,1,14,9},
-		{2,3,2,10,3,14,2,1,7,9,8,8,4,1,4,1,6,3,9,7,4,1,5,5,4,3,9,9,6,8},
-		{2,2,2,5,1,9,3,7,8,5,1,4,1,5},
-		{9,14,3,7,8,9,7,8,5,2,7,8,1,4,10},
-		{7,1,3,4,8,2,2,8,5,5,7,3,2,2,8,3,5,1,1,8,10,7},
-		{12,1,1,11,8,3,2,1,4,3,6,5,8,9,1},
-		{3,7,4,3,4,5,3,1,10},
-		{3,1,4,7,4,3,6,9,5},
-		{10,3,7,3,6,1,8},
-		{5,4,3,6,9,6,2,1,5},
-		{1,10,3,2,2,7,6}};
-		
-		Race race = raceHistoriesToMeeting(array);
-		Meeting meeting = new Meeting();
-		meeting.addRace(race);
-		
-		SpringRacingServices.setStatistsics(new FormStatistics());
-		Model m = new Model(new ModelAttributes());
-		new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
-		
-		GeneratePunts.printStatistics(meeting);
-		
-		Runner donkeyRunner = race.getRunners().get(0);
-		Runner pharLapRunner = race.getRunners().get(1);
-		Assert.assertTrue(pharLapRunner.getProbability().getWin() > donkeyRunner.getProbability().getWin());
-	}
+//	public static void testLongAndShortHistoryOdds() {
+//		int[][] array = new int[][]{{5,5,9,7,9,4,6,1,14,9},
+//		{2,3,2,10,3,14,2,1,7,9,8,8,4,1,4,1,6,3,9,7,4,1,5,5,4,3,9,9,6,8},
+//		{2,2,2,5,1,9,3,7,8,5,1,4,1,5},
+//		{9,14,3,7,8,9,7,8,5,2,7,8,1,4,10},
+//		{7,1,3,4,8,2,2,8,5,5,7,3,2,2,8,3,5,1,1,8,10,7},
+//		{12,1,1,11,8,3,2,1,4,3,6,5,8,9,1},
+//		{3,7,4,3,4,5,3,1,10},
+//		{3,1,4,7,4,3,6,9,5},
+//		{10,3,7,3,6,1,8},
+//		{5,4,3,6,9,6,2,1,5},
+//		{1,10,3,2,2,7,6}};
+//		
+//		Race race = raceHistoriesToMeeting(array);
+//		Meeting meeting = new Meeting();
+//		meeting.addRace(race);
+//		
+//		SpringRacingServices.setStatistsics(new FormStatistics());
+//		Model m = new Model(new ModelAttributes());
+//		new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
+//		
+//		GeneratePunts.printStatistics(meeting);
+//		
+//		Runner donkeyRunner = race.getRunners().get(0);
+//		Runner pharLapRunner = race.getRunners().get(1);
+//		Assert.assertTrue(pharLapRunner.getProbability().getWin() > donkeyRunner.getProbability().getWin());
+//	}
 	
 	public static void testOneRace() {
 		int[][] array = new int[][]{{2},
