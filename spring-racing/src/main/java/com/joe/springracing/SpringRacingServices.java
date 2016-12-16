@@ -1,7 +1,6 @@
 package com.joe.springracing;
 
 import java.net.Authenticator;
-import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 
@@ -9,11 +8,7 @@ import com.joe.springracing.business.Simulator;
 import com.joe.springracing.business.Statistics;
 import com.joe.springracing.business.probability.MonteCarloSimulation;
 import com.joe.springracing.business.probability.PrizeMoneyStatistics;
-import com.joe.springracing.dao.HorseDAO;
 import com.joe.springracing.dao.LocalRaceDAOImpl;
-import com.joe.springracing.dao.RaceDAO;
-import com.joe.springracing.dao.RacingDotComHorseDAOImpl;
-import com.joe.springracing.dao.RacingDotComRaceDAOImpl;
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.dao.SpringRacingFileDAOV1;
 

@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.joe.springracing.business.RacingKeys;
-
-public class RaceResult extends RacingObject {
+public class RaceResult {
 
 	private List<RunnerResult> runners;
 	private double[] prizeMoney;
+	private int meetCode;
 
 	public RaceResult(Properties props) {
-		super(props);
 		runners = new ArrayList<RunnerResult>();
 	}
 
@@ -24,10 +22,6 @@ public class RaceResult extends RacingObject {
 		this.runners = runners;
 	}
 	
-	public String getMeetCode() {
-		return getProperty(RacingKeys.KEY_MEETCODE);
-	}
-
 	public double[] getPrizeMoney() {
 		return prizeMoney;
 	}
@@ -45,6 +39,19 @@ public class RaceResult extends RacingObject {
 
 	public void addRunner(RunnerResult result) {
 		runners.add(result);
+	}
+
+	public int getMeetCode() {
+		return meetCode;
+	}
+
+	public void setMeetCode(int meetCode) {
+		this.meetCode = meetCode;
+	}
+
+	public Properties getProperties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

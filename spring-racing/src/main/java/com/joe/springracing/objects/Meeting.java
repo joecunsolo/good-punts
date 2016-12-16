@@ -3,6 +3,7 @@ package com.joe.springracing.objects;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 public class Meeting { //extends RacingObject {
 
@@ -13,6 +14,10 @@ public class Meeting { //extends RacingObject {
 	
 	public Meeting() {
 		races = new ArrayList<Race>();
+	}
+
+	public Meeting(Race race) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getMeetCode() {
@@ -52,6 +57,11 @@ public class Meeting { //extends RacingObject {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Properties getProperties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

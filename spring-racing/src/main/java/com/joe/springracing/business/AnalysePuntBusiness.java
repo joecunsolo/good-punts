@@ -14,11 +14,11 @@ public class AnalysePuntBusiness {
 		if (goodPunts.size() == 0) {
 			return 0;
 		}
-		if (goodPunts.get(0).getRace().getTime().getTime() > System.currentTimeMillis() - 12 * 60 * 60 * 1000) {
+		if (goodPunts.get(0).getRace().getDate().getTime() > System.currentTimeMillis() - 12 * 60 * 60 * 1000) {
 			throw new Exception("Future Punt");
 		}
 		double returnOnPunts = 0;
-		String meetCode = goodPunts.get(0).getRace().getMeetCode();
+		int meetCode = goodPunts.get(0).getRace().getMeetCode();
 		
 		for (Punt punt : goodPunts) {
 			int raceNumber = punt.getRace().getRaceNumber();
@@ -40,7 +40,7 @@ public class AnalysePuntBusiness {
 		return returnOnPunts;
 	}
 
-	public int[] getResultsForRace(String meetCode, int raceNumber) throws Exception {
+	public int[] getResultsForRace(int meetCode, int raceNumber) throws Exception {
 		Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(meetCode, raceNumber, true, false);
 		RaceResult raceResult = race.getResult();
 		int[] result = new int[raceResult.getRunners().size()];
@@ -61,6 +61,9 @@ public class AnalysePuntBusiness {
 			}
 			case PLACE : {
 				return place(result, punt);
+			}
+			default: {
+				break;
 			}
 		}
 		return 0;

@@ -33,7 +33,7 @@ public class RacingDotComImporter {
 		List<Race> races = datasource.fetchRaces();
 		List<Race> upcoming = new ArrayList<Race>();
 		for (Race race : races) {
-			if (race.getTime().getTime() > System.currentTimeMillis() ) {
+			if (race.getDate().getTime() > System.currentTimeMillis() ) {
 				Meeting meet = meetBusiness.getMeeting(race.getMeetCode());
 				dao.storeMeet(meet);
 				dao.storeRace(race);
@@ -94,9 +94,9 @@ public class RacingDotComImporter {
 		return datasource.fetchRaceResult(race);
 	}
 
-	public SplitsAndSectionals fetchSplits(RunnerResult result) throws Exception {
-		return datasource.fetchSplits(result);
-	}
+//	public SplitsAndSectionals fetchSplits(RunnerResult result) throws Exception {
+//		return datasource.fetchSplits(result);
+//	}
 
 	public RacingDotComDataSource getDatasource() {
 		return datasource;

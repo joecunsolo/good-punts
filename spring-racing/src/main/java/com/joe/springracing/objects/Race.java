@@ -117,5 +117,9 @@ public class Race { //extends RacingObject {
 	public void setRaceCode(String raceCode) {
 		this.raceCode = raceCode;
 	}
+	
+	public Properties getProperties() {
+		return null;
+	}
 
 }

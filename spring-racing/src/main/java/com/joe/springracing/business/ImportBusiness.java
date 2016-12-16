@@ -64,9 +64,9 @@ public class ImportBusiness {
 		}
 	}
 	
-	public void migrateFromFileV1() {
-		List<Meeting> meets = SpringRacingServices._getSpringRacingDAOV1().fetchExistingMeets(true, true, true);
-		SpringRacingServices._getSpringRacingDAOV1().storeMeets(meets);	
-	}
+//	public void migrateFromFileV1() {
+//		List<Meeting> meets = SpringRacingServices._getSpringRacingDAOV1().fetchExistingMeets(true, true, true);
+//		SpringRacingServices._getSpringRacingDAOV1().storeMeets(meets);	
+//	}
 	
 }

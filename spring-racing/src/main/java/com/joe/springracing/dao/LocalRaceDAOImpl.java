@@ -5,18 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import com.joe.springracing.business.RacingKeys;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Jockey;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Odds;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.RaceResult;
-import com.joe.springracing.objects.RacingObject;
 import com.joe.springracing.objects.RunnerResult;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.Trainer;
@@ -199,7 +196,7 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 	}
 
 	public void storeMeet(Meeting meet) throws Exception {
-		File meetFolder = new File(storageDirectory, meet.getMeetCode());
+		File meetFolder = new File(storageDirectory, String.valueOf(meet.getMeetCode()));
 		meetFolder.mkdir();
 		
 		File meetingFile = new File(meetFolder, FILENAME_MEETING);

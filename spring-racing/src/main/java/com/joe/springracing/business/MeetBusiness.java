@@ -19,7 +19,7 @@ public class MeetBusiness {
 					oddsSet(race)) {
 				Meeting meeting = getMeeting(race.getMeetCode());
 				if (meeting == null) {
-					meeting = new Meeting(race.getProperties());
+					meeting = new Meeting(race);
 					meets.add(meeting);
 				} 
 				meeting.addRace(race);
@@ -37,18 +37,18 @@ public class MeetBusiness {
 		return false;
 	}
 
-	public Meeting getMeeting(List<Meeting> meets, String meetCode) {
+	public Meeting getMeeting(List<Meeting> meets, int meetCode) {
 		for (Meeting meet : meets) {
-			if (meet.getMeetCode().equals(meetCode)) {
+			if (meet.getMeetCode() == meetCode) {
 				return meet;
 			}
 		}
 		return null;
 	}
 	
-	public Meeting getMeeting (String meetCode) {
+	public Meeting getMeeting (int meetCode) {
 		for (Meeting meet : meets) {
-			if (meet.getMeetCode().equals(meetCode)) {
+			if (meet.getMeetCode() == meetCode) {
 				return meet;
 			}
 		}

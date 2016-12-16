@@ -62,6 +62,7 @@ public class RacingDotComDataSource extends JsonReaderIO {
 	public static final String KEY_SECTIONAL_RACETIME = "racetime";
 	public static final String KEY_MEETCODE = "meetcode";
 	public static final String KEY_DATA_URL = "dataurl";
+	public static final String KEY_TIME = "time";
 	
 	public static final String PREFIX_RACE_RESULTS_URL = "https://api.racing.com/v1/en-au/race/results/";
 	public static final String PREFIX_RACE_DAY_URL = "https://api.racing.com/api/meet/RacesByDay/";
@@ -94,12 +95,12 @@ public class RacingDotComDataSource extends JsonReaderIO {
 			
 			JsonObject jObject = array.getJsonObject(i);
 			Properties props = parseProperties(jObject);
-			race.setProperties(props);
+//			race.setProperties(props);
 
 			//Dont worry about
 			if ((!result.contains(race)) && //races we already have
 					race.getDate().getTime() > System.currentTimeMillis() - (1000 * 60 * 60 * 24) && //races in the past
-					race.getTime() != null) { //races not scheduled
+					props.getProperty(KEY_TIME) != null) { //races not scheduled
 				JsonObject jUrl = jObject.getJsonObject(KEY_URL);
 				race.setURL(parseProperties(jUrl));
 				
@@ -109,8 +110,8 @@ public class RacingDotComDataSource extends JsonReaderIO {
 		return result;
 	}
 
-	public List<Runner> fetchRunnnersForRace(String meeting, int race) throws Exception {
-		String urlToRead = getRunnerURL(meeting, race);
+	public List<Runner> fetchRunnnersForRace(int meetCode, int race) throws Exception {
+		String urlToRead = getRunnerURL(meetCode, race);
 		String html = HTMLReaderIO.getHTML(urlToRead);			
 		return parseRunners(html);
 	}
@@ -183,65 +184,65 @@ public class RacingDotComDataSource extends JsonReaderIO {
 		return results;
 	}
 	
-	private RunnerResult getRunner(RaceResult race, int number) {
-		for (RunnerResult runner : race.getRunners()) {
-			if (runner.getNumber() == number) {
-				return runner;
-			}
-		}
-		return null;
-	}
+//	private RunnerResult getRunner(RaceResult race, int number) {
+//		for (RunnerResult runner : race.getRunners()) {
+//			if (runner.getNumber() == number) {
+//				return runner;
+//			}
+//		}
+//		return null;
+//	}
 	
-	public SplitsAndSectionals fetchSplits(RunnerResult result) throws Exception {
-		String urlToRead = getSplitAndSectionalURL(result.getRace().getMeetCode(), result.getRace().getRaceNumber());
-		String html = HTMLReaderIO.getHTML(urlToRead);			
+//	public SplitsAndSectionals fetchSplits(RunnerResult result) throws Exception {
+//		String urlToRead = getSplitAndSectionalURL(result.getRace().getMeetCode(), result.getRace().getRaceNumber());
+//		String html = HTMLReaderIO.getHTML(urlToRead);			
+//
+//		Properties props = parseRaceSplitsOverview(html);
+//		String dataURL = props.getProperty(KEY_DATA_URL);
+//		if (dataURL.length() <= 2) {
+//			return null;
+//		}
+//		urlToRead = PREFIX_PROTOCOL_HTTP + dataURL;
+//		html = HTMLReaderIO.getHTML(urlToRead);
+//		if (html == null) {
+//			return null;
+//		}
+//		
+//		try {
+//			return parseSplitsAndSectionals(html, result);
+//		} catch (Exception ex) {
+//			System.out.println(urlToRead);
+//			throw new RuntimeException(ex);
+//		}
+//	}
 
-		Properties props = parseRaceSplitsOverview(html);
-		String dataURL = props.getProperty(KEY_DATA_URL);
-		if (dataURL.length() <= 2) {
-			return null;
-		}
-		urlToRead = PREFIX_PROTOCOL_HTTP + dataURL;
-		html = HTMLReaderIO.getHTML(urlToRead);
-		if (html == null) {
-			return null;
-		}
-		
-		try {
-			return parseSplitsAndSectionals(html, result);
-		} catch (Exception ex) {
-			System.out.println(urlToRead);
-			throw new RuntimeException(ex);
-		}
-	}
+//	private Properties parseRaceSplitsOverview(String html) {
+//		JsonReader jsonReader = Json.createReader(new StringReader(html));
+//		return parseProperties(jsonReader.readObject());
+//	}
 
-	private Properties parseRaceSplitsOverview(String html) {
-		JsonReader jsonReader = Json.createReader(new StringReader(html));
-		return parseProperties(jsonReader.readObject());
-	}
-
-	private SplitsAndSectionals parseSplitsAndSectionals(String html, RunnerResult result) throws ParseException {
-		html = html.substring(KEY_WRAP_SECTIONAL_TIMES_CALLBACK.length());
-		html = html.substring(0, html.length() - DELIMITTER_CLOSE_PARENTHESES.length());
-
-		JsonReader jsonReader = Json.createReader(new StringReader(html));
-		JsonArray array = jsonReader.readObject().getJsonArray(KEY_SECTIONAL_HORSES);
-
-		for (int i = 0; i < array.size(); i++) {
-			JsonObject jObject = array.getJsonObject(i);
-			Horse horse = parseHorse(jObject);
-			
-			if (horse.getName().equals(result.getHorse().getName())) {
-				SplitsAndSectionals splits = new SplitsAndSectionals();
-				String time = horse.getProperty(KEY_SECTIONAL_RACETIME);
-				splits.setRaceTime(parseRaceTime(time));
-				
-				splits.setSplits(parseHorseSplits(jObject));
-				return splits;
-			}
-		}
-		return null;
-	}
+//	private SplitsAndSectionals parseSplitsAndSectionals(String html, RunnerResult result) throws ParseException {
+//		html = html.substring(KEY_WRAP_SECTIONAL_TIMES_CALLBACK.length());
+//		html = html.substring(0, html.length() - DELIMITTER_CLOSE_PARENTHESES.length());
+//
+//		JsonReader jsonReader = Json.createReader(new StringReader(html));
+//		JsonArray array = jsonReader.readObject().getJsonArray(KEY_SECTIONAL_HORSES);
+//
+//		for (int i = 0; i < array.size(); i++) {
+//			JsonObject jObject = array.getJsonObject(i);
+//			Horse horse = parseHorse(jObject);
+//			
+//			if (horse.getName().equals(result.getHorse().getName())) {
+//				SplitsAndSectionals splits = new SplitsAndSectionals();
+//				String time = horse.getProperty(KEY_SECTIONAL_RACETIME);
+//				splits.setRaceTime(parseRaceTime(time));
+//				
+//				splits.setSplits(parseHorseSplits(jObject));
+//				return splits;
+//			}
+//		}
+//		return null;
+//	}
 	
 	public double parseRaceTime(String time) throws ParseException {
 		if (time == null) {
@@ -255,23 +256,23 @@ public class RacingDotComDataSource extends JsonReaderIO {
 		return timeAsDate.getTime() / (1000.00);
 	}
 
-	private List<Double> parseHorseSplits(JsonObject jObject) {
-		List<Double> splits = new ArrayList<Double>();
-		
-		JsonArray array = jObject.getJsonArray(KEY_SECTIONAL_SPLITS);
-		for (int i = 0; i < array.size(); i++) {
-			JsonObject jSplit = array.getJsonObject(i);
-			Properties props = parseProperties(jSplit);
-	
-			String time = props.getProperty(KEY_SECTIONAL_SPLITS_TIME);
-			if (time.length() > 0) {
-				splits.add(new Double(time));
-			} else {
-				splits.add(new Double(-1));
-			}
-		}
-		return splits;
-	}
+//	private List<Double> parseHorseSplits(JsonObject jObject) {
+//		List<Double> splits = new ArrayList<Double>();
+//		
+//		JsonArray array = jObject.getJsonArray(KEY_SECTIONAL_SPLITS);
+//		for (int i = 0; i < array.size(); i++) {
+//			JsonObject jSplit = array.getJsonObject(i);
+//			Properties props = parseProperties(jSplit);
+//	
+//			String time = props.getProperty(KEY_SECTIONAL_SPLITS_TIME);
+//			if (time.length() > 0) {
+//				splits.add(new Double(time));
+//			} else {
+//				splits.add(new Double(-1));
+//			}
+//		}
+//		return splits;
+//	}
 	
 	public RaceResult fetchRaceResult(String racecode) throws Exception {
 		String urlToRead = getRaceURL(racecode);
@@ -312,9 +313,9 @@ public class RacingDotComDataSource extends JsonReaderIO {
 	}
 	
 	public RaceResult fetchRaceResult(Race race) throws Exception {
-		if (race.getMeetCode() == null) {
-			return fetchRaceResult(race.getCode());
-		}
+//		if (race.getMeetCode() == null) {
+//			return fetchRaceResult(race.getCode());
+//		}
 		String urlToRead = getRaceResultURL(race.getMeetCode(), race.getRaceNumber());
 		String html = HTMLReaderIO.getHTML(urlToRead);			
 		return parseRaceResults(html, race);
@@ -342,7 +343,7 @@ public class RacingDotComDataSource extends JsonReaderIO {
 	}
 
 
-	private String getRaceResultURL(String meetCode, int race) {
+	private String getRaceResultURL(int meetCode, int race) {
 		return PREFIX_RACE_RESULTS_URL + meetCode + "/" + race;
 	}
 
@@ -350,7 +351,7 @@ public class RacingDotComDataSource extends JsonReaderIO {
 		return PREFIX_RACE_DAY_URL + page + "/" + resultsPerPage;
 	}
 	
-	private String getRunnerURL(String meeting, int race) {
+	private String getRunnerURL(int meeting, int race) {
 		return PREFIX_RUNNER_URL + meeting + "/" + race;
 	}
 
@@ -358,9 +359,9 @@ public class RacingDotComDataSource extends JsonReaderIO {
 		return PREFIX_RACE_URL + raceCode;
 	}
 
-	private String getSplitAndSectionalURL(String meetCode, int race) {
-		return PREFIX_SPLIT_SECTION_URL + meetCode + "/" + race;
-	}
+//	private String getSplitAndSectionalURL(String meetCode, int race) {
+//		return PREFIX_SPLIT_SECTION_URL + meetCode + "/" + race;
+//	}
 	
 	private String getHorseURL(Horse horse) {
 		return PREFIX_FORM_URL + horse.getCode() + "/" + NUM_PAGES + "/" + HORSE_RESULTS_PER_PAGE;
@@ -386,7 +387,7 @@ public class RacingDotComDataSource extends JsonReaderIO {
 	}
 	
 	protected Race parseRace(JsonValue jsonValue) {
-		return new Race(parseProperties(jsonValue));
+		return new Race();//parseProperties(jsonValue));
 	}
 
 }
