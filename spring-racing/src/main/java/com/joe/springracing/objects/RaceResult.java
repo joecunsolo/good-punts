@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/** This is a handy racing.com object 
+ * not to be stored*/
 public class RaceResult {
 
 	private List<RunnerResult> runners;
+	private String meetCode;
 	private double[] prizeMoney;
-	private int meetCode;
 
 	public RaceResult(Properties props) {
 		runners = new ArrayList<RunnerResult>();
@@ -41,15 +43,20 @@ public class RaceResult {
 		runners.add(result);
 	}
 
-	public int getMeetCode() {
+	public String getMeetCode() {
 		return meetCode;
 	}
 
-	public void setMeetCode(int meetCode) {
+	public void setMeetCode(String meetCode) {
 		this.meetCode = meetCode;
 	}
 
 	public Properties getProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int[] getResult() {
 		// TODO Auto-generated method stub
 		return null;
 	}

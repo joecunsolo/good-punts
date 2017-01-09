@@ -2,14 +2,17 @@ package com.joe.springracing.business;
 
 import java.util.List;
 
-import com.joe.springracing.SpringRacingServices;
+import com.joe.springracing.AbstractSpringRacingBusiness;
+import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
-import com.joe.springracing.objects.RaceResult;
-import com.joe.springracing.objects.RunnerResult;
 
-public class AnalysePuntBusiness {
-
+public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
+	
+	public AnalysePuntBusiness(SpringRacingDAO dao) {
+		super(dao);
+	}
+	
 	public double getReturnOnGoodPunts(List<Punt> goodPunts) throws Exception {
 		if (goodPunts.size() == 0) {
 			return 0;
@@ -18,12 +21,12 @@ public class AnalysePuntBusiness {
 			throw new Exception("Future Punt");
 		}
 		double returnOnPunts = 0;
-		int meetCode = goodPunts.get(0).getRace().getMeetCode();
+		String raceCode = goodPunts.get(0).getRace().getRaceCode();
 		
 		for (Punt punt : goodPunts) {
 			int raceNumber = punt.getRace().getRaceNumber();
 			int[] result = new int[0];
-			result = getResultsForRace(meetCode, raceNumber);
+			result = getResultsForRace(raceCode);
 			//System.out.println("Unable to get results for " + meetCode + " " + raceNumber);
 			
 			
@@ -31,7 +34,7 @@ public class AnalysePuntBusiness {
 			if (returnOnPunt > 0) {
 				System.out.println(raceNumber + " " + 
 						punt.getRunners().get(0).getNumber() + ":" + 
-						punt.getRunners().get(0).getHorse().getName() + " " + 
+						punt.getRunners().get(0).getHorse() + " " + 
 						returnOnPunt + " " +
 						punt.getJoesOdds());
 			}
@@ -40,18 +43,19 @@ public class AnalysePuntBusiness {
 		return returnOnPunts;
 	}
 
-	public int[] getResultsForRace(int meetCode, int raceNumber) throws Exception {
-		Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(meetCode, raceNumber, true, false);
-		RaceResult raceResult = race.getResult();
-		int[] result = new int[raceResult.getRunners().size()];
-		for (RunnerResult runner : raceResult.getRunners()) {
-			int finish = runner.getResult();
-			if (!runner.isScratched() && finish <= 3) {
-				int number = runner.getNumber(); 
-				result[finish - 1] = number;
-			}
-		}
-		return result;
+	public int[] getResultsForRace(String raceCode) throws Exception {
+		Race race = getSpringRacingDAO().fetchRace(raceCode);
+		return race.getResult();
+//		RaceResult raceResult = race.getResult();
+//		int[] result = new int[raceResult.getRunners().size()];
+//		for (RunnerResult runner : raceResult.getRunners()) {
+//			int finish = runner.getResult();
+//			if (!runner.isScratched() && finish <= 3) {
+//				int number = runner.getNumber(); 
+//				result[finish - 1] = number;
+//			}
+//		}
+//		return result;
 	}
 
 	private double getReturn(int[] result, Punt punt) {

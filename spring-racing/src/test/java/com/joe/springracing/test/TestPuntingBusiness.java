@@ -14,7 +14,7 @@ public class TestPuntingBusiness extends TestCase {
 		double probability = 0.5;
 		
 		Model m = new Model(new ModelAttributes());
-		PuntingBusiness business = new PuntingBusiness(m);
+		PuntingBusiness business = new PuntingBusiness(null, m);
 		double odds = business.probabilityToOdds(probability);
 		
 		Assert.assertEquals(2.0, odds, 0.01);

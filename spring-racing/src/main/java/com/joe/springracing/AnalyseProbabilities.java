@@ -16,8 +16,9 @@ import com.joe.springracing.objects.Runner;
 public class AnalyseProbabilities {
 
 	public static void main(String[] args) {
+		
 		try {
-			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets(false, false, false);
+			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
 		
 			Model m = new Model(new ModelAttributes());
 			for (Meeting meeting : meets) {
@@ -25,9 +26,13 @@ public class AnalyseProbabilities {
 					System.out.println();
 					System.out.println(meeting.getDate() + " "  + meeting.getVenue());
 					
-					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting, true, true);
+					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 					meeting.setRaces(races);
-					new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
+					new ProbabilityBusiness(SpringRacingServices.getSpringRacingDAO(),
+							SpringRacingServices.getPuntingDao(), 
+							SpringRacingServices.getStatistics(),
+							SpringRacingServices.getSimulator(),
+							m).calculateOddsForMeet(meeting);
 					
 					printAndSortMeet(meeting);
 				}
@@ -57,7 +62,7 @@ public class AnalyseProbabilities {
 			if (stats.get(0) instanceof SingleVariateStatistic) {
 				SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);
 				System.out.println(runner.getNumber() + " " + 
-						runner.getHorse().getName() + " " + 
+						runner.getHorse() + " " + 
 						runner.getProbability().getWin() + " " + 
 						svs.getMean() + " " + 
 						svs.getStandardDeviation() + " " + 

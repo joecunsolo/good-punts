@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.joe.springracing.GeneratePunts;
-import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.RacingKeys;
 import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.business.probability.FormStatistics;
+import com.joe.springracing.business.probability.MonteCarloSimulation;
 import com.joe.springracing.business.probability.PrizeMoneyStatistics;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 
 public class TestProbabilityBusiness extends TestCase {
 
-	public static void testCalculateOddsForRaceByForm() {
+	public static void testCalculateOddsForRaceByForm() throws Exception {
 		int[] donkeyArray = new int[]{100};
 		int[] pharLapArray = new int[]{1};
 		
@@ -31,9 +31,8 @@ public class TestProbabilityBusiness extends TestCase {
 		Meeting meeting = new Meeting();
 		meeting.addRace(race);
 
-		SpringRacingServices.setStatistsics(new FormStatistics());
 		Model m = new Model(new ModelAttributes());
-		new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
+		new ProbabilityBusiness(null, null, new FormStatistics(), new MonteCarloSimulation(), m).calculateOddsForMeet(meeting);
 		
 		GeneratePunts.printStatistics(meeting);
 		
@@ -42,7 +41,7 @@ public class TestProbabilityBusiness extends TestCase {
 		Assert.assertTrue(pharLapRunner.getProbability().getWin() > donkeyRunner.getProbability().getWin());
 	}
 	
-	public static void testCalculateOddsForRaceByPrizeMoney() {
+	public static void testCalculateOddsForRaceByPrizeMoney() throws Exception {
 		int[] donkeyArray = new int[]{10, 5, 10};
 		int[] pharLapArray = new int[]{1000, 500, 1000};
 		
@@ -50,9 +49,8 @@ public class TestProbabilityBusiness extends TestCase {
 		Meeting meeting = new Meeting();
 		meeting.addRace(race);
 		
-		SpringRacingServices.setStatistsics(new PrizeMoneyStatistics());
 		Model m = new Model(new ModelAttributes());
-		new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
+		new ProbabilityBusiness(null, null, new PrizeMoneyStatistics(), new MonteCarloSimulation(), m).calculateOddsForMeet(meeting);
 		
 		GeneratePunts.printStatistics(meeting);
 		
@@ -90,7 +88,7 @@ public class TestProbabilityBusiness extends TestCase {
 //		Assert.assertTrue(pharLapRunner.getProbability().getWin() > donkeyRunner.getProbability().getWin());
 //	}
 	
-	public static void testOneRace() {
+	public static void testOneRace() throws Exception {
 		int[][] array = new int[][]{{2},
 		{3, 5}};
 		
@@ -99,7 +97,7 @@ public class TestProbabilityBusiness extends TestCase {
 		meeting.addRace(race);
 		
 		Model m = new Model(new ModelAttributes());
-		new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
+		new ProbabilityBusiness(null, null, new PrizeMoneyStatistics(), new MonteCarloSimulation(), m).calculateOddsForMeet(meeting);
 		
 		GeneratePunts.printStatistics(meeting);
 		
@@ -112,14 +110,14 @@ public class TestProbabilityBusiness extends TestCase {
 		List<Runner> runners = new ArrayList<Runner>();
 		for (int i = 0; i < positions.length; i++) {
 			Horse donkey = new Horse();
-			donkey.setProperty(RacingKeys.KEY_FULLNAME, "Donkey");
-			donkey.setProperty(RacingKeys.KEY_HORSE_URL, "Donkey");
-			donkey.setProperty(RacingKeys.KEY_NUMBER, String.valueOf(i));
+			donkey.setName("Donkey");
+			donkey.setId("Donkey");
+			donkey.setCode(String.valueOf(i));
 			
 			addPositions(positions[i], donkey);
 			Runner donkeyRunner = new Runner();
-			donkeyRunner.setHorse(donkey);
-			donkeyRunner.setProperty(RacingKeys.KEY_RUNNER_NUMBER, String.valueOf(i));
+			donkeyRunner.setHorse(donkey.getCode());
+			donkeyRunner.setNumber(i);
 			runners.add(donkeyRunner);
 		}
 		
@@ -132,9 +130,9 @@ public class TestProbabilityBusiness extends TestCase {
 	public static void addPositions(int[] positions, Horse horse) {
 		for (int i = 0; i < positions.length; i++) {
 			RunnerResult raceResult = new RunnerResult();
-			raceResult.setProperty(RacingKeys.KEY_RESULT_RESULT, String.valueOf(positions[i]));
+			raceResult.setPosition(positions[i]);
 			raceResult.setPrizeMoney(positions[i]);
-			raceResult.setHorse(horse);
+			raceResult.setHorse(horse.getId());
 			
 			horse.addPastResult(raceResult);
 		}

@@ -1,13 +1,10 @@
 package com.joe.springracing.objects;
 
-import java.util.Properties;
-
 import com.joe.springracing.business.model.AnalysableObject;
 
-public abstract class AnalysableRacePropertyObject extends RacingObject implements AnalysableObject {
+public abstract class AnalysableRacePropertyObject implements AnalysableObject {
 
-	protected AnalysableRacePropertyObject(Properties props) {
-		super(props);
+	protected AnalysableRacePropertyObject() {
 	}
 	
 	@Override

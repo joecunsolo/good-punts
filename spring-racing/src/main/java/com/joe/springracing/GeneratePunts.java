@@ -12,7 +12,6 @@ import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
-import com.joe.springracing.objects.RunnerResult;
 import com.joe.springracing.objects.Runner;
 
 public class GeneratePunts {
@@ -21,7 +20,7 @@ public class GeneratePunts {
 	
 	public static void main(String[] args) {
 		try {
-			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets(false, false, false);
+			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
 		
 			Model m = new Model(new ModelAttributes());
 			for (Meeting meeting : meets) {
@@ -29,10 +28,16 @@ public class GeneratePunts {
 					System.out.println();
 					System.out.println(meeting.getDate() + " "  + meeting.getVenue());
 					
-					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting, true, true);
+					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 					meeting.setRaces(races);
-					new ProbabilityBusiness(m).calculateOddsForMeet(meeting);
-					List<Punt> goodPunts = new PuntingBusiness(m).getGoodPuntsForMeet(meeting);
+					new ProbabilityBusiness(SpringRacingServices.getSpringRacingDAO(),
+							SpringRacingServices.getPuntingDao(), 
+							SpringRacingServices.getStatistics(),
+							SpringRacingServices.getSimulator(),
+							m).calculateOddsForMeet(meeting);
+					List<Punt> goodPunts = new PuntingBusiness(
+							SpringRacingServices.getPuntingDao(),
+							m).getGoodPuntsForMeet(meeting);
 					printGoodPunts(goodPunts);
 					
 					if (PRINT_STATISTICS) {
@@ -54,10 +59,10 @@ public class GeneratePunts {
 			List<Runner> runners = race.getRunners();
 			Collections.sort(runners, gp.new RunnersByProbability());
 			for (Runner runner : race.getRunners()) {
-				System.out.print(runner.getNumber() + " " + runner.getHorse().getName() + " " + runner.getProbability().getWin() + " " + runner.getProbability().getPlace() + " ");
-				for (RunnerResult result : runner.getHorse().getPastResults()) {
-					System.out.print(result.getResult() + ",");
-				}
+				System.out.print(runner.getNumber() + " " + runner.getHorse() + " " + runner.getProbability().getWin() + " " + runner.getProbability().getPlace() + " ");
+//				for (RunnerResult result : runner.getHorse().getPastResults()) {
+//					System.out.print(result.getPosition() + ",");
+//				}
 				SingleVariateStatistic stat = (SingleVariateStatistic)runner.getStatistics().get(0);
 				System.out.println(" " + stat.getMean());
 			}
@@ -89,7 +94,7 @@ public class GeneratePunts {
 	public static void printHorses(List<Runner> horses) {
 		System.out.print("[");
 		for (Runner horse : horses) {
-			System.out.print(horse.getNumber() + "{" + horse.getHorse().getName() + "},");
+			System.out.print(horse.getNumber() + "{" + horse.getHorse() + "},");
 		}
 		System.out.print("]");
 	}

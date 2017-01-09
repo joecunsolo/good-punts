@@ -8,7 +8,7 @@ import java.util.Properties;
 public class Meeting { //extends RacingObject {
 
 	private List<Race> races;
-	private int meetCode;
+	private String meetCode;
 	private String venue;
 	private Date date;
 	
@@ -20,7 +20,7 @@ public class Meeting { //extends RacingObject {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getMeetCode() {
+	public String getMeetCode() {
 //		return getProperty(KEY_MEETCODE);
 		return meetCode;
 	}
@@ -36,7 +36,9 @@ public class Meeting { //extends RacingObject {
 	}
 
 	public void addRace(Race race) {
-		races.add(race);
+		if (!races.contains(race)) {
+			races.add(race);
+		}
 	}
 
 	public List<Race> getRaces() {
@@ -47,7 +49,7 @@ public class Meeting { //extends RacingObject {
 		this.races = races2;
 	}
 
-	public void setMeetCode(int meetCode) {
+	public void setMeetCode(String meetCode) {
 		this.meetCode = meetCode;
 	}
 
@@ -59,9 +61,9 @@ public class Meeting { //extends RacingObject {
 		this.date = date;
 	}
 
-	public Properties getProperties() {
+	public boolean hasResults() {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	

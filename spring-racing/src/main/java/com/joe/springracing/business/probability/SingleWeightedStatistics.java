@@ -9,6 +9,7 @@ import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.AnalysableObjectRaceResultFilter;
 import com.joe.springracing.business.model.stats.SingleVariateStatistic;
+import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.RunnerResult;
 import com.joe.springracing.objects.Runner;
 
@@ -17,16 +18,16 @@ public abstract class SingleWeightedStatistics implements Statistics {
 	private Model model;
 	private Runner runner;
 	
-	public List<AnalysableObjectStatistic> evaluate(Runner r, Model m) {
+	public List<AnalysableObjectStatistic> evaluate(Runner r, AnalysableObject o, Model m) {
 		this.setModel(m);
 		this.setRunner(r);
 				
 		List<AnalysableObjectStatistic> stats = new ArrayList<AnalysableObjectStatistic>();
-		List<RunnerResult> pastResults = getRunner().getHorse().getPastResults();
+//		List<RunnerResult> pastResults = getRunner().getHorse().getPastResults();
 		
-		stats.add(evaluate(runner.getHorse(), pastResults, m.getAttributes().getHorseInfluence()));
-		stats.add(evaluate(runner.getJockey(), pastResults, m.getAttributes().getJockeyInfluence()));
-		stats.add(evaluate(runner.getTrainer(), pastResults, m.getAttributes().getTrainerInfluence()));
+		stats.add(evaluate(o, ((Horse)o).getPastResults(), m.getAttributes().getHorseInfluence()));
+//		stats.add(evaluate(runner.getJockey(), pastResults, m.getAttributes().getJockeyInfluence()));
+//		stats.add(evaluate(runner.getTrainer(), pastResults, m.getAttributes().getTrainerInfluence()));
 //		runner.getDistance().evaluate(pastResults);
 		
 		return stats;

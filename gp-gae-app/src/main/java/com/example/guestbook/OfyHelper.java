@@ -1,7 +1,14 @@
 package com.example.guestbook;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
+import com.goodpunts.objectify.ObjHorse;
+import com.goodpunts.objectify.ObjMeet;
+import com.goodpunts.objectify.ObjOdds;
+import com.goodpunts.objectify.ObjProbability;
+import com.goodpunts.objectify.ObjPunt;
+import com.goodpunts.objectify.ObjRace;
+import com.goodpunts.objectify.ObjRunner;
+import com.goodpunts.objectify.ObjRunnerResult;
+import com.goodpunts.objectify.ObjStatistic;
 import com.googlecode.objectify.ObjectifyService;
 
 import javax.servlet.ServletContextListener;
@@ -17,6 +24,15 @@ public class OfyHelper implements ServletContextListener {
     // request.
     ObjectifyService.register(Guestbook.class);
     ObjectifyService.register(Greeting.class);
+    ObjectifyService.register(ObjMeet.class);
+    ObjectifyService.register(ObjRace.class);
+    ObjectifyService.register(ObjRunner.class);
+    ObjectifyService.register(ObjOdds.class);
+    ObjectifyService.register(ObjHorse.class);
+    ObjectifyService.register(ObjRunnerResult.class);
+    ObjectifyService.register(ObjPunt.class);
+    ObjectifyService.register(ObjProbability.class);
+    ObjectifyService.register(ObjStatistic.class);
   }
 
   public void contextDestroyed(ServletContextEvent event) {

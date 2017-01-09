@@ -9,6 +9,8 @@ public class SingleVariateStatistic implements AnalysableObjectStatistic {
 	private double standardDeviation;
 	private double weight;
 	
+	public SingleVariateStatistic() {}
+		
 	public SingleVariateStatistic(double[] myResults) {
 		this.setValues(myResults);
 	}

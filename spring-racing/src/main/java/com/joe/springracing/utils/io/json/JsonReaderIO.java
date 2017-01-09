@@ -7,12 +7,6 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
-import com.joe.springracing.objects.Horse;
-import com.joe.springracing.objects.Jockey;
-import com.joe.springracing.objects.Odds;
-import com.joe.springracing.objects.Race;
-import com.joe.springracing.objects.Trainer;
-
 public class JsonReaderIO {
 	
 	public static final String KEY_FIXED_ODDS = "fixed";
@@ -45,6 +39,10 @@ public class JsonReaderIO {
 		return result;
 	}
 
+//	private double[] readDoubleArray(String property) {
+//		double[] result = new double[property.];
+//		return null;
+//	}
 
 
 }

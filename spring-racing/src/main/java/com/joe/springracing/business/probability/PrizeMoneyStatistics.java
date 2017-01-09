@@ -57,14 +57,15 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 		}
 		
 		private Date toDate(RunnerResult arg) {
-			try {
-				String s1 = arg.getProperty("race");
-				s1 = s1.substring(s1.indexOf("Date:") + 5, s1.indexOf("Date:") + 24);
-	
-				return RacingObject.dateFormat.parse(s1);
-			} catch (Exception ex) {
-				return null;
-			}
+			return arg.getRaceDate();
+//			try {
+//				String s1 = arg.getProperty("race");
+//				s1 = s1.substring(s1.indexOf("Date:") + 5, s1.indexOf("Date:") + 24);
+//	
+//				return RacingObject.dateFormat.parse(s1);
+//			} catch (Exception ex) {
+//				return null;
+//			}
 		}
 	}
 }

@@ -49,7 +49,7 @@ public class MonteCarloSimulation implements Simulator {
 		for (Runner runner : race.getRunners()) {
 			Simulation s = new Simulation();
 			s.number = runner.getNumber();
-			if (runner.isScratched()) {
+			if (runner.isScratched() || runner.isEmergency()) {
 				s.probability = Double.MIN_VALUE;
 			}
 			else {

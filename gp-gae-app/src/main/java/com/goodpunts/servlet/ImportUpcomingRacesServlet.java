@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.goodpunts.GoodPuntsServices;
 import com.joe.springracing.business.ImportBusiness;
 
 public class ImportUpcomingRacesServlet extends GenericServlet {
@@ -16,7 +17,7 @@ public class ImportUpcomingRacesServlet extends GenericServlet {
 	@Override
 	public void service(ServletRequest arg0, ServletResponse arg1)
 			throws ServletException, IOException {
-		ImportBusiness importer = new ImportBusiness();
+		ImportBusiness importer = new ImportBusiness(GoodPuntsServices.getSpringRacingDAO());
 		importer.importUpcomingRaces(true);
 	}
 

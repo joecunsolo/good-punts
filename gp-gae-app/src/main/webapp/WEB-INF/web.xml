@@ -18,14 +18,30 @@
 	  <servlet-name>sign</servlet-name>
 	  <servlet-class>com.example.guestbook.SignGuestbookServlet</servlet-class>
 	</servlet>
-	
+	<servlet>
+	  <servlet-name>import</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.ImportUpcomingRacesServlet</servlet-class>
+	</servlet>
+	<servlet>
+	  <servlet-name>punts</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.GeneratePuntsServlet</servlet-class>
+	</servlet>
+			
 	<servlet-mapping>
 	  <servlet-name>sign</servlet-name>
 	  <url-pattern>/sign</url-pattern>
 	</servlet-mapping>
-	
+	<servlet-mapping>
+	  <servlet-name>import</servlet-name>
+	  <url-pattern>/import</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	  <servlet-name>punts</servlet-name>
+	  <url-pattern>/punts</url-pattern>
+	</servlet-mapping>
+			
 	<welcome-file-list>
-	    <welcome-file>guestbook.jsp</welcome-file>
+	    <welcome-file>punts.jsp</welcome-file>
 	</welcome-file-list>
 <!--     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

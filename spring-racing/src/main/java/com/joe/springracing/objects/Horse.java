@@ -2,31 +2,18 @@ package com.joe.springracing.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import static com.joe.springracing.business.RacingKeys.*;
 
 public class Horse extends AnalysableRacePropertyObject {
 
 	private List<RunnerResult> results;
+	private String name;
+	private String code;
+	private String id;
 	
-	public Horse(Properties props) {
-		super(props);
+	public Horse() {
 		results = new ArrayList<RunnerResult>();
 	}
-
-	public Horse() {
-		this(new Properties());
-	}
 	
-	public String getName() {
-		return getProperty(KEY_FULLNAME);
-	}
-	
-	public String getCode() {
-		return getProperty(KEY_CODE);
-	}
-
 	public void addPastResult(RunnerResult result) {
 		results.add(result);
 	}
@@ -36,19 +23,35 @@ public class Horse extends AnalysableRacePropertyObject {
 	}
 
 	public boolean raced(RunnerResult result) {
-		return result.getHorse().equals(this);
-	}
-
-	public String getId() {
-		return getURL();
-	}
-
-	public String getURL () {
-		return getProperty(KEY_HORSE_URL);
+		return result.getHorse().equals(this.getId());
 	}
 
 	public void setPastResults(List<RunnerResult> results2) {
 		this.results = results2;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

@@ -1,20 +1,28 @@
 package com.joe.springracing.objects;
 
-import static com.joe.springracing.business.RacingKeys.*;
+public class Odds {
 
-import java.util.Properties;
-
-public class Odds extends RacingObject {
-
-	public Odds(Properties props) {
-		super(props);
-	}
+	private double win;
+	private double place;
 	
+	public Odds() {
+	}
+
 	public double getWin() {
-		return getDouble(KEY_ODDS_WIN);
+		return win;
+	}
+
+	public void setWin(double win) {
+		this.win = win;
+	}
+
+	public double getPlace() {
+		return place;
+	}
+
+	public void setPlace(double place) {
+		this.place = place;
 	}
 	
-	public double getPlace() {
-		return getDouble(KEY_ODDS_PLACE);		
-	}
+
 }

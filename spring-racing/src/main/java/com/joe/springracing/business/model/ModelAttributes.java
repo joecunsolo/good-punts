@@ -8,9 +8,9 @@ public class ModelAttributes {
 	public static final double BOOKIE_HIGH = 20;
 	public static final double DEFAULT_DEVIATION_DIVIDER = 2;
 	public static final double DEFAULT_MEAN_DIVIDER = 1;
-	public static final double DEFAULT_JOCKEY_INFLUENCE = 0.2;
-	public static final double DEFAULT_TRAINER_INFLUENCE = 0.1;
-	public static final double DEFAULT_HORSE_INFLUENCE = 0.7;
+	public static final double DEFAULT_JOCKEY_INFLUENCE = 0.0;
+	public static final double DEFAULT_TRAINER_INFLUENCE = 0.0;
+	public static final double DEFAULT_HORSE_INFLUENCE = 1.0;
 	public static final Punt.Type[] DEFAULT_GOOD_PUNT_TYPES = new Punt.Type[]{Punt.Type.WIN};
 	public static final int DEFAULT_NUMBER_OF_PUNTS = 10;
 

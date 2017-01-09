@@ -16,7 +16,7 @@ public class HTMLReaderIO {
 		URL url = new URL(urlToRead);
 		
 		HttpURLConnection conn;
-		if (SpringRacingServices.useHTTPProxy()) {
+		if (com.joe.springracing.SpringRacingServices.useHTTPProxy()) {
 			conn = (HttpURLConnection) url.openConnection(SpringRacingServices.getHTTPProxy());			
 		    Authenticator.setDefault(SpringRacingServices.getHTTPAuthenticator());
 		} else {

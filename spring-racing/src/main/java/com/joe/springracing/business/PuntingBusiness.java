@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.joe.springracing.business.model.Model;
+import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.Type;
@@ -15,14 +16,16 @@ import com.joe.springracing.objects.Runner;
 public class PuntingBusiness {
 
 	private Model model;
+	private PuntingDAO dao;
 	
 	private boolean puntOnWin;
 	private boolean puntOnPlace;
 	private boolean puntOnTrifecta;
 	private boolean puntOnFlexi;
 	
-	public PuntingBusiness(Model model) {
+	public PuntingBusiness(PuntingDAO puntingDAO, Model model) {
 		this.setModel(model);
+		this.setDao(puntingDAO);
 		updatePuntTypes(model.getAttributes().getGoodPuntTypes());
 	}
 	
@@ -38,6 +41,18 @@ public class PuntingBusiness {
 				this.setPuntOnTrifecta(true);
 				this.setPuntOnFlexi(true);
 			}
+		}
+	}
+
+
+	public void generateGoodPuntsForMeets(List<Meeting> upcoming) {
+		try {
+			for (Meeting meet : upcoming) {
+				List<Punt> punts = getGoodPuntsForMeet(meet);
+				this.getDao().storePunts(punts);
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException("Unable to generate punts",  ex);
 		}
 	}
 
@@ -276,6 +291,14 @@ public class PuntingBusiness {
 
 	public void setPuntOnFlexi(boolean puntOnFlexi) {
 		this.puntOnFlexi = puntOnFlexi;
+	}
+
+	public PuntingDAO getDao() {
+		return dao;
+	}
+
+	public void setDao(PuntingDAO dao) {
+		this.dao = dao;
 	}
 
 	public class ProbailityComparator implements Comparator<Runner> {

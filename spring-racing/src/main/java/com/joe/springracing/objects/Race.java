@@ -9,15 +9,16 @@ public class Race { //extends RacingObject {
 
 	private Properties URL;
 	private List<Runner> runners;
-	private RaceResult result;
+	private int[] result;
+	private double[] prizeMoney;
 	
 	private Date date;
 	private int raceNumber;
-	private int meetCode;
+	private String meetCode;
 	private String venue;
 	private String name;
 	private String raceCode;
-	
+	private double distance;
 	
 	public Race() {
 		runners = new ArrayList<Runner>();
@@ -49,7 +50,7 @@ public class Race { //extends RacingObject {
 	
 	@Override
 	public int hashCode() {
-		return getMeetCode() * 100 + getRaceNumber();
+		return this.getRaceCode().hashCode();
 	}
 
 	public int getMaxRunnerNumber() {
@@ -62,11 +63,11 @@ public class Race { //extends RacingObject {
 		return max;
 	}
 
-	public RaceResult getResult() {
+	public int[] getResult() {
 		return result;
 	}
 
-	public void setResult(RaceResult result) {
+	public void setResult(int[] result) {
 		this.result = result;
 	}
 
@@ -86,11 +87,11 @@ public class Race { //extends RacingObject {
 		this.raceNumber = raceNumber;
 	}
 
-	public int getMeetCode() {
+	public String getMeetCode() {
 		return meetCode;
 	}
 
-	public void setMeetCode(int meetCode) {
+	public void setMeetCode(String meetCode) {
 		this.meetCode = meetCode;
 	}
 
@@ -120,6 +121,29 @@ public class Race { //extends RacingObject {
 	
 	public Properties getProperties() {
 		return null;
+	}
+
+	public double[] getPrizeMoney() {
+		return prizeMoney;
+	}
+
+	public void setPrizeMoney(double[] prizeMoney) {
+		this.prizeMoney = prizeMoney;
+	}
+
+	public double getPrizeMoney(int position) {
+		if (position - 1 < prizeMoney.length) {
+			return prizeMoney[position - 1];
+		}
+		return 0;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 }

@@ -1,70 +1,51 @@
 package com.joe.springracing.objects;
 
 import java.util.List;
-import java.util.Properties;
 
-import com.joe.springracing.business.RacingKeys;
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.probability.Probability;
 
-public class Runner extends RacingObject {
+public class Runner {
 	
-	private Horse horse;
-	private Jockey jockey;
-	private Trainer trainer;
+	private String horse;
+	private String jockey;
+	private String trainer;
 	private Odds odds;
-	private Properties career;
-	private Properties goodAt;
+//	private Properties career;
+//	private Properties goodAt;
 
 	//TODO Move these out
 	private List<AnalysableObjectStatistic> statistics;
 	private Probability probability = new Probability();
 	
-	public Runner(Properties props) {
-		super(props);
+	private int number;
+	private boolean scratched;
+	private boolean emergency;
+	
+	public Runner() {		
+	}
 		
-		jockey = new Jockey();
-		trainer = new Trainer();
-		horse = new Horse();
-	}
-	
-	public Runner() {
-		this(new Properties());
-	}
-	
-	public Horse getHorse() {
+	public String getHorse() {
 		return horse;
 	}
 
-	public void setHorse(Horse horse) {
+	public void setHorse(String horse) {
 		this.horse = horse;
 	}
 
-	public int getNumber() {
-		return getNumber(RacingKeys.KEY_RUNNER_NUMBER);
-	}
-	
-	public boolean isScratched() {
-		return isTrue(RacingKeys.KEY_SCRATCHED);
-	}
-	
-	public boolean isEmergency() {
-		return isTrue(RacingKeys.KEY_EMERGENCY);
-	}
-
-	public Jockey getJockey() {
+	public String getJockey() {
 		return jockey;
 	}
 
-	public void setJockey(Jockey jockey) {
+	public void setJockey(String jockey) {
 		this.jockey = jockey;
 	}
 
-	public Trainer getTrainer() {
+	public String getTrainer() {
 		return trainer;
 	}
 
-	public void setTrainer(Trainer trainer) {
+	public void setTrainer(String trainer) {
 		this.trainer = trainer;
 	}
 
@@ -78,22 +59,6 @@ public class Runner extends RacingObject {
 
 	public boolean hasOdds() {
 		return odds != null && odds.getWin() > 0;
-	}
-
-	public Properties getGoodAt() {
-		return goodAt;
-	}
-
-	public void setGoodAt(Properties goodAt) {
-		this.goodAt = goodAt;
-	}
-
-	public Properties getCareer() {
-		return career;
-	}
-
-	public void setCareer(Properties career) {
-		this.career = career;
 	}
 
 	public Probability getProbability() {
@@ -112,12 +77,28 @@ public class Runner extends RacingObject {
 		this.statistics = statistics;
 	}
 
-//	public StatisticsObject getDistance() {
-//		return distance;
-//	}
-//
-//	public void setDistance(StatisticsObject distance) {
-//		this.distance = distance;
-//	}
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public boolean isScratched() {
+		return scratched;
+	}
+
+	public void setScratched(boolean scratched) {
+		this.scratched = scratched;
+	}
+
+	public boolean isEmergency() {
+		return emergency;
+	}
+
+	public void setEmergency(boolean emergency) {
+		this.emergency = emergency;
+	}
 
 }

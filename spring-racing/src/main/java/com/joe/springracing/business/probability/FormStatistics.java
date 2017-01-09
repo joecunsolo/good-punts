@@ -14,7 +14,7 @@ public class FormStatistics extends SingleWeightedStatistics {
 		double[] result = new double[pastResults.size()];
 		int i = 0;
 		for (RunnerResult race : pastResults) {
-			result[i++] = race.getResult();
+			result[i++] = race.getPosition();
 		}
 		
 		return result;	
