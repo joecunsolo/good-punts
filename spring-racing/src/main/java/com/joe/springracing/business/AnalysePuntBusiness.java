@@ -1,5 +1,6 @@
 package com.joe.springracing.business;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
@@ -10,7 +11,7 @@ import com.joe.springracing.objects.Race;
 public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
 	
 	public AnalysePuntBusiness(SpringRacingDAO dao) {
-		super(dao);
+		super(dao, new PrintWriter(System.out));
 	}
 	
 	public double getReturnOnGoodPunts(List<Punt> goodPunts) throws Exception {
@@ -32,7 +33,7 @@ public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
 			
 			double returnOnPunt = getReturn(result, punt);
 			if (returnOnPunt > 0) {
-				System.out.println(raceNumber + " " + 
+				getWriter().println(raceNumber + " " + 
 						punt.getRunners().get(0).getNumber() + ":" + 
 						punt.getRunners().get(0).getHorse() + " " + 
 						returnOnPunt + " " +

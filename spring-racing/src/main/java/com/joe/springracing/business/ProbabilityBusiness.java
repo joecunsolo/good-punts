@@ -1,13 +1,12 @@
 package com.joe.springracing.business;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
-import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.model.Model;
-import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.business.probability.distributions.GatheredDistribution;
 import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.dao.SpringRacingDAO;
@@ -24,7 +23,7 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 	private Simulator simulator;
 	
 	public ProbabilityBusiness(SpringRacingDAO dao, PuntingDAO puntingDAO, Statistics stats, Simulator sim, Model model) {
-		super(dao);
+		super(dao, new PrintWriter(System.out));
 		this.setPuntingDAO(puntingDAO);
 		this.setModel(model);
 		this.setStatistics(stats);
@@ -40,8 +39,8 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			for (Meeting meeting : meets) {
 				try {
 //					if (meeting.getDate().getTime() > System.currentTimeMillis() - 96 * 60 * 60 * 1000) {
-						System.out.println();
-						System.out.println(meeting.getDate() + " "  + meeting.getVenue());
+						getWriter().println();
+						getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 						
 						List<Race> races = springRacingDao.fetchRacesForMeet(meeting);
 						meeting.setRaces(races);
