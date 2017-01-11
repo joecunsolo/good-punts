@@ -15,7 +15,7 @@ public class ImportUpcomingRacesServlet extends GenericServlet {
 	private static final long serialVersionUID = -5725479682605823516L;
 
 	@Override
-	public void service(ServletRequest arg0, ServletResponse arg1)
+	public void service(ServletRequest arg0, ServletResponse resp)
 			throws ServletException, IOException {
 		ImportBusiness importer = new ImportBusiness(GoodPuntsServices.getSpringRacingDAO());
 		importer.importUpcomingRaces(true);

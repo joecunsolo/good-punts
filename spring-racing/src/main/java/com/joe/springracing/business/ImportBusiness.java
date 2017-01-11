@@ -1,5 +1,6 @@
 package com.joe.springracing.business;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
@@ -14,7 +15,7 @@ import com.joe.springracing.objects.RunnerResult;
 public class ImportBusiness extends AbstractSpringRacingBusiness {
 
 	public ImportBusiness(SpringRacingDAO dao) {
-		super(dao);
+		super(dao, new PrintWriter(System.out));
 	}
 
 	public void importUpcomingRaces(boolean histories) {
@@ -34,7 +35,8 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	private void importRaces(List<Race> races, boolean histories) throws Exception {
 		Importer importer = new Importer();
 		for (Race race : races) {			
-			System.out.println(race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
+			getWriter().println(race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
+			getWriter().flush();
 			List<Runner> runners = importer.fetchRunners(race);
 			race.setRunners(runners);
 			getSpringRacingDAO().storeRace(race);
@@ -48,7 +50,9 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		Importer importer = new Importer();
 		for (Runner runner : runners) {
 			Horse horse = importer.fetchHorse(runner);
-			System.out.println(runner.getNumber() + " " + horse.getName());
+			getWriter().println(runner.getNumber() + " " + horse.getName());
+			getWriter().flush();
+
 			getSpringRacingDAO().storeHorse(horse);
 			
 			if (histories) {
@@ -62,8 +66,9 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		try {
 			List<Meeting> meets = getSpringRacingDAO().fetchExistingMeets();
 			for (Meeting meeting : meets) {
-				System.out.println();
-				System.out.println(meeting.getDate() + " "  + meeting.getVenue());
+				getWriter().println();
+				getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
+				getWriter().flush();
 				
 				importRaceResults(meeting);
 				getSpringRacingDAO().storeMeet(meeting);
@@ -84,8 +89,8 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			List<Meeting> meets = getSpringRacingDAO().fetchExistingMeets();
 			
 			for (Meeting meeting : meets) {
-				System.out.println();
-				System.out.println(meeting.getDate() + " "  + meeting.getVenue());
+				getWriter().println();
+				getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 				
 				importer.importExistingMeet(meeting);
 				getSpringRacingDAO().storeMeet(meeting);
