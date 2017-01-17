@@ -2,7 +2,6 @@ package com.joe.springracing.objects;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 public class RunnerResult {
 	
@@ -26,6 +25,7 @@ public class RunnerResult {
 	private int raceNumber;
 	private String raceName;
 	//TODO Splits and Sectionals
+	private boolean resultsFetched;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -179,15 +179,6 @@ public class RunnerResult {
 		this.raceDate = raceDate;
 	}
 	
-	public Runner getRunner() {
-		Runner runner = new Runner();
-		runner.setHorse(this.getHorse());
-		runner.setJockey(this.getJockey());
-		runner.setTrainer(this.getTrainer());
-		
-		return runner;
-	}
-
 	public String getVenueName() {
 		return venueName;
 	}
@@ -226,6 +217,14 @@ public class RunnerResult {
 
 	public void setRaceName(String raceName) {
 		this.raceName = raceName;
+	}
+
+	public boolean isResultsFetched() {
+		return resultsFetched;
+	}
+
+	public void setResultsFetched(boolean resultsFetched) {
+		this.resultsFetched = resultsFetched;
 	}
 
 

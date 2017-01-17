@@ -95,7 +95,8 @@ public class ObjectifyBaseDaoImpl {
 	}
 	
 	protected ObjRace toObjRace(Race race) {
-		ObjRace result = new ObjRace(race.getMeetCode());
+		ObjRace result = new ObjRace();
+		result.setMeetCode(race.getMeetCode());
 		result.setDate(race.getDate());
 		result.setDistance(race.getDistance());
 		result.setName(race.getName());
@@ -104,6 +105,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setRaceNumber(race.getRaceNumber());
 		result.setResult(race.getResult());
 		result.setVenue(race.getVenue());
+		result.setHistories(race.hasHistories());
 		return result;
 	}
 	

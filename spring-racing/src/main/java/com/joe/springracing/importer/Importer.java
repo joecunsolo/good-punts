@@ -2,6 +2,7 @@ package com.joe.springracing.importer;
 
 import java.util.List;
 
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.MeetBusiness;
 import com.joe.springracing.dao.datasource.RacingDotComDataSource;
 import com.joe.springracing.dao.datasource.SpringRacingDataSource;
@@ -15,7 +16,7 @@ public class Importer {
 
 	private SpringRacingDataSource datasource;
 	public Importer() {
-		datasource = new RacingDotComDataSource();
+		datasource = SpringRacingServices.getSpringRacingDataSource();
 	}
 		
 	public List<Meeting> importUpcomingMeets() throws Exception {
@@ -59,8 +60,10 @@ public class Importer {
 				result.setVenueName(raceResult.getVenue());
 				result.setRaceName(raceResult.getName());
 				result.setHorse(h.getId());
+				result.setResultsFetched(true);
 			} catch (Exception ex) {
-				//TODO Do something with this
+				ex.printStackTrace();
+//				result.setResultsFetched(false);
 			}
 		}
 		

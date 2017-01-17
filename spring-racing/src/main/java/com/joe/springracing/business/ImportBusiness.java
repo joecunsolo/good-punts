@@ -17,7 +17,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	public ImportBusiness(SpringRacingDAO dao) {
 		super(dao, new PrintWriter(System.out));
 	}
-
+	
 	public void importUpcomingRaces(boolean histories) {
 		try {
 			Importer importer = new Importer();
@@ -33,17 +33,24 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	}
 	
 	private void importRaces(List<Race> races, boolean histories) throws Exception {
-		Importer importer = new Importer();
 		for (Race race : races) {			
-			getWriter().println(race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
-			getWriter().flush();
-			List<Runner> runners = importer.fetchRunners(race);
-			race.setRunners(runners);
-			getSpringRacingDAO().storeRace(race);
-			if (runners != null) {
-				importRunners(runners, histories);
-			}
+			importRace(race, histories);
 		}
+	}
+	
+	public void importRace(Race race, boolean histories) throws Exception {
+		getWriter().println(race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
+		getWriter().flush();
+
+		Importer importer = new Importer();
+		List<Runner> runners = importer.fetchRunners(race);
+		race.setRunners(runners);
+		if (runners != null) {
+			race.setHistories(histories);
+			getSpringRacingDAO().storeRace(race);
+
+			importRunners(runners, histories);
+		}		
 	}
 
 	private void importRunners(List<Runner> runners, boolean histories) throws Exception {
@@ -107,6 +114,10 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			int[] result = importer.importRaceResults(race);
 			race.setResult(result);
 		}
+	}
+
+	public List<Race> fetchRacesWithoutHistories() {
+		return getSpringRacingDAO().fetchRacesWithoutHistories();
 	}
 	
 //	public void migrateFromFileV1() {

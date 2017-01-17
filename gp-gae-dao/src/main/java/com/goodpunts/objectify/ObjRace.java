@@ -2,10 +2,9 @@ package com.goodpunts.objectify;
 
 import java.util.Date;
 
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Parent;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class ObjRace  {
@@ -14,19 +13,17 @@ public class ObjRace  {
 	private double[] prizeMoney;
 	private Date date;
 	private int raceNumber;
+	@Index
 	private String meetCode;
 	private String venue;
 	private String name;
 	@Id
 	private String raceCode;
 	private double distance;
-	@Parent Key<ObjMeet> meeting;
+	@Index
+	private boolean histories;
 	
 	public ObjRace() {}
-	
-	public ObjRace(String meetCode) {
-		meeting = Key.create(ObjMeet.class, meetCode);
-	}
 	
 	public int[] getResult() {
 		return result;
@@ -82,4 +79,13 @@ public class ObjRace  {
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
+
+	public void setHistories(boolean hasHistories) {
+		this.histories = hasHistories;
+	}
+	
+	public boolean hasHistories() {
+		return histories;
+	}
+
 }

@@ -121,12 +121,10 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 
 	private List<Race> fetchRaceIdsForMeet(Meeting meet) {
-	    Key<ObjMeet> meetKey= getMeetKey(meet);
-
 		List<ObjRace> races = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRace.class) // We want only Races
-		          .ancestor(meetKey)    // Races in the meet
+		          .filter("meetCode", meet.getMeetCode())    // Races in the meet
 		          .list();
 		List<Race> result = new ArrayList<Race>();
 		for (ObjRace race : races) {

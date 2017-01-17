@@ -137,7 +137,9 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 		race.setDistance(Double.parseDouble(props.getProperty(KEY_RACE_DISTANCE)));
 		try {
 			race.setDate(raceDateFormat.parse(props.getProperty(KEY_RACE_TIME)));
-		} catch (ParseException pe) {}
+		} catch (ParseException pe) {
+			pe.printStackTrace();
+		}
 		return race;
 	}
 

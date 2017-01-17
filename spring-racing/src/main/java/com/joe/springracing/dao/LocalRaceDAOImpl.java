@@ -513,4 +513,9 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		return result;
 	}
 
+	public List<Race> fetchRacesWithoutHistories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

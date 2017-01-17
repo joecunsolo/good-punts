@@ -19,8 +19,16 @@
 	  <servlet-class>com.example.guestbook.SignGuestbookServlet</servlet-class>
 	</servlet>
 	<servlet>
-	  <servlet-name>import</servlet-name>
+	  <servlet-name>import-races</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.ImportUpcomingRacesServlet</servlet-class>
+	</servlet>
+	<servlet>
+	  <servlet-name>import-histories</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.ImportRunnerHistoriesServlet</servlet-class>
+	</servlet>
+	<servlet>
+	  <servlet-name>import-queue</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.ImportHistoryQueueServlet</servlet-class>
 	</servlet>
 	<servlet>
 	  <servlet-name>punts</servlet-name>
@@ -32,8 +40,16 @@
 	  <url-pattern>/sign</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-	  <servlet-name>import</servlet-name>
-	  <url-pattern>/import</url-pattern>
+	  <servlet-name>import-races</servlet-name>
+	  <url-pattern>/import/races</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	  <servlet-name>import-histories</servlet-name>
+	  <url-pattern>/import/histories</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	  <servlet-name>import-queue</servlet-name>
+	  <url-pattern>/import/queue</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 	  <servlet-name>punts</servlet-name>

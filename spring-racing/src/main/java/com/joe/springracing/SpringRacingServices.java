@@ -12,6 +12,8 @@ import com.joe.springracing.business.probability.PrizeMoneyStatistics;
 import com.joe.springracing.dao.LocalRaceDAOImpl;
 import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.dao.SpringRacingDAO;
+import com.joe.springracing.dao.datasource.RacingDotComDataSource;
+import com.joe.springracing.dao.datasource.SpringRacingDataSource;
 
 public class SpringRacingServices {
 
@@ -39,8 +41,13 @@ public class SpringRacingServices {
 		statistics = statistics1;
 	}
 	
+	private static SpringRacingDAO springRacingDao = new LocalRaceDAOImpl(OFFLINE_DIRECTORY);
 	public static SpringRacingDAO getSpringRacingDAO() {
-		return new LocalRaceDAOImpl(OFFLINE_DIRECTORY);
+		return springRacingDao;
+	}
+	
+	public static void setSpringRacingDAO(SpringRacingDAO dao) {
+		springRacingDao = dao;
 	}
 	
 	//TODO Move these to properties - they are not services
@@ -60,5 +67,13 @@ public class SpringRacingServices {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	private static SpringRacingDataSource datasource = new RacingDotComDataSource();
+	public static SpringRacingDataSource getSpringRacingDataSource() {
+		return datasource;
+	}
 	
+	public static void setSpringRacingDataSource(SpringRacingDataSource srdsource) {
+		datasource = srdsource;
+	}
 }

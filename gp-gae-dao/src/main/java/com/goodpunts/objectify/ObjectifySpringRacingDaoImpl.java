@@ -39,7 +39,8 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		List<ObjRace> races = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRace.class) // We want only Races
-		          .ancestor(getMeetKey(meet))    // Races in the meet
+		          .filter("meetCode", meet.getMeetCode())
+//		          .ancestor(getMeetKey(meet))    // Races in the meet
 		          .list();
 		List<Race> result = new ArrayList<Race>();
 		for (ObjRace oRace : races) {
@@ -69,9 +70,11 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 	public Race fetchRace(String raceCode) throws Exception {
 		ObjRace race = ObjectifyService.ofy()
 		          .load()
-		          .type(ObjRace.class) // We want only Races
-		          .ancestor(getRaceKey(raceCode))    // for this race code
-		          .first()
+//		          .type(ObjRace.class)
+//		          .id(raceCode)
+		          .key(getRaceKey(raceCode))
+//		          .filterKey("raceCode", raceCode)
+//		          .first()
 		          .now();
 
 		return toRace(race);
@@ -171,6 +174,21 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		result.setResultType(objResult.getResultType());
 		result.setTrainer(objResult.getTrainer());
 		result.setVenueName(objResult.getVenueName());
+		return result;
+	}
+
+	public List<Race> fetchRacesWithoutHistories() {
+		List<ObjRace> races = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRace.class) // We want only Races
+		          .filter("histories", false)
+		          .list();
+	
+		List<Race> result = new ArrayList<Race>();
+		for (ObjRace oRace : races) {
+			Race r = toRace(oRace);
+			result.add(r);
+		}
 		return result;
 	}
 

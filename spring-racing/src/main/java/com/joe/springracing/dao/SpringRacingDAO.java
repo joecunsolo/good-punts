@@ -44,4 +44,6 @@ public interface SpringRacingDAO {
 
 	public Horse fetchHorse(String horse) throws Exception;
 
+	public List<Race> fetchRacesWithoutHistories();
+
 }
