@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
   <cron>
-    <url>/import</url>
+    <url>/import/races</url>
     <description>Import Upcoming Races</description>
     <schedule>every 1 hours</schedule>
   </cron>
-    <cron>
+  <cron>
+    <url>/import/queue</url>
+    <description>Import Runner Histories</description>
+    <schedule>every 1 hours</schedule>
+  </cron>
+  <cron>
     <url>/punts</url>
     <description>Generate Punts and Probabilities</description>
     <schedule>every 1 hours</schedule>
