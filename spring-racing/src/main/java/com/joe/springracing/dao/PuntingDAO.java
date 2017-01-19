@@ -14,8 +14,8 @@ public interface PuntingDAO {
 	/** Runners with probabilities populated */
 	List<Runner> fetchProbabilitiesForRace(Race race) throws Exception;
 	
-	void storePunts(List<Punt> punts) throws Exception;
-
 	List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception;
+
+	void storePunts(Meeting meet, List<Punt> punts);
 
 }

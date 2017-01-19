@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
+
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.business.probability.Probability;
@@ -47,43 +48,72 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		return new ObjProbability(runner.getProbability(), runnerKey);
 	}
 
-	public void storePunts(List<Punt> punts) {
+	public void storePunts(Meeting m, List<Punt> punts) {
+		Key<ObjPuntEvent> event = storePuntEvent(m);
 		for (Punt punt : punts) {
-			storePunt(punt);
+			storePunt(event, punt);
 		}
 	}
 
-	private void storePunt(Punt punt) {
-		ObjPunt oPunt = toObjPunt(punt);
+	private Key<ObjPuntEvent> storePuntEvent(Meeting m) {
+		ObjPuntEvent event = new ObjPuntEvent(m);
+		return ObjectifyService.ofy().save().entity(event).now();
+	}
+
+	private void storePunt(Key<ObjPuntEvent> event, Punt punt) {
+		ObjPunt oPunt = toObjPunt(event, punt);
 		ObjectifyService.ofy().save().entity(oPunt).now();
 	}
 	
 	public List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception {
-		List<Race> racesForMeet = fetchRaceIdsForMeet(meet);
-		List<Punt> result = new ArrayList<Punt>();
-		for (Race race : racesForMeet) {
-			result.addAll(fetchPuntsForRace(race));
-		}
-		return result;
-	}
-
-	public List<Punt> fetchPuntsForRace(Race race) throws Exception {
-	    Key<ObjRace> raceKey = getRaceKey(race);
-
+		ObjPuntEvent event = fetchPuntEvent(meet);
+		System.out.println(event.date);
+		Key<ObjMeet> parent = Key.create(ObjMeet.class, meet.getMeetCode());
+		Key<ObjPuntEvent> key = Key.create(parent, ObjPuntEvent.class, event.getId());
+		
 		List<ObjPunt> punts = ObjectifyService.ofy()
-		          .load()
-		          .type(ObjPunt.class) // We want only Punt
-		          .ancestor(raceKey)    // Punts for the race
-		          .list();
+	        .load()
+	        .type(ObjPunt.class) // We want only PuntEvents
+	        .ancestor(key)    // Punts for the meet
+	        .list();
+		
 		List<Punt> result = new ArrayList<Punt>();
-		for (ObjPunt oPunt : punts) {
-			Punt p = toPunt(oPunt, race);
-			List<Runner> runners = fetchRunners(oPunt.getRunners(), race);
+		for (ObjPunt punt : punts) {
+			Race race = fetchRace(punt.getRaceCode());
+			Punt p = toPunt(punt, race);
+			List<Runner> runners = fetchRunners(punt.getRunners(), race);
 			p.setRunners(runners);
 			result.add(p);
 		}
 		return result;
 	}
+	
+	private ObjPuntEvent fetchPuntEvent(Meeting meet) {
+		return ObjectifyService.ofy()
+		          .load()
+		          .type(ObjPuntEvent.class) // We want only PuntEvents
+		          .ancestor(getMeetKey(meet))    // Punts for the meet
+		          .order("-date")
+		          .first()
+		          .now();
+	}
+
+//	private List<Punt> fetchPuntsForEvent(ObjPuntEvent pe) throws Exception {
+//		Key<ObjPuntEvent> parent = Key.create(ObjPuntEvent.class, pe.getMeetCode());
+//		List<ObjPunt> punts = ObjectifyService.ofy()
+//		          .load()
+//		          .type(ObjPunt.class) // We want only Punt
+//		          .ancestor(parent)    // Punts for the race
+//		          .list();
+//		List<Punt> result = new ArrayList<Punt>();
+//		for (ObjPunt oPunt : punts) {
+//			Punt p = toPunt(oPunt, null);
+//			List<Runner> runners = fetchRunners(oPunt.getRunners(), null);
+//			p.setRunners(runners);
+//			result.add(p);
+//		}
+//		return result;
+//	}
 	
 	private List<Runner> fetchRunners(List<Key<ObjRunner>> runners, Race race) throws Exception {
 		List<Runner> result = new ArrayList<Runner>();
@@ -103,12 +133,12 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 
 	
-	private ObjPunt toObjPunt(Punt punt) {
+	private ObjPunt toObjPunt(Key<ObjPuntEvent> event, Punt punt) {
 		List<String> runnerIds = new ArrayList<String>();
 		for (Runner r : punt.getRunners()) {
 			runnerIds.add(r.getHorse());
 		}
-		ObjPunt result = new ObjPunt(punt.getRace().getRaceCode(), runnerIds);
+		ObjPunt result = new ObjPunt(event, punt.getRace().getRaceCode(), runnerIds);
 		result.setBookieOdds(punt.getBookieOdds());
 		result.setJoesOdds(punt.getJoesOdds());
 		result.setType(punt.getType());

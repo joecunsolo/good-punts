@@ -6,6 +6,7 @@ import java.util.List;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.joe.springracing.objects.Punt.Type;
 
@@ -14,7 +15,9 @@ public class ObjPunt {
 	
 	@Id Long id;
 	@Parent
-	private Key<ObjRace> race;
+	private Key<ObjPuntEvent> event;
+	@Index
+	private String raceCode;
 	private Type type;
 	private double joesOdds;
 	private double bookieOdds;
@@ -24,9 +27,12 @@ public class ObjPunt {
 		runners = new ArrayList<Key<ObjRunner>>();		
 	}
 	
-	public ObjPunt(String raceCode, List<String> runnerIds) {
+	public ObjPunt(Key<ObjPuntEvent> event, String raceCode, List<String> runnerIds) {
 		this();
-		race = Key.create(ObjRace.class, raceCode);
+		this.event = event;
+		this.setRaceCode(raceCode);
+		
+		Key<ObjRace> race = Key.create(ObjRace.class, raceCode);
 		for (String id : runnerIds) {
 			runners.add(Key.create(race, ObjRunner.class, id));
 		}
@@ -55,6 +61,14 @@ public class ObjPunt {
 	}
 	public void setBookieOdds(double bookieOdds) {
 		this.bookieOdds = bookieOdds;
+	}
+
+	public String getRaceCode() {
+		return raceCode;
+	}
+
+	public void setRaceCode(String raceCode) {
+		this.raceCode = raceCode;
 	}
 
 }

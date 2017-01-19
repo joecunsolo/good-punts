@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.goodpunts</groupId>
   <artifactId>spring-racing</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   
   <properties>
     <appengine.app.version>1</appengine.app.version>
@@ -51,5 +51,20 @@
         <version>${appengine.target.version}</version>
         <scope>test</scope>
     </dependency>
+    	 <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.3.6</version>
+    </dependency>
+    <dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+	    <artifactId>httpcore-nio</artifactId>
+	    <version>4.0-alpha6</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+	    <artifactId>httpasyncclient</artifactId>
+	    <version>4.0-alpha2</version>
+	</dependency>
   </dependencies>
 </project>

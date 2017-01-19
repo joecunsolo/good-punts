@@ -13,6 +13,19 @@ import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
 
 public class ObjectifyBaseDaoImpl {
+	public Race fetchRace(String raceCode) throws Exception {
+		ObjRace race = ObjectifyService.ofy()
+		          .load()
+//		          .type(ObjRace.class)
+//		          .id(raceCode)
+		          .key(getRaceKey(raceCode))
+//		          .filterKey("raceCode", raceCode)
+//		          .first()
+		          .now();
+
+		return toRace(race);
+	}
+
 	public List<Runner> fetchRunnersForRace(Race race) throws Exception {
 		Key<ObjRace> raceKey = getRaceKey(race);
 		List<ObjRunner> runners = ObjectifyService.ofy()

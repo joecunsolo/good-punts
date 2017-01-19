@@ -49,7 +49,7 @@ public class PuntingBusiness {
 		try {
 			for (Meeting meet : upcoming) {
 				List<Punt> punts = getGoodPuntsForMeet(meet);
-				this.getDao().storePunts(punts);
+				this.getDao().storePunts(meet, punts);
 			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Unable to generate punts",  ex);

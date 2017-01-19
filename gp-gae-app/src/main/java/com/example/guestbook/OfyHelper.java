@@ -5,6 +5,7 @@ import com.goodpunts.objectify.ObjMeet;
 import com.goodpunts.objectify.ObjOdds;
 import com.goodpunts.objectify.ObjProbability;
 import com.goodpunts.objectify.ObjPunt;
+import com.goodpunts.objectify.ObjPuntEvent;
 import com.goodpunts.objectify.ObjRace;
 import com.goodpunts.objectify.ObjRunner;
 import com.goodpunts.objectify.ObjRunnerResult;
@@ -33,6 +34,7 @@ public class OfyHelper implements ServletContextListener {
     ObjectifyService.register(ObjPunt.class);
     ObjectifyService.register(ObjProbability.class);
     ObjectifyService.register(ObjStatistic.class);
+    ObjectifyService.register(ObjPuntEvent.class);
   }
 
   public void contextDestroyed(ServletContextEvent event) {

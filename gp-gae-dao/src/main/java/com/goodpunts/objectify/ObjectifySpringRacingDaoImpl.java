@@ -67,19 +67,6 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		}
 	}
 
-	public Race fetchRace(String raceCode) throws Exception {
-		ObjRace race = ObjectifyService.ofy()
-		          .load()
-//		          .type(ObjRace.class)
-//		          .id(raceCode)
-		          .key(getRaceKey(raceCode))
-//		          .filterKey("raceCode", raceCode)
-//		          .first()
-		          .now();
-
-		return toRace(race);
-	}
-
 	public void storeRace(Race race) throws Exception {
 		ObjRace oRace = toObjRace(race);
 		ObjectifyService.ofy().save().entity(oRace).now();

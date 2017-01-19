@@ -23,7 +23,7 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 	private Simulator simulator;
 	
 	public ProbabilityBusiness(SpringRacingDAO dao, PuntingDAO puntingDAO, Statistics stats, Simulator sim, Model model) {
-		super(dao, new PrintWriter(System.out));
+		super(dao, new PrintWriter(System.out, true));
 		this.setPuntingDAO(puntingDAO);
 		this.setModel(model);
 		this.setStatistics(stats);
