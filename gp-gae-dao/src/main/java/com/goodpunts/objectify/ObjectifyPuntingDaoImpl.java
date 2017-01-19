@@ -67,8 +67,8 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	
 	public List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception {
 		List<Punt> result = new ArrayList<Punt>();
-		if (meet != null) {
-			ObjPuntEvent event = fetchPuntEvent(meet);
+		ObjPuntEvent event = fetchPuntEvent(meet);
+		if (event != null) {
 			System.out.println(event.date);
 			Key<ObjMeet> parent = Key.create(ObjMeet.class, meet.getMeetCode());
 			Key<ObjPuntEvent> key = Key.create(parent, ObjPuntEvent.class, event.getId());
