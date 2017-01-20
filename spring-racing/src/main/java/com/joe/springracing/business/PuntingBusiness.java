@@ -45,12 +45,12 @@ public class PuntingBusiness {
 	}
 
 
-	public void generateGoodPuntsForMeets(List<Meeting> upcoming) {
+	public void generateGoodPuntsForMeet(Meeting upcoming) {
 		try {
-			for (Meeting meet : upcoming) {
-				List<Punt> punts = getGoodPuntsForMeet(meet);
-				this.getDao().storePunts(meet, punts);
-			}
+//			for (Meeting meet : upcoming) {
+				List<Punt> punts = getGoodPuntsForMeet(upcoming);
+				this.getDao().storePunts(upcoming, punts);
+//			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Unable to generate punts",  ex);
 		}

@@ -46,4 +46,6 @@ public interface SpringRacingDAO {
 
 	public List<Race> fetchRacesWithoutHistories();
 
+	public Meeting fetchMeet(String meetCode) throws Exception;
+
 }

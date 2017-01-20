@@ -1,7 +1,6 @@
 package com.goodpunts.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -20,9 +19,14 @@ public class GeneratePuntsServlet extends GenericServlet {
 
 	private static final long serialVersionUID = -574531141170405668L;
 
+	public static final String URL = "/punts/generate";
+	public static final String KEY_MEETCODE = "meetcode";
+	
 	@Override
-	public void service(ServletRequest arg0, ServletResponse arg1)
+	public void service(ServletRequest req, ServletResponse res)
 			throws ServletException, IOException {
+		String meetCode = req.getParameter(KEY_MEETCODE);
+		
 		Model m = new Model(new ModelAttributes());
 		ProbabilityBusiness probabilities = new ProbabilityBusiness(
 				GoodPuntsServices.getSpringRacingDAO(),
@@ -30,9 +34,18 @@ public class GeneratePuntsServlet extends GenericServlet {
 				SpringRacingServices.getStatistics(), 
 				SpringRacingServices.getSimulator(), 
 				m);
-		List<Meeting> upcoming = probabilities.generateProbabilitiesForUpcomingMeets();
-		
-		PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
-		punts.generateGoodPuntsForMeets(upcoming);
+
+		Meeting meeting;
+		try {
+			meeting = GoodPuntsServices.getSpringRacingDAO().fetchMeet(meetCode);
+			probabilities.generateProbabilitiesForMeet(meeting);
+			
+			PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
+			punts.generateGoodPuntsForMeet(meeting);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Unablt to generate punts for " + meetCode);
+		}
+
 	}
 }

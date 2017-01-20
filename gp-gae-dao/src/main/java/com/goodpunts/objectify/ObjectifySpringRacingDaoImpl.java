@@ -27,14 +27,6 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		return result;
 	}
 
-	private Meeting toMeeting(ObjMeet oMeet) {
-		Meeting m = new Meeting();
-		m.setDate(oMeet.getDate());
-		m.setMeetCode(oMeet.getMeetCode());
-		m.setVenue(oMeet.getVenue());
-		return m;
-	}
-
 	public List<Race> fetchRacesForMeet(Meeting meet) throws Exception {
 		List<ObjRace> races = ObjectifyService.ofy()
 		          .load()

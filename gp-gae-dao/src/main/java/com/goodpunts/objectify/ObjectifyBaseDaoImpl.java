@@ -16,15 +16,29 @@ public class ObjectifyBaseDaoImpl {
 	public Race fetchRace(String raceCode) throws Exception {
 		ObjRace race = ObjectifyService.ofy()
 		          .load()
-//		          .type(ObjRace.class)
-//		          .id(raceCode)
 		          .key(getRaceKey(raceCode))
-//		          .filterKey("raceCode", raceCode)
-//		          .first()
 		          .now();
 
 		return toRace(race);
 	}
+
+	public Meeting fetchMeet(String meetCode) throws Exception {
+		ObjMeet meet = ObjectifyService.ofy()
+		          .load()
+		          .key(getMeetKey(meetCode))
+		          .now();
+
+		return toMeeting(meet);
+	}
+	
+	protected Meeting toMeeting(ObjMeet oMeet) {
+		Meeting m = new Meeting();
+		m.setDate(oMeet.getDate());
+		m.setMeetCode(oMeet.getMeetCode());
+		m.setVenue(oMeet.getVenue());
+		return m;
+	}
+
 
 	public List<Runner> fetchRunnersForRace(Race race) throws Exception {
 		Key<ObjRace> raceKey = getRaceKey(race);
@@ -154,7 +168,10 @@ public class ObjectifyBaseDaoImpl {
 		return horse;
 	}
 	protected Key<ObjMeet> getMeetKey(Meeting meet) {
-	    return Key.create(ObjMeet.class, meet.getMeetCode());
+	    return getMeetKey(meet.getMeetCode());
+	}
+	protected Key<ObjMeet> getMeetKey(String meetCode) {
+	    return Key.create(ObjMeet.class, meetCode);
 	}
 
 	protected Key<ObjRace> getRaceKey(Race race) {

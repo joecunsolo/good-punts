@@ -77,4 +77,9 @@ public class MockRacingDao implements SpringRacingDAO {
 		return result;
 	}
 
+	public Meeting fetchMeet(String meetCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -30,7 +30,7 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 		this.setSimulator(sim);
 	}
 	
-	public List<Meeting> generateProbabilitiesForUpcomingMeets() {
+	public List<Meeting> fetchUpcomingMeets() {
 		SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
 		try {
 			List<Meeting> meets = springRacingDao.fetchExistingMeets();
@@ -38,17 +38,9 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			
 			for (Meeting meeting : meets) {
 				try {
-//					if (meeting.getDate().getTime() > System.currentTimeMillis() - 96 * 60 * 60 * 1000) {
-						getWriter().println();
-						getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
-						
-						List<Race> races = springRacingDao.fetchRacesForMeet(meeting);
-						meeting.setRaces(races);
-						calculateOddsForMeet(meeting);
-						
-						getPuntingDAO().storeProbabilities(meeting);
+					if (meeting.getDate().getTime() > System.currentTimeMillis() - 96 * 60 * 60 * 1000) {
 						upcoming.add(meeting);
-//					}
+					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -58,6 +50,22 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void generateProbabilitiesForMeet(Meeting meeting) {
+		try {
+			SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
+			getWriter().println();
+			getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
+			
+			List<Race> races = springRacingDao.fetchRacesForMeet(meeting);
+			meeting.setRaces(races);
+			calculateOddsForMeet(meeting);
+			
+			getPuntingDAO().storeProbabilities(meeting);	
+		} catch (Exception ex) {
+			throw new RuntimeException("Unable to generate probabilities for: " + meeting.getMeetCode(), ex);
+		}
 	}
 	
 	public void calculateOddsForMeet(Meeting meeting) throws Exception {		

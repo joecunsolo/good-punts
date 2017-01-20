@@ -31,10 +31,14 @@
 	  <servlet-class>com.goodpunts.servlet.ImportHistoryQueueServlet</servlet-class>
 	</servlet>
 	<servlet>
-	  <servlet-name>punts</servlet-name>
+	  <servlet-name>punts-generate</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.GeneratePuntsServlet</servlet-class>
 	</servlet>
-			
+	<servlet>
+	  <servlet-name>punts-queue</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.GeneratePuntsQueueServlet</servlet-class>
+	</servlet>
+				
 	<servlet-mapping>
 	  <servlet-name>sign</servlet-name>
 	  <url-pattern>/sign</url-pattern>
@@ -52,10 +56,14 @@
 	  <url-pattern>/import/queue</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-	  <servlet-name>punts</servlet-name>
-	  <url-pattern>/punts</url-pattern>
+	  <servlet-name>punts-generate</servlet-name>
+	  <url-pattern>/punts/generate</url-pattern>
 	</servlet-mapping>
-			
+	<servlet-mapping>
+	  <servlet-name>punts-queue</servlet-name>
+	  <url-pattern>/punts/queue</url-pattern>
+	</servlet-mapping>
+				
 	<welcome-file-list>
 	    <welcome-file>punts.jsp</welcome-file>
 	</welcome-file-list>
