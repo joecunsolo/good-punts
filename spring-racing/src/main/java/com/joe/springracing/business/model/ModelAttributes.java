@@ -4,7 +4,7 @@ import com.joe.springracing.objects.Punt;
 
 public class ModelAttributes {
 
-	public static final int DEFAULT_SIMULATIONS = 1000;
+	public static final int DEFAULT_SIMULATIONS = 100;
 	public static final double BOOKIE_HIGH = 20;
 	public static final double DEFAULT_DEVIATION_DIVIDER = 2;
 	public static final double DEFAULT_MEAN_DIVIDER = 1;
