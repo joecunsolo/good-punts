@@ -56,9 +56,10 @@ public class PuntingBusiness {
 		}
 	}
 
-	public List<Punt> getGoodPuntsForMeet(Meeting meeting) {
+	public List<Punt> getGoodPuntsForMeet(Meeting meeting) throws Exception {
 		List<Punt> puntsForMeet = new ArrayList<Punt>();
 		for (Race r : meeting.getRaces()) {
+			r.setRunners(this.getDao().fetchProbabilitiesForRace(r));
 			List<Punt> puntsForRace = getGoodPuntsForRace(r);
 			puntsForMeet.addAll(puntsForRace);
 		}

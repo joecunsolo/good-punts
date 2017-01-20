@@ -55,6 +55,9 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 
 	private void storePunt(Key<ObjPuntEvent> event, Punt punt) {
+		System.out.println(punt.getRace().getVenue() + " " +
+				punt.getRace().getRaceNumber() + " " +
+				punt.getRunners().get(0).getHorse());
 		ObjPunt oPunt = toObjPunt(event, punt);
 		ObjectifyService.ofy().save().entity(oPunt).now();
 	}
@@ -146,18 +149,18 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		return p;
 	}
 
-	private List<Race> fetchRaceIdsForMeet(Meeting meet) {
-		List<ObjRace> races = ObjectifyService.ofy()
-		          .load()
-		          .type(ObjRace.class) // We want only Races
-		          .filter("meetCode", meet.getMeetCode())    // Races in the meet
-		          .list();
-		List<Race> result = new ArrayList<Race>();
-		for (ObjRace race : races) {
-			result.add(toRace(race));
-		}
-		return result;
-	}
+//	private List<Race> fetchRaceIdsForMeet(Meeting meet) {
+//		List<ObjRace> races = ObjectifyService.ofy()
+//		          .load()
+//		          .type(ObjRace.class) // We want only Races
+//		          .filter("meetCode", meet.getMeetCode())    // Races in the meet
+//		          .list();
+//		List<Race> result = new ArrayList<Race>();
+//		for (ObjRace race : races) {
+//			result.add(toRace(race));
+//		}
+//		return result;
+//	}
 
 	public List<Runner> fetchProbabilitiesForRace(Race race) throws Exception {
 		List<Runner> result = super.fetchRunnersForRace(race);
