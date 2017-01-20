@@ -8,6 +8,7 @@
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
 <%@ page import="com.joe.springracing.objects.Punt" %>
+<%@ page import="java.text.DecimalFormat" %>
 
 <%-- //[END imports]--%>
 
@@ -23,17 +24,22 @@
 <a href="punts.jsp">Punts</a><br />
 <a href="probabilities.jsp">Probabilities</a><br />
 <% 			List<Meeting> meets = GoodPuntsServices.getSpringRacingDAO().fetchExistingMeets();
+			DecimalFormat df = new DecimalFormat("0.0");
 			for (Meeting meet : meets) {
 				//if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>
 					<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
 <%					List<Punt> punts = GoodPuntsServices.getPuntingDAO().fetchPuntsForMeet(meet);
 					for (Punt punt : punts) {%>
-						<p style="margin-left:40px">Race <%=punt.getRace().getRaceNumber()%>&nbsp;
+						<p style="margin-left:40px">
+						<a href="race_probabilities.jsp?meet=<%=meet.getMeetCode()%>&race_code=<%=punt.getRace().getRaceCode()%>">
+						Race <%=punt.getRace().getRaceNumber()%>
+						</a>
+						&nbsp;
 						<%=punt.getType()%>&nbsp;
 <% 						for (Runner horse : punt.getRunners()) {%>
-							Horse: <%= horse.getNumber() + "&nbsp;" + horse.getHorse() %>&nbsp;
+							<%= horse.getNumber() + ".&nbsp;" + horse.getHorse() %>&nbsp;
 <% 						}%>
-						<%=punt.getJoesOdds()%>&nbsp;
+						<%=df.format(punt.getJoesOdds())%>&nbsp;
 						<%=punt.getBookieOdds()%>
 						</p>
 <%					}
