@@ -11,8 +11,14 @@
     <schedule>every 1 hours</schedule>
   </cron>
   <cron>
-    <url>/punts/queue</url>
-    <description>Generate Punts and Probabilities</description>
+    <url>/probabilities/queue</url>
+    <description>Generate Probabilities</description>
     <schedule>every 1 hours</schedule>
   </cron>
+  <cron>
+    <url>/punts/generate</url>
+    <description>Generate Punts</description>
+    <schedule>every 1 hours</schedule>
+  </cron>
+  
 </cronentries>

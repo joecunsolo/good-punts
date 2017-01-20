@@ -26,7 +26,7 @@ public class ImportUpcomingRacesServlet extends GenericServlet {
 	public void service(ServletRequest req, ServletResponse resp)
 			throws ServletException, IOException {
 		ImportBusiness importer = new ImportBusiness(GoodPuntsServices.getSpringRacingDAO());
-		importer.importUpcomingRaces(false);			
+		importer.importUpcomingRaces(false);
 	}
 
 }
