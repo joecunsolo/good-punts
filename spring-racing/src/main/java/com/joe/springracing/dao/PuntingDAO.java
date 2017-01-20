@@ -9,13 +9,13 @@ import com.joe.springracing.objects.Runner;
 
 public interface PuntingDAO {
 
-	void storeProbabilities(Meeting meeting) throws Exception;
-
 	/** Runners with probabilities populated */
 	List<Runner> fetchProbabilitiesForRace(Race race) throws Exception;
 	
 	List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception;
 
 	void storePunts(Meeting meet, List<Punt> punts);
+
+	void storeProbabilities(Race race);
 
 }

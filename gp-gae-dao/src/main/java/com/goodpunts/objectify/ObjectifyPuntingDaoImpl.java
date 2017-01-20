@@ -17,13 +17,7 @@ import com.joe.springracing.objects.Runner;
 
 public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements PuntingDAO {
 
-	public void storeProbabilities(Meeting meeting) {
-		for (Race race : meeting.getRaces()) {
-			storeProbabilities(race);
-		}
-	}
-
-	private void storeProbabilities(Race race) {
+	public void storeProbabilities(Race race) {
 		Key<ObjRace> raceKey = super.getRaceKey(race);
 		for (Runner runner : race.getRunners()) {
 			storeProbabilities(raceKey, runner);

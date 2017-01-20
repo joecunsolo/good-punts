@@ -27,12 +27,11 @@ public class AnalyseProbabilities {
 					System.out.println(meeting.getDate() + " "  + meeting.getVenue());
 					
 					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
-					meeting.setRaces(races);
 					new ProbabilityBusiness(SpringRacingServices.getSpringRacingDAO(),
 							SpringRacingServices.getPuntingDao(), 
 							SpringRacingServices.getStatistics(),
 							SpringRacingServices.getSimulator(),
-							m).calculateOddsForMeet(meeting);
+							m).calculateOddsForRaces(races);
 					
 					printAndSortMeet(meeting);
 				}

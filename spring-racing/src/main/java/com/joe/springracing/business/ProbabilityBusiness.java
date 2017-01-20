@@ -59,17 +59,14 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 			
 			List<Race> races = springRacingDao.fetchRacesForMeet(meeting);
-			meeting.setRaces(races);
-			calculateOddsForMeet(meeting);
-			
-			getPuntingDAO().storeProbabilities(meeting);	
+			calculateOddsForRaces(races);			
 		} catch (Exception ex) {
 			throw new RuntimeException("Unable to generate probabilities for: " + meeting.getMeetCode(), ex);
 		}
 	}
 	
-	public void calculateOddsForMeet(Meeting meeting) throws Exception {		
-		for (Race race : meeting.getRaces()) {
+	public void calculateOddsForRaces(List<Race> races) throws Exception {		
+		for (Race race : races) {
 			calculateOddsForRace(race);
 		}
 	}
@@ -90,6 +87,8 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 		}
 		GatheredDistribution gd = new GatheredDistribution(model);
 		getSimulator().simulate(race, model.getAttributes().getSimulations(), gd, statistics.isDescending());
+		
+		getPuntingDAO().storeProbabilities(race);
 	}
 
 	public Model getModel() {

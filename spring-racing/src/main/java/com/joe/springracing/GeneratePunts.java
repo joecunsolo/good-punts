@@ -34,7 +34,7 @@ public class GeneratePunts {
 							SpringRacingServices.getPuntingDao(), 
 							SpringRacingServices.getStatistics(),
 							SpringRacingServices.getSimulator(),
-							m).calculateOddsForMeet(meeting);
+							m).calculateOddsForRaces(races);
 					List<Punt> goodPunts = new PuntingBusiness(
 							SpringRacingServices.getPuntingDao(),
 							m).getGoodPuntsForMeet(meeting);
