@@ -9,7 +9,8 @@ public class StandardDeviationCalculator {
 		setModel(model);
 	}
 	public double calculate() {
-		return model.getRace().getRunners().size() / model.getAttributes().getDefaultDeviationDivider();
+		return model.getMeanCalculator().calculate() 
+				/ model.getAttributes().getDefaultDeviationDivider();
 	}
 	public Model getModel() {
 		return model;
@@ -25,7 +26,7 @@ public class StandardDeviationCalculator {
 		}
 		
 		if (sd == 0) {
-			sd = calculate();
+			return calculate();
 		}
 		return sd;
 	}

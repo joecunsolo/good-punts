@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.joe.springracing.objects.RacingObject;
 import com.joe.springracing.objects.RunnerResult;
 
 public class PrizeMoneyStatistics extends SingleWeightedStatistics {
@@ -18,7 +17,7 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 		
 		Collections.sort(pastResults, new RunnerResultDateComparator());
 		
-		int numResults = pastResults.size();// > 9 ? 9 : pastResults.size();
+		int numResults = pastResults.size() > 9 ? 9 : pastResults.size();
 		double[] result = new double[numResults];
 		int i = 0;
 		for (RunnerResult runnerResult : pastResults) {
