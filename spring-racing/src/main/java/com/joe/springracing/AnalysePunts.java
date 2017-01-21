@@ -26,7 +26,7 @@ public class AnalysePunts {
 						SpringRacingServices.getPuntingDao(), 
 						SpringRacingServices.getStatistics(),
 						SpringRacingServices.getSimulator(),
-						m).calculateOddsForRaces(meeting.getRaces());
+						m).generateProbabilitiesForRaces(meeting.getRaces());
 				PuntingBusiness pb = new PuntingBusiness(
 						SpringRacingServices.getPuntingDao(),
 						m);

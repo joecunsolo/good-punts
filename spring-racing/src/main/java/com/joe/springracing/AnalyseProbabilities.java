@@ -31,7 +31,7 @@ public class AnalyseProbabilities {
 							SpringRacingServices.getPuntingDao(), 
 							SpringRacingServices.getStatistics(),
 							SpringRacingServices.getSimulator(),
-							m).calculateOddsForRaces(races);
+							m).generateProbabilitiesForRaces(races);
 					
 					printAndSortMeet(meeting);
 				}

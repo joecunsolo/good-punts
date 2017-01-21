@@ -56,7 +56,9 @@
 					stats.get(0) instanceof SingleVariateStatistic) {
 					SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);%>
 					<p style="margin-left:80px"><%=runner.getNumber()%>&nbsp; 
-					<%=runner.getHorse()%>&nbsp;
+					<a href="horse.jsp?horse_code=<%=runner.getHorse() %>">
+						<%=runner.getHorse()%>
+					</a>&nbsp;
 					<%=runner.getProbability().getWin()%>&nbsp; 
 					<%=df.format(svs.getMean())%>&nbsp;
 					<%=df.format(svs.getStandardDeviation())%>&nbsp;
