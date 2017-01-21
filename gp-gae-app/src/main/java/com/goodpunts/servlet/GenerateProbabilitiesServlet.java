@@ -10,22 +10,21 @@ import javax.servlet.ServletResponse;
 import com.goodpunts.GoodPuntsServices;
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ProbabilityBusiness;
-import com.joe.springracing.business.PuntingBusiness;
 import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.ModelAttributes;
-import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Race;
 
 public class GenerateProbabilitiesServlet extends GenericServlet {
 
 	private static final long serialVersionUID = -574531141170405668L;
 
 	public static final String URL = "/probabilities/generate";
-	public static final String KEY_MEETCODE = "meetcode";
+	public static final String KEY_RACECODE = "racecode";
 	
 	@Override
 	public void service(ServletRequest req, ServletResponse res)
 			throws ServletException, IOException {
-		String meetCode = req.getParameter(KEY_MEETCODE);
+		String raceCode = req.getParameter(KEY_RACECODE);
 		
 		Model m = new Model(new ModelAttributes());
 		ProbabilityBusiness probabilities = new ProbabilityBusiness(
@@ -36,13 +35,13 @@ public class GenerateProbabilitiesServlet extends GenericServlet {
 				m);
 
 		try {
-			Meeting meeting = GoodPuntsServices.getSpringRacingDAO().fetchMeet(meetCode);
-			probabilities.generateProbabilitiesForMeet(meeting);
+			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
+			probabilities.generateProbabilitiesForRace(race);
 			
-			PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
-			punts.generateGoodPuntsForMeet(meeting);
+//			PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
+//			punts.generateGoodPuntsForMeet(meeting);
 		} catch (Exception e) {
-			throw new RuntimeException("Unablt to generate punts for " + meetCode);
+			throw new RuntimeException("Unablt to generate punts for " + raceCode);
 		}
 
 	}

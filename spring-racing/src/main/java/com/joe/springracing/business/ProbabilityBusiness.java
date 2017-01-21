@@ -52,6 +52,18 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 		return null;
 	}
 	
+	public List<Race> fetchRacesForMeet(Meeting meeting) {
+		SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
+		getWriter().println();
+		getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
+		
+		try {
+			return springRacingDao.fetchRacesForMeet(meeting);
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to fetch races for meet " + meeting.getMeetCode(), e);
+		}		
+	}
+	
 	public void generateProbabilitiesForMeet(Meeting meeting) {
 		try {
 			SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
@@ -59,19 +71,19 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 			
 			List<Race> races = springRacingDao.fetchRacesForMeet(meeting);
-			calculateOddsForRaces(races);			
+			generateProbabilitiesForRaces(races);			
 		} catch (Exception ex) {
 			throw new RuntimeException("Unable to generate probabilities for: " + meeting.getMeetCode(), ex);
 		}
 	}
 	
-	public void calculateOddsForRaces(List<Race> races) throws Exception {		
+	public void generateProbabilitiesForRaces(List<Race> races) throws Exception {		
 		for (Race race : races) {
-			calculateOddsForRace(race);
+			generateProbabilitiesForRace(race);
 		}
 	}
 
-	public void calculateOddsForRace(Race race) throws Exception {
+	public void generateProbabilitiesForRace(Race race) throws Exception {
 		//load the runners
 		List<Runner> runners = this.getSpringRacingDAO().fetchRunnersForRace(race);
 		race.setRunners(runners);
