@@ -11,7 +11,7 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class ObjRunnerResult {
 
-	@Id Long Id;
+	@Id String id;
 	private String jockey;
 	private String trainer;
 	@Parent
@@ -30,8 +30,10 @@ public class ObjRunnerResult {
 
 	public ObjRunnerResult() {}
 	
-	public ObjRunnerResult(String horseCode) {
+	public ObjRunnerResult(String horseCode, String raceCode) {
 		horse = Key.create(ObjHorse.class, horseCode);
+		id = horseCode + raceCode;
+		setRaceCode(raceCode);
 	}
 	
 	public String getJockey() {

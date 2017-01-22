@@ -145,12 +145,12 @@ public class ObjectifyBaseDaoImpl {
 	}
 	
 	protected ObjRunnerResult toObjRunnerResult(RunnerResult runner) {
-		ObjRunnerResult result = new ObjRunnerResult(runner.getHorse());
+		ObjRunnerResult result = new ObjRunnerResult(runner.getHorse(), runner.getRaceCode());
 		result.setDistance(runner.getDistance());
 		result.setJockey(runner.getJockey());
 		result.setPosition(runner.getPosition());
 		result.setPrizeMoney(runner.getPrizeMoney());
-		result.setRaceCode(runner.getRaceCode());
+//		result.setRaceCode(runner.getRaceCode());
 		result.setRaceDate(runner.getRaceDate());
 		result.setRaceTime(runner.getRaceTime());
 		result.setResultType(runner.getResultType());

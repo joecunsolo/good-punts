@@ -26,7 +26,8 @@ public class StandardDeviationCalculator {
 		}
 		
 		if (sd == 0) {
-			return calculate();
+			return model.getMeanCalculator().calculate(values) 
+					/ model.getAttributes().getDefaultDeviationDivider();
 		}
 		return sd;
 	}
