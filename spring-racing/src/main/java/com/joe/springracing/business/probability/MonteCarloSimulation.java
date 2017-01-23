@@ -33,12 +33,19 @@ public class MonteCarloSimulation implements Simulator {
 	}
 
 	private void setOdds(Race race) {
+		double checkSum = 0;
 		for (int i = 0; i < race.getRunners().size(); i++) {
 			Runner runner = race.getRunners().get(i);
-			double win = wins[runner.getNumber()] / (double)this.simulations;
+			checkSum += wins[runner.getNumber()];
+			runner.getProbability().setNumberWins(wins[runner.getNumber()]);
+			double win = runner.getProbability().getNumberWins() / (double)this.simulations;
 			runner.getProbability().setWin(win);
-			double place = places[runner.getNumber()] / (double)this.simulations;
+			runner.getProbability().setNumberPlaces(places[runner.getNumber()]);
+			double place = runner.getProbability().getNumberPlaces() / (double)this.simulations;
 			runner.getProbability().setPlace(place);			
+		}
+		if (checkSum > this.simulations) {
+			throw new RuntimeException("Sum does not sum to the number of simulations");
 		}
 	}
 

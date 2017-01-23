@@ -46,7 +46,21 @@
 <% 			}
 %>
 			</p>		
-			<p style="margin-left:40px"><%=race.getRaceNumber()%>&nbsp;<%=race.getName()%>
+			<p style="margin-left:40px">
+			<%=race.getRaceNumber()%>&nbsp;<%=race.getName()%>
+			<table>
+				<thead>
+					<tr>
+						<td>#</td>
+						<td>Name</td>
+						<td>Mean</td>
+						<td>SD</td>
+						<td>Sims</td>
+						<td>%</td>
+						<td>Odds</td>
+					</tr>
+				</thead>
+				<tbody>
 <% 			List<Runner> runners = GoodPuntsServices.getPuntingDAO().fetchProbabilitiesForRace(race);
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {
@@ -55,16 +69,21 @@
 					stats.size() > 0 &&
 					stats.get(0) instanceof SingleVariateStatistic) {
 					SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);%>
-					<p style="margin-left:80px"><%=runner.getNumber()%>&nbsp; 
-					<a href="horse.jsp?horse_code=<%=runner.getHorse() %>">
-						<%=runner.getHorse()%>
-					</a>&nbsp;
-					<%=runner.getProbability().getWin()%>&nbsp; 
-					<%=df.format(svs.getMean())%>&nbsp;
-					<%=df.format(svs.getStandardDeviation())%>&nbsp;
-					<%=runner.getOdds().getWin()%></p>
+					<tr>
+						<td><%=runner.getNumber()%></td> 
+						<td><a href="horse.jsp?horse_code=<%=runner.getHorse() %>">
+							<%=runner.getHorse()%>
+						</a></td>
+						<td><%=df.format(svs.getMean())%></td>
+						<td><%=df.format(svs.getStandardDeviation())%></td>
+						<td><%=runner.getProbability().getNumberWins()%></td> 
+						<td><%=runner.getProbability().getWin() * 100%></td> 
+						<td><%=runner.getOdds().getWin()%></td>
+					</tr>
 <%				}
 			}%>
+				</tbody>
+			</table>
 			</p>
 </body>
 </html>

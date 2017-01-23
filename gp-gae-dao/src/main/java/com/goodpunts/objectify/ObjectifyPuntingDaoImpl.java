@@ -39,7 +39,7 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 
 	private ObjProbability toObjProbability(Key<ObjRunner> runnerKey, Runner runner) {
-		return new ObjProbability(runner.getProbability(), runnerKey);
+		return new ObjProbability(runner.getProbability(), runner.getHorse(), runnerKey);
 	}
 
 	public void storePunts(Meeting m, List<Punt> punts) {
@@ -216,8 +216,8 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		Key<ObjRunner> runnerKey = super.getRunnerKey(race, runner.getHorse());
 		ObjProbability probs = ObjectifyService.ofy()
 	          .load()
-	          .type(ObjProbability.class) // We want only Punt
-	          .ancestor(runnerKey)    // Punts for the race
+	          .type(ObjProbability.class) // We want only Probabilities
+	          .ancestor(runnerKey)    // Probabilities for this runner
 	          .first()
 	          .now();
 		return probs;

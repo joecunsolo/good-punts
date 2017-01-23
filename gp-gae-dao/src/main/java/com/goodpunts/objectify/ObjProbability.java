@@ -10,21 +10,26 @@ import com.joe.springracing.business.probability.Probability;
 public class ObjProbability {
 
 	@Id
-	private Long id;
+	private String id;
 	@Parent 
 	private Key<ObjRunner> runner;
 	private double win;
 	private double place;
+	private int numberWins;
+	private int numberPlaces;
 	private double mean;
 	private double standardDeviation;
 	private double weight;
 
 	public ObjProbability() {}
 	
-	public ObjProbability(Probability p, Key<ObjRunner> runnerKey) {
+	public ObjProbability(Probability p, String id, Key<ObjRunner> runnerKey) {
 		runner = runnerKey;
+		this.setId(id);
 		this.setPlace(p.getPlace());
 		this.setWin(p.getWin());
+		this.setNumberWins(p.getNumberWins());
+		this.setNumberPlaces(p.getNumberPlaces());
 	}
 		
 	public double getWin() {
@@ -64,7 +69,27 @@ public class ObjProbability {
 		this.weight = weight;
 	}
 	
-	public Long getId() {
+	public String getId() {
 		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public int getNumberPlaces() {
+		return numberPlaces;
+	}
+
+	public void setNumberPlaces(int numberPlaces) {
+		this.numberPlaces = numberPlaces;
+	}
+
+	public int getNumberWins() {
+		return numberWins;
+	}
+
+	public void setNumberWins(int numberWins) {
+		this.numberWins = numberWins;
 	}
 }

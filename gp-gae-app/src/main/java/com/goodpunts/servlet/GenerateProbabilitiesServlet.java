@@ -42,7 +42,7 @@ public class GenerateProbabilitiesServlet extends GenericServlet {
 //			PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
 //			punts.generateGoodPuntsForMeet(meeting);
 		} catch (Exception e) {
-			throw new RuntimeException("Unablt to generate punts for " + raceCode);
+			throw new RuntimeException("Unable to generate punts for " + raceCode, e);
 		}
 
 	}
