@@ -9,6 +9,7 @@ import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
+import com.joe.springracing.objects.Race;
 
 public class AnalysePunts {
 
@@ -30,7 +31,10 @@ public class AnalysePunts {
 				PuntingBusiness pb = new PuntingBusiness(
 						SpringRacingServices.getPuntingDao(),
 						m);
-				List<Punt> goodPunts = pb.getGoodPuntsForMeet(meeting);
+				
+				List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
+				meeting.setRaces(races);
+				List<Punt> goodPunts = pb.generateGoodPuntsForMeet(meeting);
 				//goodPunts = new PuntingBusiness(m).addWinAndPlacePunts(goodPunts);
 				goodPunts = pb.getPlacePunts(goodPunts);
 				

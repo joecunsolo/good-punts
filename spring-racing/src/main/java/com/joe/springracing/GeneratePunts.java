@@ -37,7 +37,7 @@ public class GeneratePunts {
 							m).generateProbabilitiesForRaces(races);
 					List<Punt> goodPunts = new PuntingBusiness(
 							SpringRacingServices.getPuntingDao(),
-							m).getGoodPuntsForMeet(meeting);
+							m).generateGoodPuntsForMeet(meeting);
 					printGoodPunts(goodPunts);
 					
 					if (PRINT_STATISTICS) {

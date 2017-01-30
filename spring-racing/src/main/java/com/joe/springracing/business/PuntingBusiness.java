@@ -3,6 +3,7 @@ package com.joe.springracing.business;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import com.joe.springracing.business.model.Model;
@@ -45,38 +46,58 @@ public class PuntingBusiness {
 	}
 
 
-	public void generateGoodPuntsForMeet(Meeting upcoming) {
-		try {
-//			for (Meeting meet : upcoming) {
-				List<Punt> punts = getGoodPuntsForMeet(upcoming);
-				this.getDao().storePunts(upcoming, punts);
-//			}
-		} catch (Exception ex) {
-			throw new RuntimeException("Unable to generate punts",  ex);
+//	public void generateGoodPuntsForMeet(Meeting upcoming) {
+//		try {
+////			for (Meeting meet : upcoming) {
+//				List<Punt> punts = getGoodPuntsForMeet(upcoming);
+//				this.getDao().storePunts(upcoming, punts);
+////			}
+//		} catch (Exception ex) {
+//			throw new RuntimeException("Unable to generate punts",  ex);
+//		}
+//	}
+	
+	public void generateAndStoreGoodPuntsForRaces(List<Race> races) throws Exception {
+		for (Race race : races) {
+			generateAndStoreGoodPuntsForRace(race);
 		}
 	}
 
-	public List<Punt> getGoodPuntsForMeet(Meeting meeting) throws Exception {
-		List<Punt> puntsForMeet = new ArrayList<Punt>();
-		for (Race r : meeting.getRaces()) {
-			r.setRunners(this.getDao().fetchProbabilitiesForRace(r));
-			List<Punt> puntsForRace = getGoodPuntsForRace(r);
-			puntsForMeet.addAll(puntsForRace);
+	public void generateAndStoreGoodPuntsForRace(Race race) throws Exception {
+		List<Punt> punts = generateGoodPuntsForRace(race);
+		this.getDao().storePunts(race, punts);
+	}
+
+	public Date fetchLastPuntEvent(Race r) {
+		return this.getDao().fetchLastPuntEvent(r);
+	}
+
+	public List<Punt> generateGoodPuntsForMeet(Meeting meet) throws Exception {
+		List<Punt> punts = new ArrayList<Punt>();
+		for (Race race : meet.getRaces()) {
+			punts.addAll(generateGoodPuntsForRace(race));
 		}
+		return punts;
+	}
+
+	
+	public List<Punt> generateGoodPuntsForRace(Race race) throws Exception {
+		race.setRunners(this.getDao().fetchProbabilitiesForRace(race));
+		List<Punt> puntsForRace = getAllGoodPuntsForRace(race);
 		
-		List<Punt> flexiBets = filterFlexiBets(puntsForMeet);
-		Collections.sort(puntsForMeet, new PuntComparator(true));
-		int punts = puntsForMeet.size() - flexiBets.size();
-		puntsForMeet = puntsForMeet.subList(0, punts);
+		List<Punt> flexiBets = filterFlexiBets(puntsForRace);
+		Collections.sort(puntsForRace, new PuntComparator(true));
+		int punts = puntsForRace.size() - flexiBets.size();
+		puntsForRace = puntsForRace.subList(0, punts);
 		
 		if (model.getAttributes().getNumberOfPunts() < punts) {
-			puntsForMeet = puntsForMeet.subList(0,  model.getAttributes().getNumberOfPunts());
+			puntsForRace = puntsForRace.subList(0,  model.getAttributes().getNumberOfPunts());
 		}
 		if (isPuntOnFlexi()) {
-			puntsForMeet.addAll(flexiBets);
+			puntsForRace.addAll(flexiBets);
 		}
 		
-		return puntsForMeet;
+		return puntsForRace;
 	}
 
 	private List<Punt> filterFlexiBets(List<Punt> puntsForMeet) {
@@ -143,8 +164,8 @@ public class PuntingBusiness {
 		}
 		return false;
 	}
-
-	public List<Punt> getGoodPuntsForRace(Race r) {
+	
+	public List<Punt> getAllGoodPuntsForRace(Race r) {
 		List<Punt> punts = new ArrayList<Punt>();
 		double bookieHigh =  model.getAttributes().getBookieHigh();
 		

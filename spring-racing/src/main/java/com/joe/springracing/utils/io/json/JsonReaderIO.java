@@ -10,6 +10,7 @@ import javax.json.JsonValue;
 public class JsonReaderIO {
 	
 	public static final String KEY_FIXED_ODDS = "fixed";
+	public static final String KEY_PARIMUTEL_ODDS = "parimutuel";
 	public static final String PREFIX_PROTOCOL_HTTP = "http:";
 
 	protected Properties parseProperties(JsonValue jsonValue) {

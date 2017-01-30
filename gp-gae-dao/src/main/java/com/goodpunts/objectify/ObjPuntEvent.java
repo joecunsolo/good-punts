@@ -7,10 +7,10 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
-import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Race;
 
 /**
- * The set of good punts for a meeting
+ * The set of good punts for a Race
  * @author joe.cunsolo
  *
  */
@@ -18,7 +18,7 @@ import com.joe.springracing.objects.Meeting;
 public class ObjPuntEvent {
 
 	@Parent
-	Key<ObjMeet> meet;
+	Key<ObjRace> race;
 	@Id
 	Long id;
 	@Index
@@ -26,21 +26,20 @@ public class ObjPuntEvent {
 	
 	public ObjPuntEvent() {}
 	
-	public ObjPuntEvent(Meeting m) {
-		this(m.getMeetCode());
+	public ObjPuntEvent(Race race) {
+		this(race.getRaceCode());
 	}
 	
-	public ObjPuntEvent(String meetCode) {
-//		this.meetCode = meetCode;
-		meet = Key.create(ObjMeet.class, meetCode);	
+	public ObjPuntEvent(String raceCode) {
+		race = Key.create(ObjRace.class, raceCode);	
 		date = new Date();
 	}
 	
 	public Long getId() {
 		return id;
 	}
-	
-//	public String getMeetCode() {
-//		return meetCode;
-//	}
+
+	public Date getDate() {
+		return date;
+	}
 }

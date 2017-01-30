@@ -31,6 +31,22 @@ public class ObjectifyBaseDaoImpl {
 		return toMeeting(meet);
 	}
 	
+
+	public List<Race> fetchRacesForMeet(Meeting meet) throws Exception {
+		List<ObjRace> races = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRace.class) // We want only Races
+		          .filter("meetCode", meet.getMeetCode())
+//		          .ancestor(getMeetKey(meet))    // Races in the meet
+		          .list();
+		List<Race> result = new ArrayList<Race>();
+		for (ObjRace oRace : races) {
+			Race r = toRace(oRace);
+			result.add(r);
+		}
+		return result;
+	}
+	
 	protected Meeting toMeeting(ObjMeet oMeet) {
 		Meeting m = new Meeting();
 		m.setDate(oMeet.getDate());

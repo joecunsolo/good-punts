@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 import com.goodpunts.GoodPuntsServices;
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ProbabilityBusiness;
+import com.joe.springracing.business.PuntingBusiness;
 import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.objects.Race;
@@ -39,8 +40,8 @@ public class GenerateProbabilitiesServlet extends GenericServlet {
 			System.out.println(race.getVenue() + " " + race.getRaceNumber() + " " + race.getName());
 			probabilities.generateProbabilitiesForRace(race);
 			
-//			PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
-//			punts.generateGoodPuntsForMeet(meeting);
+			PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
+			punts.generateAndStoreGoodPuntsForRace(race);
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to generate punts for " + raceCode, e);
 		}

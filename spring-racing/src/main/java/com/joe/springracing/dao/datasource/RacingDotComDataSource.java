@@ -370,17 +370,27 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 		}
 	}
 
+	/** tries to set the odds with the fixed odds then the parimutel odds if not available */
 	protected Odds parseOdds(JsonObject jsonObject) {
 		if (jsonObject != null) {
-			Properties props = parseProperties(jsonObject.get(KEY_FIXED_ODDS));
+			
 			Odds odds = new Odds();
 			try {
-				odds.setWin(Double.parseDouble(props.getProperty(KEY_ODDS_WIN)));
-				odds.setPlace(Double.parseDouble(props.getProperty(KEY_ODDS_PLACE)));
-			} catch (Exception ex) {}
+				setOdds(odds, jsonObject, KEY_FIXED_ODDS);
+			} catch (Exception ex) {
+				try {
+					setOdds(odds, jsonObject, KEY_PARIMUTEL_ODDS);
+				} catch (Exception ex2) {}
+			}
 			return odds;
 		}
 		return null;
+	}
+	
+	private void setOdds(Odds odds, JsonObject jsonObject, String key) {
+		Properties props = parseProperties(jsonObject.get(key));
+		odds.setWin(Double.parseDouble(props.getProperty(KEY_ODDS_WIN)));
+		odds.setPlace(Double.parseDouble(props.getProperty(KEY_ODDS_PLACE)));
 	}
 
 	protected Horse parseHorse(JsonValue jsonObject) {

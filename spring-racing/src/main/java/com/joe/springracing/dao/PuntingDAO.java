@@ -1,5 +1,6 @@
 package com.joe.springracing.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.joe.springracing.objects.Meeting;
@@ -14,8 +15,12 @@ public interface PuntingDAO {
 	
 	List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception;
 
-	void storePunts(Meeting meet, List<Punt> punts);
+	void storePunts(Race race, List<Punt> punts);
 
 	void storeProbabilities(Race race);
+	
+	List<Punt> fetchPuntsForRace(Race race) throws Exception;
+
+	Date fetchLastPuntEvent(Race r);
 
 }

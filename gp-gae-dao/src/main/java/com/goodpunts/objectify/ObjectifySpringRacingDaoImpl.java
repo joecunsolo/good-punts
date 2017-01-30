@@ -27,21 +27,6 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		return result;
 	}
 
-	public List<Race> fetchRacesForMeet(Meeting meet) throws Exception {
-		List<ObjRace> races = ObjectifyService.ofy()
-		          .load()
-		          .type(ObjRace.class) // We want only Races
-		          .filter("meetCode", meet.getMeetCode())
-//		          .ancestor(getMeetKey(meet))    // Races in the meet
-		          .list();
-		List<Race> result = new ArrayList<Race>();
-		for (ObjRace oRace : races) {
-			Race r = toRace(oRace);
-			result.add(r);
-		}
-		return result;
-	}
-	
 	public boolean storeMeet(Meeting meet) throws Exception {
 		ObjMeet oMeet = toObjMeet(meet);
 		ObjectifyService.ofy().save().entity(oMeet).now();
