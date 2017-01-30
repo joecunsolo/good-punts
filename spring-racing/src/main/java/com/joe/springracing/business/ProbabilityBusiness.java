@@ -38,9 +38,9 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			
 			for (Meeting meeting : meets) {
 				try {
-					//if (meeting.getDate().getTime() > System.currentTimeMillis() - 96 * 60 * 60 * 1000) {
+					if (meeting.getDate().getTime() > System.currentTimeMillis() - 24 * 60 * 60 * 1000) {
 						upcoming.add(meeting);
-					//}
+					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
