@@ -38,4 +38,5 @@ install:
 script:
 - mvn install
 - cd gp-gae-app
-- mvn gcloud:deploy
+- mvn appengine:deploy
+#- mvn gcloud:deploy
