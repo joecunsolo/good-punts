@@ -27,6 +27,10 @@
 	  <servlet-class>com.goodpunts.servlet.ImportRunnerHistoriesServlet</servlet-class>
 	</servlet>
 	<servlet>
+	  <servlet-name>histories-export</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.ExportRunnerHistoriesServlet</servlet-class>
+	</servlet>
+	<servlet>
 	  <servlet-name>import-queue</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.ImportHistoryQueueServlet</servlet-class>
 	</servlet>
@@ -56,6 +60,11 @@
 	  <url-pattern>/import/histories</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+	  <servlet-name>histories-export</servlet-name>
+	  <url-pattern>/histories/export</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
 	  <servlet-name>import-queue</servlet-name>
 	  <url-pattern>/import/queue</url-pattern>
 	</servlet-mapping>
@@ -67,10 +76,10 @@
 	  <servlet-name>probabilities-generate</servlet-name>
 	  <url-pattern>/probabilities/generate</url-pattern>
 	</servlet-mapping>
-		<servlet-mapping>
+	<servlet-mapping>
 	  <servlet-name>probabilities-queue</servlet-name>
 	  <url-pattern>/probabilities/queue</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping>	
 				
 	<welcome-file-list>
 	    <welcome-file>punts.jsp</welcome-file>

@@ -6,8 +6,10 @@ import java.util.List;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.joe.springracing.dao.SpringRacingDAO;
+import com.joe.springracing.exporter.RunnerHistoriesExporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Odds;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
@@ -156,4 +158,24 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		return result;
 	}
 
+	public void exportRunnerHistories(RunnerHistoriesExporter exporter) throws Exception {
+		List<ObjRunner> runners = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRunner.class) // We want only Runners
+		          .list();
+		for (ObjRunner oRunner : runners) {
+			exportRunnerHistories(exporter, oRunner);
+		}
+	}
+	
+	private void exportRunnerHistories(RunnerHistoriesExporter exporter, ObjRunner runner) {
+		List<ObjRunnerResult> objResults = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRunnerResult.class) // We want only RunnerResults
+		          .ancestor(getHorseKey(runner.getHorse()))    // for this horse
+		          .list();
+		for (ObjRunnerResult objResult : objResults) {
+			exporter.export(toRunnerResult(objResult, runner.getHorse()));
+		}
+	}
 }

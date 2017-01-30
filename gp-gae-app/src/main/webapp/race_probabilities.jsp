@@ -26,6 +26,8 @@
 <body>
 <a href="punts.jsp">Punts</a><br />
 <a href="probabilities.jsp">Probabilities</a><br />
+<a href="analysis.jsp">Analysis</a><br />
+
 <% 			String meetCode = request.getParameter("meet");
 			Meeting meet = GoodPuntsServices.getSpringRacingDAO().fetchMeet(meetCode); 
 			String raceCode = request.getParameter("race_code");
@@ -77,7 +79,7 @@
 						<td><%=df.format(svs.getMean())%></td>
 						<td><%=df.format(svs.getStandardDeviation())%></td>
 						<td><%=runner.getProbability().getNumberWins()%></td> 
-						<td><%=runner.getProbability().getWin() * 100%></td> 
+						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
 						<td><%=runner.getOdds().getWin()%></td>
 					</tr>
 <%				}

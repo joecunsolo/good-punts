@@ -15,6 +15,7 @@
 <%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="com.joe.springracing.business.model.AnalysableObjectStatistic" %>
 <%@ page import="com.joe.springracing.business.model.stats.SingleVariateStatistic" %>
+<%@ page import="java.text.DecimalFormat" %>
  
 <%-- //[END imports]--%>
 
@@ -29,9 +30,12 @@
 <body>
 <a href="punts.jsp">Punts</a><br />
 <a href="probabilities.jsp">Probabilities</a><br />
+<a href="analysis.jsp">Analysis</a><br />
+
 <% 			MeetBusiness mb = new MeetBusiness();
 			Model m = new Model(new ModelAttributes());
-
+			DecimalFormat df = new DecimalFormat("0.0");
+			
 			ProbabilityBusiness business = new ProbabilityBusiness(
 				GoodPuntsServices.getSpringRacingDAO(),
 				GoodPuntsServices.getPuntingDAO(),
@@ -39,6 +43,7 @@
 				SpringRacingServices.getSimulator(), 
 				m);
 			List<Meeting> upcoming = business.fetchUpcomingMeets();
+			
 			mb.sortMeetingsByDate(upcoming);
 			for (Meeting meet : upcoming) {
 //				if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>

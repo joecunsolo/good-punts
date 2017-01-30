@@ -28,6 +28,7 @@
 <body>
 <a href="punts.jsp">Punts</a><br />
 <a href="probabilities.jsp">Probabilities</a><br />
+<a href="analysis.jsp">Analysis</a><br />
 <% 			MeetBusiness mb = new MeetBusiness();
 			Model m = new Model(new ModelAttributes());
 
