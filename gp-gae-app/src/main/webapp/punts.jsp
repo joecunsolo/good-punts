@@ -3,11 +3,16 @@
 
 <%-- //[START imports]--%>
 <%@ page import="java.util.List" %>
+<%@ page import="com.joe.springracing.business.MeetBusiness" %>
+<%@ page import="com.joe.springracing.business.ProbabilityBusiness" %>
+<%@ page import="com.joe.springracing.business.model.Model" %>
+<%@ page import="com.joe.springracing.business.model.ModelAttributes" %>
 <%@ page import="com.goodpunts.GoodPuntsServices" %>
 <%@ page import="com.joe.springracing.objects.Meeting" %>
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
 <%@ page import="com.joe.springracing.objects.Punt" %>
+<%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="java.text.DecimalFormat" %>
 
 <%-- //[END imports]--%>
@@ -23,9 +28,19 @@
 <body>
 <a href="punts.jsp">Punts</a><br />
 <a href="probabilities.jsp">Probabilities</a><br />
-<% 			List<Meeting> meets = GoodPuntsServices.getSpringRacingDAO().fetchExistingMeets();
+<% 			MeetBusiness mb = new MeetBusiness();
+			Model m = new Model(new ModelAttributes());
+
+			ProbabilityBusiness business = new ProbabilityBusiness(
+				GoodPuntsServices.getSpringRacingDAO(),
+				GoodPuntsServices.getPuntingDAO(),
+				SpringRacingServices.getStatistics(), 
+				SpringRacingServices.getSimulator(), 
+				m);
+			List<Meeting> upcoming = business.fetchUpcomingMeets();
+			mb.sortMeetingsByDate(upcoming);
 			DecimalFormat df = new DecimalFormat("0.0");
-			for (Meeting meet : meets) {
+			for (Meeting meet : upcoming) {
 				//if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>
 					<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
 <%					List<Punt> punts = GoodPuntsServices.getPuntingDAO().fetchPuntsForMeet(meet);
