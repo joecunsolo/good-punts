@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.joe.springracing.dao.SpringRacingDAO;
+import com.joe.springracing.exporter.RunnerHistoriesExporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
@@ -80,6 +81,12 @@ public class MockRacingDao implements SpringRacingDAO {
 	public Meeting fetchMeet(String meetCode) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void exportRunnerHistories(RunnerHistoriesExporter exporter)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
