@@ -1,12 +1,16 @@
 package com.joe.springracing.exporter;
 
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 
 import com.joe.springracing.objects.RunnerResult;
 
+/** Exports the histories of the runners as a CSV */
 public class CSVRunnerHistoriesExporter implements RunnerHistoriesExporter {
 
 	private PrintWriter writer;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	public CSVRunnerHistoriesExporter(PrintWriter writer) {
 		this.writer = writer;
 		writer.println(getHeader());
@@ -26,6 +30,7 @@ public class CSVRunnerHistoriesExporter implements RunnerHistoriesExporter {
 				"PrizeMoney";
 	}
 
+	/** Writer a runner history to CSV */
 	public void export(RunnerResult runnerResult) {
 		writer.println(toRecord(runnerResult));
 		writer.flush();
@@ -36,7 +41,7 @@ public class CSVRunnerHistoriesExporter implements RunnerHistoriesExporter {
 	}
 	
 	private String toRecord(RunnerResult runnerResult) {
-		return runnerResult.getHorse() + "," +
+		String result = runnerResult.getHorse() + "," +
 				runnerResult.getDistance() + "," +
 				runnerResult.getJockey() + "," +
 				runnerResult.getPosition() + "," +
@@ -45,9 +50,14 @@ public class CSVRunnerHistoriesExporter implements RunnerHistoriesExporter {
 				runnerResult.getRaceNumber() + "," +
 				runnerResult.getResultType() + "," +
 				runnerResult.getTrainer() + "," +
-				runnerResult.getVenueName() + "," +
-				runnerResult.getRaceDate() + "," +
-				runnerResult.getPrizeMoney();
+				runnerResult.getVenueName() + ",";
+		if (runnerResult.getRaceDate() != null) { 	
+			result += sdf.format(runnerResult.getRaceDate()) + ",";
+		} else {
+			result += "null,";
+		}
+		result += runnerResult.getPrizeMoney();
+		return result;
 	}
 
 }
