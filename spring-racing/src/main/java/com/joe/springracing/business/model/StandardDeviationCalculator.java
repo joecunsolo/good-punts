@@ -23,6 +23,10 @@ public class StandardDeviationCalculator {
 			return sdFunc.evaluate(values);	
 		}
 		
-		return model.getMeanCalculator().calculate(values);
+		double sd = model.getMeanCalculator().calculate(values);
+		if (sd == 0) {
+			return calculate();
+		}
+		return sd;
 	}
 }
