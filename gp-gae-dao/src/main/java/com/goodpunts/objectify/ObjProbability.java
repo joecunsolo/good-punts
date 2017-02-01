@@ -21,11 +21,9 @@ public class ObjProbability {
 	private double standardDeviation;
 	private double weight;
 
-	public ObjProbability() {}
-	
-	public ObjProbability(Probability p, String id, Key<ObjRunner> runnerKey) {
+	public ObjProbability(Probability p, String race, String horse, Key<ObjRunner> runnerKey) {
 		runner = runnerKey;
-		this.setId(id);
+		this.setId(race+horse);
 		this.setPlace(p.getPlace());
 		this.setWin(p.getWin());
 		this.setNumberWins(p.getNumberWins());

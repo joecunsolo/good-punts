@@ -20,26 +20,26 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	public void storeProbabilities(Race race) {
 		Key<ObjRace> raceKey = super.getRaceKey(race);
 		for (Runner runner : race.getRunners()) {
-			storeProbabilities(raceKey, runner);
+			storeProbabilities(raceKey, race.getRaceCode(), runner);
 		}
 	}
 
-	private void storeProbabilities(Key<ObjRace> race, Runner runner) {	
+	private void storeProbabilities(Key<ObjRace> race, String raceCode, Runner runner) {	
 		Key<ObjRunner> runnerKey = super.getRunnerKey(race, runner.getHorse());
 
-		ObjProbability oProbability = toObjProbability(runnerKey, runner);
+		ObjProbability oProbability = toObjProbability(runnerKey, raceCode, runner);
 		Key<ObjProbability> key = ObjectifyService.ofy().save().entity(oProbability).now();
 		
 		if (runner.getStatistics() != null) {
 			for (AnalysableObjectStatistic stat : runner.getStatistics()) {
-				ObjStatistic objStat = new ObjStatistic(stat, key);
+				ObjStatistic objStat = new ObjStatistic(stat, oProbability.getId(), key);
 				ObjectifyService.ofy().save().entity(objStat).now();
 			}
 		}
 	}
 
-	private ObjProbability toObjProbability(Key<ObjRunner> runnerKey, Runner runner) {
-		return new ObjProbability(runner.getProbability(), runner.getHorse(), runnerKey);
+	private ObjProbability toObjProbability(Key<ObjRunner> runnerKey, String raceCode, Runner runner) {
+		return new ObjProbability(runner.getProbability(), raceCode, runner.getHorse(), runnerKey);
 	}
 
 	public void storePunts(Race race, List<Punt> punts) {

@@ -11,18 +11,17 @@ import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 public class ObjStatistic {
 
 	@Id
-	private Long id;
+	private String id;
 	@Parent
 	private Key<ObjProbability> parent;
 	private double mean;
 	private double standardDeviation;
 	private double weight;
 	
-	public ObjStatistic() {}
-	
-	public ObjStatistic(AnalysableObjectStatistic stat, Key<ObjProbability> parent) {
+	public ObjStatistic(AnalysableObjectStatistic stat, String id, Key<ObjProbability> parent) {
 		this.parent = parent;
 		this.weight = stat.getWeight();
+		this.setId(id);
 		if (stat instanceof SingleVariateStatistic) {
 			SingleVariateStatistic svs = (SingleVariateStatistic)stat;
 			this.setMean(svs.getMean());
@@ -52,6 +51,14 @@ public class ObjStatistic {
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
