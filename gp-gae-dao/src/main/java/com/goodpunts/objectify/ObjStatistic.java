@@ -18,6 +18,8 @@ public class ObjStatistic {
 	private double standardDeviation;
 	private double weight;
 	
+	public ObjStatistic() {}
+	
 	public ObjStatistic(AnalysableObjectStatistic stat, String id, Key<ObjProbability> parent) {
 		this.parent = parent;
 		this.weight = stat.getWeight();

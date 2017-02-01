@@ -21,6 +21,8 @@ public class ObjProbability {
 	private double standardDeviation;
 	private double weight;
 
+	public ObjProbability() {}
+	
 	public ObjProbability(Probability p, String race, String horse, Key<ObjRunner> runnerKey) {
 		runner = runnerKey;
 		this.setId(race+horse);
