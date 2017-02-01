@@ -9,6 +9,8 @@ import com.joe.springracing.objects.RunnerResult;
 
 public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 
+	public static final long A_YEAR = 1000 * 60 * 60 * 24 * 365;
+	
 	@Override
 	protected double[] careerToValues(List<RunnerResult> pastResults) {
 		if (pastResults.size() == 0) {
@@ -21,7 +23,8 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 		double[] result = new double[numResults];
 		int i = 0;
 		for (RunnerResult runnerResult : pastResults) {
-			if (i == numResults) {
+			if (i == numResults || 
+					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() > A_YEAR) {
 				return result;
 			}
 			result[i++] = runnerResult.getPrizeMoney();
