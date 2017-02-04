@@ -18,15 +18,19 @@ public class StandardDeviationCalculator {
 		this.model = model;
 	}
 	public double calculate(double[] values) {
+		double sd = 0;
 		if (values.length > 1) {
 			StandardDeviation sdFunc = new StandardDeviation();
-			return sdFunc.evaluate(values);	
+			sd = sdFunc.evaluate(values);
+			if (sd > 0) {
+				return sd;
+			}
 		}
 		
-		double sd = model.getMeanCalculator().calculate(values);
-		if (sd == 0) {
-			return calculate();
+		sd = model.getMeanCalculator().calculate(values);
+		if (sd > 0) {
+			return sd;
 		}
-		return sd;
+		return calculate();
 	}
 }
