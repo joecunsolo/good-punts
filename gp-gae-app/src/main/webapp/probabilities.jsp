@@ -28,9 +28,7 @@
 </head>
 
 <body>
-<a href="punts.jsp">Punts</a><br />
-<a href="probabilities.jsp">Probabilities</a><br />
-<a href="analysis.jsp">Analysis</a><br />
+	<jsp:include page="menu.jsp" />
 
 <% 			MeetBusiness mb = new MeetBusiness();
 			Model m = new Model(new ModelAttributes());
@@ -45,19 +43,17 @@
 			List<Meeting> upcoming = business.fetchUpcomingMeets();
 			
 			mb.sortMeetingsByDate(upcoming);
-			for (Meeting meet : upcoming) {
-//				if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>
-					<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
+			for (Meeting meet : upcoming) {%>
+				<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
 <%					List<Race> races =  GoodPuntsServices.getSpringRacingDAO().fetchRacesForMeet(meet);
-					mb.sortRacesByNumber(races);
-					for (Race race : races) {%>
-						<p style="margin-left:40px">
-							<a href="race_probabilities.jsp?meet=<%=meet.getMeetCode()%>&race_code=<%=race.getRaceCode()%>">
-								<%=race.getRaceNumber()%>&nbsp;<%=race.getName()%>
-							</a>
- 						</p>
-<%					}
-//				}
+				mb.sortRacesByNumber(races);
+				for (Race race : races) {%>
+					<p style="margin-left:40px">
+						<a href="race_probabilities.jsp?race_code=<%=race.getRaceCode()%>">
+							<%=race.getRaceNumber()%>&nbsp;<%=race.getName()%>
+						</a>
+					</p>
+<%				}
 			}
 %>
 </body>

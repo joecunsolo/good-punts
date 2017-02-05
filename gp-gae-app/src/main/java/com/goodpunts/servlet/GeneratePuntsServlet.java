@@ -1,6 +1,7 @@
 package com.goodpunts.servlet;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.GenericServlet;
@@ -42,8 +43,10 @@ public class GeneratePuntsServlet extends GenericServlet {
 //				meeting.setRaces(races);
 				PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
 				for (Race r : races) {
-					if (r.getDate().getTime() - System.currentTimeMillis() < 60 * 60 * 1000 ||
-							System.currentTimeMillis() - punts.fetchLastPuntEvent(r).getTime() > 60 * 60 * 1000) {
+					Date lastPuntEvent = punts.fetchLastPuntEvent(r);
+					if (lastPuntEvent == null ||
+							r.getDate().getTime() - System.currentTimeMillis() < 60 * 60 * 1000 ||
+							System.currentTimeMillis() - lastPuntEvent.getTime() > 60 * 60 * 1000) {
 						punts.generateAndStoreGoodPuntsForRace(r);
 					}
 				}

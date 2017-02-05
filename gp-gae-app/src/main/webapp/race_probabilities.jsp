@@ -24,19 +24,18 @@
 </head>
 
 <body>
-<a href="punts.jsp">Punts</a><br />
-<a href="probabilities.jsp">Probabilities</a><br />
-<a href="analysis.jsp">Analysis</a><br />
+	<jsp:include page="menu.jsp" />
 
-<% 			String meetCode = request.getParameter("meet");
-			Meeting meet = GoodPuntsServices.getSpringRacingDAO().fetchMeet(meetCode); 
-			String raceCode = request.getParameter("race_code");
-			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode); %>
+<% 			String raceCode = request.getParameter("race_code");
+			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
+			String meetCode = race.getMeetCode();
+			Meeting meet = GoodPuntsServices.getSpringRacingDAO().fetchMeet(meetCode); %>
 						
 			<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
 <%			List<Race> races =  GoodPuntsServices.getSpringRacingDAO().fetchRacesForMeet(meet);
 			MeetBusiness mb = new MeetBusiness();
 			mb.sortRacesByNumber(races); %>
+			
 			<p style="margin-left:40px">
 <% 			for (Race n : races) {
 				if (race.getRaceNumber() != n.getRaceNumber()) {%>			
@@ -45,8 +44,7 @@
 					<%=n.getRaceNumber()%>
 				<%} %>
 				&nbsp;&nbsp;&nbsp;
-<% 			}
-%>
+<% 			}%>
 			</p>		
 			<p style="margin-left:40px">
 			<%=race.getRaceNumber()%>&nbsp;<%=race.getName()%>
@@ -71,6 +69,7 @@
 					stats.size() > 0 &&
 					stats.get(0) instanceof SingleVariateStatistic) {
 					SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);%>
+					
 					<tr>
 						<td><%=runner.getNumber()%></td> 
 						<td><a href="horse.jsp?horse_code=<%=runner.getHorse() %>">

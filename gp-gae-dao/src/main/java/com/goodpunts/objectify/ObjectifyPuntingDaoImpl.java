@@ -94,6 +94,11 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		return result;
 	}
 	
+	public List<Punt> fetchPuntResults() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private ObjPuntEvent fetchPuntEvent(Race race) {
 		return ObjectifyService.ofy()
 		          .load()
@@ -108,7 +113,6 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		ObjPuntEvent event = fetchPuntEvent(r);
 		return event.getDate();
 	}
-	
 
 //	private List<Punt> fetchPuntsForEvent(ObjPuntEvent pe) throws Exception {
 //		Key<ObjPuntEvent> parent = Key.create(ObjPuntEvent.class, pe.getMeetCode());
@@ -227,12 +231,18 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 
 	private ObjProbability fetchProbabilityForRunner(Key<ObjRace> race, Runner runner) {
 		Key<ObjRunner> runnerKey = super.getRunnerKey(race, runner.getHorse());
-		ObjProbability probs = ObjectifyService.ofy()
+		List<ObjProbability> probs = ObjectifyService.ofy()
 	          .load()
 	          .type(ObjProbability.class) // We want only Probabilities
 	          .ancestor(runnerKey)    // Probabilities for this runner
-	          .first()
-	          .now();
-		return probs;
+	          .list();
+	          //.first()
+	          //.now();
+		
+		if (probs.size() > 0) {
+			return probs.get(0);
+		}
+		return null;
 	}
+
 }

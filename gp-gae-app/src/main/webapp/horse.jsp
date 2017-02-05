@@ -19,8 +19,8 @@
 </head>
 
 <body>
-<a href="punts.jsp">Punts</a><br />
-<a href="probabilities.jsp">Probabilities</a><br />
+	<jsp:include page="menu.jsp" />
+
 <% 			String horseCode = request.getParameter("horse_code");
 			Horse horse = GoodPuntsServices.getSpringRacingDAO().fetchHorse(horseCode); %>
 						
@@ -34,7 +34,6 @@
 					<%=r.getPrizeMoney() %>&nbsp;
 				</p>
 <% 			}%>
-<!-- @TODO Need to be able to probabilities for a horse -->
 <!-- @TODO Need to be able to get upcoming races for a horse -->
 			</p>		
 </body>

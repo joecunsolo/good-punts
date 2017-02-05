@@ -10,6 +10,7 @@ public class Punt {
 	private double joesOdds;
 	private double bookieOdds;
 	private List<Runner> runners;
+	private double puntReturn;
 	
 	public enum Type {
 		WIN,
@@ -67,6 +68,14 @@ public class Punt {
 	
 	public double variance() {
 		return bookieOdds / joesOdds;
+	}
+
+	public double getPuntReturn() {
+		return puntReturn;
+	}
+
+	public void setPuntReturn(double puntReturn) {
+		this.puntReturn = puntReturn;
 	}
 
 }

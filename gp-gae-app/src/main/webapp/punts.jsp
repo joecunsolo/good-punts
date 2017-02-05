@@ -26,9 +26,7 @@
 </head>
 
 <body>
-<a href="punts.jsp">Punts</a><br />
-<a href="probabilities.jsp">Probabilities</a><br />
-<a href="analysis.jsp">Analysis</a><br />
+	<jsp:include page="menu.jsp" />
 <% 			MeetBusiness mb = new MeetBusiness();
 			Model m = new Model(new ModelAttributes());
 
@@ -47,7 +45,7 @@
 <%					List<Punt> punts = GoodPuntsServices.getPuntingDAO().fetchPuntsForMeet(meet);
 					for (Punt punt : punts) {%>
 						<p style="margin-left:40px">
-						<a href="race_probabilities.jsp?meet=<%=meet.getMeetCode()%>&race_code=<%=punt.getRace().getRaceCode()%>">
+						<a href="race_probabilities.jsp?race_code=<%=punt.getRace().getRaceCode()%>">
 						Race <%=punt.getRace().getRaceNumber()%>
 						</a>
 						&nbsp;

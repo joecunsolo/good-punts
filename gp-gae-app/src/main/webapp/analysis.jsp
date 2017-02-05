@@ -12,9 +12,8 @@
 </head>
 
 <body>
-<a href="punts.jsp">Punts</a><br />
-<a href="probabilities.jsp">Probabilities</a><br />
-<a href="analysis.jsp">Analysis</a><br />
+	<jsp:include page="menu.jsp" />
+
 		<p><a href="/histories/export">Horse Histories</a></p>					
 </body>
 </html>

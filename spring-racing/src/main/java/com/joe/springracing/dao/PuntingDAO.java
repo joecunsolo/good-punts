@@ -22,5 +22,7 @@ public interface PuntingDAO {
 	List<Punt> fetchPuntsForRace(Race race) throws Exception;
 
 	Date fetchLastPuntEvent(Race r);
+	
+	List<Punt> fetchPuntResults() throws Exception;
 
 }

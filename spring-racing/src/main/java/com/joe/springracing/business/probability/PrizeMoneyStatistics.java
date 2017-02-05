@@ -23,8 +23,8 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 		double[] result = new double[numResults];
 		int i = 0;
 		for (RunnerResult runnerResult : pastResults) {
-			if (i == numResults || 
-					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() > A_YEAR) {
+			if (i == numResults) { // || 
+//					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() > A_YEAR) {
 				return result;
 			}
 			result[i++] = runnerResult.getPrizeMoney();
