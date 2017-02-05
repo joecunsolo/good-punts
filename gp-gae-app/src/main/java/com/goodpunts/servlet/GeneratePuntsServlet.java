@@ -43,12 +43,12 @@ public class GeneratePuntsServlet extends GenericServlet {
 //				meeting.setRaces(races);
 				PuntingBusiness punts = new PuntingBusiness(GoodPuntsServices.getPuntingDAO(), m);
 				for (Race r : races) {
-					Date lastPuntEvent = punts.fetchLastPuntEvent(r);
-					if (lastPuntEvent == null ||
-							r.getDate().getTime() - System.currentTimeMillis() < 60 * 60 * 1000 ||
-							System.currentTimeMillis() - lastPuntEvent.getTime() > 60 * 60 * 1000) {
+				//	Date lastPuntEvent = punts.fetchLastPuntEvent(r);
+				//	if (lastPuntEvent == null ||
+				//			r.getDate().getTime() - System.currentTimeMillis() < 60 * 60 * 1000 ||
+				//			System.currentTimeMillis() - lastPuntEvent.getTime() > 60 * 60 * 1000) {
 						punts.generateAndStoreGoodPuntsForRace(r);
-					}
+				//	}
 				}
 			} catch (Exception e) {
 				throw new RuntimeException("Unable to generate punts for " + meeting.getMeetCode(), e);
