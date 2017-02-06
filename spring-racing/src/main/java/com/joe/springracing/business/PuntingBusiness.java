@@ -180,7 +180,8 @@ public class PuntingBusiness {
 			if (isPuntOnWin() &&
 					runner.getOdds().getWin() < bookieHigh &&
 					runner.getOdds().getWin() - joeWinOdds * 2.5 > 0 &&
-					!runner.isEmergency()) {
+					!runner.isEmergency() &&
+					joeWinOdds < 5) {
 				Punt p = new Punt(r, Type.WIN, joeWinOdds, runner.getOdds().getWin());
 				p.getRunners().add(runner);
 				punts.add(p);
@@ -188,7 +189,8 @@ public class PuntingBusiness {
 			if (isPuntOnPlace() &&
 					runner.getOdds().getPlace() < bookieHigh &&
 					runner.getOdds().getPlace() - joePlaceOdds * 2.5 > 0 &&
-					!runner.isEmergency()) {
+					!runner.isEmergency() &&
+					joePlaceOdds < 3) {
 				Punt p = new Punt(r, Type.PLACE, joePlaceOdds, runner.getOdds().getPlace());
 				p.getRunners().add(runner);
 				punts.add(p);
