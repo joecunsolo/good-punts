@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -52,9 +53,23 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 	public static final String KEY_RACE_DISTANCE = "distance";
 	public static final String KEY_RACE_PRIZEMONEY = "prizemoneydetails";
 	
-	public static final String KEY_RESULT_NUMBER = "raceEntryNumber";
+	public static final String KEY_RESULT_NUMBER = "raceentrynumber";
 	public static final String KEY_RESULT_POSITION = "position";
 	public static final String KEY_RESULT_POSITION_FINISH = "finish";
+	//there are a bunch of these - not sure if we need to know all the numbers
+	/**
+    SCR - Scratched - 109
+    LSCR - Late Scratched
+    FF - Failed to Finish
+    LR - Lost Rider
+    F - Fell
+    NP - Not Placed
+    DQ - Disqualified
+    LP - Left at Post
+    BD - Brought Down
+    RO - Ran Off */
+	public static final int VALUE_RESULT_SCRACTHED = 100;
+	
 	public static final String KEY_RESULT_PRIZEMONEY_DETAILS = "PrizeMoneyDetails";
 	public static final String KEY_RESULT_RACE = "Race";
 	public static final String KEY_RESULT_HORSE = "Horse";
@@ -314,7 +329,7 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 		if (html != null) {
 			JsonReader jsonReader = Json.createReader(new StringReader(html));
 			JsonObject jObject = jsonReader.readObject();
-		     Race result = toRace(parseProperties(jObject));
+		    Race result = toRace(parseProperties(jObject));
 		
 			result.setPrizeMoney(readDoubleArray(jObject.getJsonArray(KEY_RESULT_PRIZEMONEY_DETAILS)));
 			return result;
@@ -329,9 +344,46 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 	
 	public Race fetchRaceResult(String raceCode) throws Exception {
 		Race race = fetchRace(raceCode);
+		String urlToRead = getRaceResultURL(race.getMeetCode(), race.getRaceNumber());
+		String html = HTMLReaderIO.getHTML(urlToRead);			
+		int[] result = parseRaceResults(html);
+		race.setResult(result);
 		return race;
 	}	
 
+	private int[] parseRaceResults(String html) {
+		JsonReader jsonReader = Json.createReader(new StringReader(html));
+		JsonObject jObject = jsonReader.readObject();
+		
+		JsonArray array = jObject.getJsonArray(KEY_RACE_RESULTS);
+		int[] results = new int[array.size()];
+		int scratchings = 0;
+		
+		for (int i = 0; i < array.size(); i++) {
+			JsonObject jRunner = array.getJsonObject(i);
+			Properties props = parseProperties(jRunner);
+			
+			JsonObject jPosition = jRunner.getJsonObject(KEY_RESULT_POSITION);
+			props.putAll(parseProperties(jPosition));
+			
+			int finish = -1;
+			int number = 0;
+			try {
+				number = Integer.parseInt(props.getProperty(KEY_RESULT_NUMBER));
+				finish = Integer.parseInt(props.getProperty(KEY_RESULT_POSITION_FINISH));
+			} catch (Exception ex) {}
+			
+			//Racing.com's method of handling exceptions
+			if (finish <= results.length && finish > 0) {
+				results[finish-1] = number;
+			} else {
+				scratchings++;
+			}
+		}
+		
+		return Arrays.copyOf(results, results.length - scratchings);
+	}
+	
 	private String getRaceResultURL(String meetCode, int race) {
 		return PREFIX_RACE_RESULTS_URL + meetCode + "/" + race;
 	}

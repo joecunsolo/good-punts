@@ -29,15 +29,13 @@ public interface SpringRacingDAO {
 	 */
 	public boolean storeMeet(Meeting meet) throws Exception;
 
-	public List<Meeting> fetchMeetsWithoutResults() throws Exception;
+	public List<Race> fetchRacesWithoutResults() throws Exception;
 
 	public void storeMeets(List<Meeting> meets) throws Exception;
 
 	public Race fetchRace(String raceCode) throws Exception;
 
 	public void storeRace(Race race) throws Exception;
-
-//	public void storeRunners(List<Runner> runners) throws Exception;
 
 	public void storeHorse(Horse horse) throws Exception;
 

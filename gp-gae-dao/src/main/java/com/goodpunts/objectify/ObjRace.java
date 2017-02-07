@@ -5,11 +5,14 @@ import java.util.Date;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 
 @Entity
 public class ObjRace  {
 
 	private int[] result;
+	@Index
+	private boolean results;
 	private double[] prizeMoney;
 	private Date date;
 	private int raceNumber;
@@ -24,6 +27,11 @@ public class ObjRace  {
 	private boolean histories;
 	
 	public ObjRace() {}
+	
+	@OnSave 
+	private void updateResults() {
+        this.setResults(result != null && result.length > 0);
+    }
 	
 	public int[] getResult() {
 		return result;
@@ -86,6 +94,14 @@ public class ObjRace  {
 	
 	public boolean hasHistories() {
 		return histories;
+	}
+
+	public boolean hasResults() {
+		return results;
+	}
+
+	public void setResults(boolean results) {
+		this.results = results;
 	}
 
 }

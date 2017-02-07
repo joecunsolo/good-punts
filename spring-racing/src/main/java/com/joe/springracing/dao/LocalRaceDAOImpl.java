@@ -527,4 +527,9 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		// TODO Auto-generated method stub
 	}
 
+	public List<Race> fetchRacesWithoutResults() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
+
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.exporter.RunnerHistoriesExporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
-import com.joe.springracing.objects.Odds;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
@@ -47,6 +47,10 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 	}
 
 	public void storeRace(Race race) throws Exception {
+		Race existing = super.fetchRace(race.getRaceCode());
+		if (existing != null) {
+			race.setHistories(existing.hasHistories());
+		}
 		ObjRace oRace = toObjRace(race);
 		ObjectifyService.ofy().save().entity(oRace).now();
 		if (race.getRunners() != null) {
@@ -157,6 +161,21 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		}
 		return result;
 	}
+	
+	public List<Race> fetchRacesWithoutResults() throws Exception {
+		List<ObjRace> races = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRace.class) // We want only Races
+		          .filter("results", false) //without results
+		          .list();
+	
+		List<Race> result = new ArrayList<Race>();
+		for (ObjRace oRace : races) {
+			Race r = toRace(oRace);
+			result.add(r);
+		}
+		return result;
+	}
 
 	public void exportRunnerHistories(RunnerHistoriesExporter exporter) throws Exception {
 		List<ObjRunner> runners = ObjectifyService.ofy()
@@ -178,4 +197,6 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 			exporter.export(toRunnerResult(objResult, runner.getHorse()));
 		}
 	}
+
+
 }

@@ -70,15 +70,19 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	}
 
 	public void importRaceResults() {
+		Importer importer = new Importer();
+		
 		try {
-			List<Meeting> meets = getSpringRacingDAO().fetchExistingMeets();
-			for (Meeting meeting : meets) {
+			List<Race> races = getSpringRacingDAO().fetchRacesWithoutResults();
+			for (Race race : races) {
 				getWriter().println();
-				getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
+				getWriter().println(race.getVenue() + " "  + race.getRaceNumber() + " " + race.getDate());
 				getWriter().flush();
 				
-				importRaceResults(meeting);
-				getSpringRacingDAO().storeMeet(meeting);
+				int[] result = importer.importRaceResults(race);
+				race.setResult(result);
+				
+				getSpringRacingDAO().storeRace(race);
 			}
 
 		} catch (Exception e) {
@@ -105,14 +109,6 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	
-	public void importRaceResults(Meeting meet) throws Exception {
-		Importer importer = new Importer();
-		for (Race race : meet.getRaces()) {
-			int[] result = importer.importRaceResults(race);
-			race.setResult(result);
 		}
 	}
 

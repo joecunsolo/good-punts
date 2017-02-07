@@ -87,6 +87,9 @@ public class ObjectifyBaseDaoImpl {
 	}
 
 	protected Race toRace(ObjRace r) {
+		if (r == null) {
+			return null;
+		}
 		Race race = new Race();
 		race.setDate(r.getDate());
 		race.setDistance(r.getDistance());
@@ -97,6 +100,7 @@ public class ObjectifyBaseDaoImpl {
 		race.setRaceNumber(r.getRaceNumber());
 		race.setResult(r.getResult());
 		race.setVenue(r.getVenue());
+		race.setHistories(r.hasHistories());
 		return race;
 	}
 	

@@ -11,6 +11,7 @@ public class Runner {
 	private String jockey;
 	private String trainer;
 	private Odds odds;
+	private int result;
 //	private Properties career;
 //	private Properties goodAt;
 
@@ -99,6 +100,14 @@ public class Runner {
 
 	public void setEmergency(boolean emergency) {
 		this.emergency = emergency;
+	}
+
+	public int getResult() {
+		return result;
+	}
+
+	public void setResult(int result) {
+		this.result = result;
 	}
 
 }
