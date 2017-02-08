@@ -72,8 +72,13 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 	
 	public List<Punt> fetchPuntsForRace(Race race) throws Exception {
-		List<Punt> result = new ArrayList<Punt>();
 		ObjPuntEvent event = fetchPuntEvent(race);
+		return fetchPuntsForEvent(event, race);
+	}
+	
+	//TODO Need to be able to query this just based on the event - not the race
+	private List<Punt> fetchPuntsForEvent(ObjPuntEvent event, Race race) throws Exception {
+		List<Punt> result = new ArrayList<Punt>();
 		if (event != null) {
 			Key<ObjRace> parent = getRaceKey(race);
 			Key<ObjPuntEvent> key = Key.create(parent, ObjPuntEvent.class, event.getId());
@@ -86,19 +91,63 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 			
 			for (ObjPunt punt : punts) {
 				Punt p = toPunt(punt, race);
-				List<Runner> runners = fetchRunners(punt.getRunners(), race);
+				List<Runner> runners = fetchRunners(punt.getRunners());
 				p.setRunners(runners);
 				result.add(p);
 			}
 		}
-		return result;
+		return result;		
 	}
 	
 	public List<Punt> fetchPuntResults() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Punt> result = new ArrayList<Punt>();
+		List<Meeting> meets = fetchExistingMeets();
+		for (Meeting meet : meets) {
+			result.addAll(fetchPuntResultsForMeet(meet));
+		}
+		return result;
 	}
 	
+	private List<Punt> fetchPuntResultsForMeet(Meeting meet) throws Exception {
+		List<Punt> result = new ArrayList<Punt>();
+		List<Race> races = super.fetchRacesForMeet(meet);
+		for (Race race : races) {
+			List<Punt> punts = fetchPuntsForRace(race);
+			setRaceResultsOnPunts(punts, race);
+			result.addAll(punts);
+		}
+		return result;
+	}
+	
+//	private List<ObjPuntEvent> fetchAllPunts() throws Exception {
+//		return ObjectifyService.ofy()
+//		          .load()
+//		          .type(ObjPuntEvent.class) // We want only PuntEvents
+//		          .list();
+//	}
+	
+	private void setRaceResultsOnPunts(List<Punt> punts, Race race) {
+		for (Punt p : punts) {
+			setRaceResultsOnPunts(p, race);
+		}
+	}
+
+	private void setRaceResultsOnPunts(Punt p, Race race) {
+		for (Runner r : p.getRunners()) {
+			setRaceResultOnRunner(r, race);
+		}
+	}
+
+	private void setRaceResultOnRunner(Runner r, Race race) {
+		int[] results = race.getResult();
+		for (int i = 0; i < results.length; i++) {
+			if (results[i] == r.getNumber()) {
+				r.setResult(i + 1);
+				return;
+			}
+		}
+	}
+
 	private ObjPuntEvent fetchPuntEvent(Race race) {
 		return ObjectifyService.ofy()
 		          .load()
@@ -131,15 +180,15 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 //		return result;
 //	}
 	
-	private List<Runner> fetchRunners(List<Key<ObjRunner>> runners, Race race) throws Exception {
+	private List<Runner> fetchRunners(List<Key<ObjRunner>> runners) throws Exception {
 		List<Runner> result = new ArrayList<Runner>();
 		for (Key<ObjRunner> runner : runners) {
-			result.add(fetchRunner(runner, race));
+			result.add(fetchRunner(runner));
 		}
 		return result;
 	}
 
-	private Runner fetchRunner(Key<ObjRunner> keyRunner, Race race) throws Exception {
+	private Runner fetchRunner(Key<ObjRunner> keyRunner) throws Exception {
 		ObjRunner objRunner = ObjectifyService.ofy()
 			.load()
 			.key(keyRunner)		

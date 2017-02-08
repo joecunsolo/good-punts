@@ -31,6 +31,18 @@ public class ObjectifyBaseDaoImpl {
 		return toMeeting(meet);
 	}
 	
+	public List<Meeting> fetchExistingMeets() throws Exception {
+		List<ObjMeet> meetings = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjMeet.class) // We want only Meetings
+		          .list();
+		List<Meeting> result = new ArrayList<Meeting>();
+		for (ObjMeet oMeet : meetings) {
+			Meeting m = toMeeting(oMeet);
+			result.add(m);
+		}
+		return result;
+	}
 
 	public List<Race> fetchRacesForMeet(Meeting meet) throws Exception {
 		List<ObjRace> races = ObjectifyService.ofy()

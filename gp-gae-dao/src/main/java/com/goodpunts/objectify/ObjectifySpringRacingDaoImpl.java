@@ -16,19 +16,6 @@ import com.joe.springracing.objects.RunnerResult;
 
 public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implements SpringRacingDAO {
 
-	public List<Meeting> fetchExistingMeets() throws Exception {
-		List<ObjMeet> meetings = ObjectifyService.ofy()
-		          .load()
-		          .type(ObjMeet.class) // We want only Meetings
-		          .list();
-		List<Meeting> result = new ArrayList<Meeting>();
-		for (ObjMeet oMeet : meetings) {
-			Meeting m = toMeeting(oMeet);
-			result.add(m);
-		}
-		return result;
-	}
-
 	public boolean storeMeet(Meeting meet) throws Exception {
 		ObjMeet oMeet = toObjMeet(meet);
 		ObjectifyService.ofy().save().entity(oMeet).now();
@@ -151,7 +138,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		List<ObjRace> races = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRace.class) // We want only Races
-		          .filter("histories", false)
+//		          .filter("histories", false)
 		          .list();
 	
 		List<Race> result = new ArrayList<Race>();
