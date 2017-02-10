@@ -9,7 +9,7 @@ public class Horse extends AnalysableRacePropertyObject {
 	private String name;
 	private String code;
 	private String id;
-	private boolean histories;
+	private boolean histories = false;
 	
 	public Horse() {
 		results = new ArrayList<RunnerResult>();

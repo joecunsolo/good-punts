@@ -483,5 +483,10 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 		return rdRunner.getHorseObject();
 	}
 
+	public Horse fetchHorse(String horseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

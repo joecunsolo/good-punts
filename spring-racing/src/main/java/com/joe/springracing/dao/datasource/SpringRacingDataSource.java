@@ -30,4 +30,5 @@ public interface SpringRacingDataSource {
 	public List<Runner> fetchRunnnersForRace(Race race) throws Exception;
 
 	public Horse fetchHorse(Runner runner) throws Exception;
+
 }

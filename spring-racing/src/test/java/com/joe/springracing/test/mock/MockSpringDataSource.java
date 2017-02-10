@@ -56,4 +56,9 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 		races.add(race);
 	}
 
+	public Horse fetchHorse(String horseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
