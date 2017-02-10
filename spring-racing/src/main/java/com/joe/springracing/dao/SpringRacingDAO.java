@@ -49,4 +49,5 @@ public interface SpringRacingDAO {
 
 	public void exportRunnerHistories(RunnerHistoriesExporter exporter) throws Exception;
 
+	public List<Runner> fetchRunnersWithoutHistories() throws Exception;
 }

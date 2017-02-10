@@ -532,4 +532,14 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		return null;
 	}
 
+	public List<Runner> fetchRunnersWithoutHistories() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Runner fetchRunner(String raceCode, String horseCode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

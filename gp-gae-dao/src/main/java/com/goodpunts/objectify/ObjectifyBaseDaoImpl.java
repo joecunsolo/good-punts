@@ -112,7 +112,7 @@ public class ObjectifyBaseDaoImpl {
 		race.setRaceNumber(r.getRaceNumber());
 		race.setResult(r.getResult());
 		race.setVenue(r.getVenue());
-		race.setHistories(r.hasHistories());
+//		race.setHistories(r.hasHistories());
 		return race;
 	}
 	
@@ -131,11 +131,14 @@ public class ObjectifyBaseDaoImpl {
 		r.setNumber(oRunner.getNumber());
 		r.setScratched(oRunner.isScratched());
 		r.setTrainer(oRunner.getTrainer());
+//		r.setHistories(oRunner.isHistories());
+		r.setRaceCode(oRunner.getRaceCode());
 		return r;
 	}
 	
 	protected ObjRunner toObjRunner(Runner runner, Race r) {
 		ObjRunner o = new ObjRunner(r.getRaceCode());
+//		o.setHistories(runner.hasHistories());
 		o.setEmergency(runner.isEmergency());
 		o.setHorse(runner.getHorse());
 		o.setJockey(runner.getJockey());
@@ -164,15 +167,16 @@ public class ObjectifyBaseDaoImpl {
 		result.setRaceNumber(race.getRaceNumber());
 		result.setResult(race.getResult());
 		result.setVenue(race.getVenue());
-		result.setHistories(race.hasHistories());
+//		result.setHistories(race.hasHistories());
 		return result;
 	}
 	
 	protected ObjHorse toObjHorse(Horse horse) {
-		ObjHorse result = new ObjHorse();
+		ObjHorse result = new ObjHorse(); 
 		result.setCode(horse.getCode());
 		result.setName(horse.getName());
 		result.setId(horse.getId());
+		result.setHistories(horse.hasHistories());
 		return result;
 	}
 	
@@ -197,6 +201,7 @@ public class ObjectifyBaseDaoImpl {
 		horse.setCode(objHorse.getCode());
 		horse.setId(objHorse.getId());
 		horse.setName(objHorse.getName());
+		horse.setHistories(objHorse.hasHistories());
 		return horse;
 	}
 	protected Key<ObjMeet> getMeetKey(Meeting meet) {

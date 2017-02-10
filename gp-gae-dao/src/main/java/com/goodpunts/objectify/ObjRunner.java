@@ -3,6 +3,7 @@ package com.goodpunts.objectify;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
 @Entity
@@ -16,11 +17,15 @@ public class ObjRunner {
 	private int number;
 	private boolean scratched;
 	private boolean emergency;
+	@Index
+	private boolean histories;
+	private String raceCode;
 	
 	public ObjRunner() {}
 	
 	public ObjRunner(String raceCode) {
 		race = Key.create(ObjRace.class, raceCode);
+		this.setRaceCode(raceCode);
 	}
 	
 	public String getHorse() {
@@ -58,6 +63,22 @@ public class ObjRunner {
 	}
 	public void setEmergency(boolean emergency) {
 		this.emergency = emergency;
+	}
+
+	public boolean isHistories() {
+		return histories;
+	}
+
+	public void setHistories(boolean histories) {
+		this.histories = histories;
+	}
+
+	public String getRaceCode() {
+		return raceCode;
+	}
+
+	public void setRaceCode(String raceCode) {
+		this.raceCode = raceCode;
 	}
 
 }

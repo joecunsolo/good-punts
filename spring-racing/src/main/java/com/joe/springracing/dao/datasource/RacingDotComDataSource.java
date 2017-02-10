@@ -13,6 +13,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonStructure;
 import javax.json.JsonValue;
 
 import com.joe.springracing.objects.Horse;
@@ -161,10 +162,10 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 	public List<Runner> fetchRunnnersForRace(Race race) throws Exception {
 		String urlToRead = getRunnerURL(race.getMeetCode(), race.getRaceNumber());
 		String html = HTMLReaderIO.getHTML(urlToRead);			
-		return parseRunners(html);
+		return parseRunners(html, race.getRaceCode());
 	}
 	
-	private List<Runner> parseRunners(String html) {
+	private List<Runner> parseRunners(String html, String raceCode) {
 		List<Runner> result = new ArrayList<Runner>();
 		if (html == null) {
 			return result;
@@ -192,6 +193,8 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 			runner.setHorse(horse.getId());
 			runner.setTrainer(parseTrainer(jObject.get(KEY_TRAINER)));
 			runner.setJockey(parseJockey(jObject.get(KEY_JOCKEY)));
+			runner.setRaceCode(raceCode);
+			
 			JsonValue odds = jObject.get(KEY_ODDS);
 			if (odds != null & odds instanceof JsonObject) {
 				runner.setOdds(parseOdds((JsonObject)odds));
@@ -212,8 +215,14 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 		List<RunnerResult> results = new ArrayList<RunnerResult>();
 
 		JsonReader jsonReader = Json.createReader(new StringReader(html));
-		JsonArray array = jsonReader.readArray();
-
+		JsonArray array = null; 
+		JsonObject object = null;
+		JsonStructure struct = jsonReader.read();
+		try {
+			array = (JsonArray)struct;
+		} catch (Exception ex) {
+			object = (JsonObject)struct;
+		}
 		for (int i = 0; i < array.size(); i++) {
 			RunnerResult result = new RunnerResult();
 			JsonObject jObject = array.getJsonObject(i);

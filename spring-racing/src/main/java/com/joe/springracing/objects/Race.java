@@ -19,7 +19,7 @@ public class Race { //extends RacingObject {
 	private String name;
 	private String raceCode;
 	private double distance;
-	private boolean histories;
+//	private boolean histories;
 	
 	public Race() {
 		runners = new ArrayList<Runner>();
@@ -147,12 +147,12 @@ public class Race { //extends RacingObject {
 		this.distance = distance;
 	}
 
-	public boolean hasHistories() {
-		return histories;
-	}
-
-	public void setHistories(boolean histories) {
-		this.histories = histories;
-	}
+//	public boolean hasHistories() {
+//		return histories;
+//	}
+//
+//	public void setHistories(boolean histories) {
+//		this.histories = histories;
+//	}
 
 }

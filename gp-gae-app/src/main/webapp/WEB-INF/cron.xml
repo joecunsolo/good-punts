@@ -14,10 +14,10 @@
     <url>/probabilities/queue</url>
     <description>Generate Probabilities</description>
     <schedule>every 1 hours</schedule>
-  </cron>
+  </cron><!-- 
   <cron>
     <url>/race-results/import</url>
     <description>Import Results</description>
     <schedule>every 1 hours</schedule>
-  </cron>
+  </cron> -->
 </cronentries>

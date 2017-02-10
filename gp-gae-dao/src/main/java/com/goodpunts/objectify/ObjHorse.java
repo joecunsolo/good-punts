@@ -2,6 +2,7 @@ package com.goodpunts.objectify;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class ObjHorse {
@@ -10,6 +11,8 @@ public class ObjHorse {
 	private String code;
 	@Id
 	private String id;
+	@Index
+	private boolean histories;
 	
 	public ObjHorse() {}
 	
@@ -30,6 +33,14 @@ public class ObjHorse {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void setHistories(boolean histories) {
+		this.histories = histories;
+	}
+	
+	public boolean hasHistories() {
+		return histories;
 	}
 
 }

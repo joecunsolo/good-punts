@@ -70,11 +70,6 @@ public class MockRacingDao implements SpringRacingDAO {
 
 	public List<Race> fetchRacesWithoutHistories() {
 		List<Race> result = new ArrayList<Race>();
-		for (Race race : races) {
-			if (!race.hasHistories()) {
-				result.add(race);
-			}
-		}
 		return result;
 	}
 
@@ -90,6 +85,16 @@ public class MockRacingDao implements SpringRacingDAO {
 	}
 
 	public List<Race> fetchRacesWithoutResults() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Runner> fetchRunnersWithoutHistories() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Runner fetchRunner(String raceCode, String horseCode) {
 		// TODO Auto-generated method stub
 		return null;
 	}

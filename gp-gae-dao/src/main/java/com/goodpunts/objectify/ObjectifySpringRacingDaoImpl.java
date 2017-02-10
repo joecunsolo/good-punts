@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
-
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.exporter.RunnerHistoriesExporter;
 import com.joe.springracing.objects.Horse;
@@ -34,10 +33,6 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 	}
 
 	public void storeRace(Race race) throws Exception {
-		Race existing = super.fetchRace(race.getRaceCode());
-		if (existing != null) {
-			race.setHistories(existing.hasHistories());
-		}
 		ObjRace oRace = toObjRace(race);
 		ObjectifyService.ofy().save().entity(oRace).now();
 		if (race.getRunners() != null) {
@@ -138,7 +133,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		List<ObjRace> races = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRace.class) // We want only Races
-//		          .filter("histories", false)
+		          .filter("histories", false)
 		          .list();
 	
 		List<Race> result = new ArrayList<Race>();
@@ -148,6 +143,22 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		}
 		return result;
 	}
+	
+	public List<Runner> fetchRunnersWithoutHistories() throws Exception {
+		List<ObjRunner> runners = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRunner.class) // We want only Runners
+		          .filter("histories", false) //without histories
+		          .list();
+	
+		List<Runner> result = new ArrayList<Runner>();
+		for (ObjRunner oRunner : runners) {
+			Runner r = toRunner(oRunner);
+			result.add(r);
+		}
+		return result;
+	}
+
 	
 	public List<Race> fetchRacesWithoutResults() throws Exception {
 		List<ObjRace> races = ObjectifyService.ofy()
@@ -184,6 +195,16 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 			exporter.export(toRunnerResult(objResult, runner.getHorse()));
 		}
 	}
+
+//	public Runner fetchRunner(String raceCode, String horseCode) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+//	public Runner fetchRunner(String raceCode, String horseCode) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 
 }

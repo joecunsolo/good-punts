@@ -14,7 +14,8 @@ public class Runner {
 	private int result;
 //	private Properties career;
 //	private Properties goodAt;
-
+	private String raceCode;
+		
 	//TODO Move these out
 	private List<AnalysableObjectStatistic> statistics;
 	private Probability probability = new Probability();
@@ -108,6 +109,14 @@ public class Runner {
 
 	public void setResult(int result) {
 		this.result = result;
+	}
+
+	public String getRaceCode() {
+		return raceCode;
+	}
+
+	public void setRaceCode(String raceCode) {
+		this.raceCode = raceCode;
 	}
 
 }
