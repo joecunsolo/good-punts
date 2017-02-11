@@ -49,36 +49,40 @@ public class Importer {
 		
 		for (RunnerResult result : results) {
 			//adds in some more information
-			Race raceResult = datasource.fetchRaceResult(result.getRaceCode());
 			try {
-				int position = result.getPosition();
-				result.setPrizeMoney(raceResult.getPrizeMoney(position));	
+				Race raceResult = datasource.fetchRaceResult(result.getRaceCode());
+				try {
+					int position = result.getPosition();
+					result.setPrizeMoney(raceResult.getPrizeMoney(position));	
+				} catch (Exception ex) {
+					ex.printStackTrace();				
+				}
+				try {
+					result.setRaceDate(raceResult.getDate());
+				} catch (Exception ex) {
+					ex.printStackTrace();				
+				}try {
+					result.setMeetCode(raceResult.getMeetCode());
+				} catch (Exception ex) {
+					ex.printStackTrace();				
+				}try {
+					result.setRaceNumber(raceResult.getRaceNumber());
+				} catch (Exception ex) {
+					ex.printStackTrace();				
+				}try {
+					result.setVenueName(raceResult.getVenue());
+				} catch (Exception ex) {
+					ex.printStackTrace();				
+				}try {
+					result.setRaceName(raceResult.getName());
+					result.setHorse(h.getId());
+					result.setResultsFetched(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+	//				result.setResultsFetched(false);
+				}
 			} catch (Exception ex) {
-				ex.printStackTrace();				
-			}
-			try {
-				result.setRaceDate(raceResult.getDate());
-			} catch (Exception ex) {
-				ex.printStackTrace();				
-			}try {
-				result.setMeetCode(raceResult.getMeetCode());
-			} catch (Exception ex) {
-				ex.printStackTrace();				
-			}try {
-				result.setRaceNumber(raceResult.getRaceNumber());
-			} catch (Exception ex) {
-				ex.printStackTrace();				
-			}try {
-				result.setVenueName(raceResult.getVenue());
-			} catch (Exception ex) {
-				ex.printStackTrace();				
-			}try {
-				result.setRaceName(raceResult.getName());
-				result.setHorse(h.getId());
-				result.setResultsFetched(true);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-//				result.setResultsFetched(false);
+				
 			}
 		}
 		
