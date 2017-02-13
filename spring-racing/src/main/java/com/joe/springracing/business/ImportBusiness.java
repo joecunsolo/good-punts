@@ -76,6 +76,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		Horse horse = getSpringRacingDAO().fetchHorse(horseCode);
 		if (horse == null) {
 			horse = fetchHorse(horseCode);
+			
 		}
 		importRunner(horse, histories, newRace);
 	}

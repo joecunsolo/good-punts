@@ -27,6 +27,16 @@
 
 <body>
 	<jsp:include page="menu.jsp" />
+	<table>
+		<thead>
+			<th></th>
+			<th>Race</th>
+			<th>Punt</th>
+			<th>Runner</th>
+			<th>Odds</th>
+			<th>Market</th>
+		</thead>
+		<tbody>
 <% 			MeetBusiness mb = new MeetBusiness();
 			Model m = new Model(new ModelAttributes());
 
@@ -41,25 +51,29 @@
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Meeting meet : upcoming) {
 				//if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>
-					<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
+					<tr><td colspan="6"><%=meet.getDate() %> <%=meet.getVenue() %></td></tr>		
 <%					List<Punt> punts = GoodPuntsServices.getPuntingDAO().fetchPuntsForMeet(meet);
 					for (Punt punt : punts) {%>
-						<p style="margin-left:40px">
-						<a href="race_probabilities.jsp?race_code=<%=punt.getRace().getRaceCode()%>">
-						Race <%=punt.getRace().getRaceNumber()%>
-						</a>
-						&nbsp;
-						<%=punt.getType()%>&nbsp;
+					<tr>
+						<td>
+							<a href="race_probabilities.jsp?race_code=<%=punt.getRace().getRaceCode()%>">
+							Race <%=punt.getRace().getRaceNumber()%>
+							</a>
+						</td>
+						<td><%=punt.getType()%></td>
+						<td>
 <% 						for (Runner horse : punt.getRunners()) {%>
-							<%= horse.getNumber() + ".&nbsp;" + horse.getHorse() %>&nbsp;
+							<%= horse.getNumber() + ".&nbsp;" + horse.getHorse() %>
 <% 						}%>
-						<%=df.format(punt.getJoesOdds())%>&nbsp;
-						<%=punt.getBookieOdds()%>
-						</p>
+						</td>
+						<td><%=df.format(punt.getJoesOdds())%></td>
+						<td><%=punt.getBookieOdds()%></td>
+					</tr>
 <%					}
 				//}
 			}
-%>
+%>			</tbody>
+		</table>
 </body>
 </html>
 <%-- //[END all]--%>
