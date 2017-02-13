@@ -23,6 +23,16 @@
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css"/>
+    <style>
+	    table {
+	    	border-collapse: collapse;
+	    }
+		th, td {
+		    border: 1px solid #ddd;
+    		text-align: left;
+    		padding: 15px;
+		}
+	</style>
 </head>
 
 <body>
@@ -55,6 +65,7 @@
 <%					List<Punt> punts = GoodPuntsServices.getPuntingDAO().fetchPuntsForMeet(meet);
 					for (Punt punt : punts) {%>
 					<tr>
+						<td>&nbsp;</td>
 						<td>
 							<a href="race_probabilities.jsp?race_code=<%=punt.getRace().getRaceCode()%>">
 							Race <%=punt.getRace().getRaceNumber()%>
