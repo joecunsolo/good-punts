@@ -96,7 +96,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 			return result;
 		} catch (Exception ex) {
 			System.out.println(horse);
-			return new Horse();
+			return null;
 		}
 	}
 
