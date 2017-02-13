@@ -1,20 +1,34 @@
-//package com.joe.springracing.test;
-//
-//import java.util.List;
-//
-//import com.joe.springracing.SpringRacingServices;
-//import com.joe.springracing.business.ImportBusiness;
-//import com.joe.springracing.dao.SpringRacingDAO;
-//import com.joe.springracing.importer.Importer;
-//import com.joe.springracing.objects.Race;
-//import com.joe.springracing.test.mock.MockRacingDao;
-//import com.joe.springracing.test.mock.MockSpringDataSource;
-//
-//import org.junit.Assert;
-//
-//import junit.framework.TestCase;
-//
-//public class TestImport extends TestCase {
+package com.joe.springracing.test;
+
+import java.util.List;
+
+import com.joe.springracing.SpringRacingServices;
+import com.joe.springracing.business.ImportBusiness;
+import com.joe.springracing.dao.SpringRacingDAO;
+import com.joe.springracing.importer.Importer;
+import com.joe.springracing.objects.Race;
+import com.joe.springracing.test.mock.MockRacingDao;
+import com.joe.springracing.test.mock.MockSpringDataSource;
+
+import org.junit.Assert;
+
+import junit.framework.TestCase;
+
+public class TestImport extends TestCase {
+	
+	/**
+	 * Given a Runner does not exist in Good Punts
+	 * When there is a request to import the horses history
+	 * Then the horse should be added to the database
+	 * And the horse's history imported
+	 * @throws Exception 
+	 */
+	public static void testImportNullHorse() throws Exception {
+		String horseCode = "not-in-db";
+		SpringRacingServices.setSpringRacingDataSource(new MockSpringDataSource());
+		ImportBusiness importer = new ImportBusiness(new MockRacingDao());
+		importer.importRunner(horseCode, true, true);	
+	}
 //	
 //	/**
 //	 * Given a race is in the datasource
@@ -95,4 +109,4 @@
 //		Assert.assertTrue(races2.size() == 0);
 //	}
 //
-//}
+}

@@ -122,8 +122,4 @@ public class Importer {
 		return this.datasource.fetchHorse(runner);
 	}
 
-	public Horse fetchHorse(String horseCode) throws Exception {
-		return this.datasource.fetchHorse(horseCode);
-	}
-
 }

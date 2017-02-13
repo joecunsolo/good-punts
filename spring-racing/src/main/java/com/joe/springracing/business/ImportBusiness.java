@@ -75,12 +75,20 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	public void importRunner(String horseCode, boolean histories, boolean newRace) throws Exception {
 		Horse horse = getSpringRacingDAO().fetchHorse(horseCode);
 		if (horse == null) {
-			Importer importer = new Importer();
-			horse = importer.fetchHorse(horseCode);
+			horse = fetchHorse(horseCode);
 		}
 		importRunner(horse, histories, newRace);
 	}
 		
+	private Horse fetchHorse(String horseCode) throws Exception {
+		Horse result = new Horse();
+		result.setCode(horseCode);
+		result.setName(horseCode);
+		result.setId(horseCode);
+		
+		return result;
+	}
+	
 	/**
 	 * Import the runner from the {@link Importer}
 	 * @param runner a horse in the race to import

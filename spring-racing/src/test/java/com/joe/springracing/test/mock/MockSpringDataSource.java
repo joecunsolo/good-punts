@@ -23,8 +23,7 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 
 	public List<RunnerResult> fetchPastResultsForHorse(String horseCode)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<RunnerResult>();
 	}
 
 	public Meeting fetchMeet(String meetCode) {
@@ -58,7 +57,7 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 
 	public Horse fetchHorse(String horseCode) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return new Horse();
 	}
 
 }
