@@ -80,6 +80,9 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 
 
 	public Horse fetchHorse(String horse) throws Exception {
+		if (horse == null) {
+			return null;
+		}
 		ObjHorse objHorse = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjHorse.class) // We want only Races
