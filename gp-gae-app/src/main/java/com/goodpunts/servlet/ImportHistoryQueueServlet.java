@@ -35,11 +35,13 @@ public class ImportHistoryQueueServlet extends GenericServlet {
 		List<Runner> runners = importer.fetchRunnerWithoutHistories();
 		
 		for (Runner runner : runners) {
-			Queue queue = QueueFactory.getDefaultQueue();
-			queue.
-				add(TaskOptions.Builder.
-						withUrl(ImportRunnerHistoriesServlet.URL).
-						param(ImportRunnerHistoriesServlet.KEY_HORSECODE, runner.getHorse()));
+			if (runner.getHorse() != null) {
+				Queue queue = QueueFactory.getDefaultQueue();
+				queue.
+					add(TaskOptions.Builder.
+							withUrl(ImportRunnerHistoriesServlet.URL).
+							param(ImportRunnerHistoriesServlet.KEY_HORSECODE, runner.getHorse()));
+			}
 		}
 	}
 
