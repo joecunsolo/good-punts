@@ -112,7 +112,7 @@ public class ObjectifyBaseDaoImpl {
 		race.setRaceNumber(r.getRaceNumber());
 		race.setResult(r.getResult());
 		race.setVenue(r.getVenue());
-//		race.setHistories(r.hasHistories());
+		race.setHistories(r.hasHistories());
 		return race;
 	}
 	
@@ -167,7 +167,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setRaceNumber(race.getRaceNumber());
 		result.setResult(race.getResult());
 		result.setVenue(race.getVenue());
-//		result.setHistories(race.hasHistories());
+		result.setHistories(race.hasHistories());
 		return result;
 	}
 	

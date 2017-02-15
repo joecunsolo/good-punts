@@ -51,7 +51,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 
 			getSpringRacingDAO().storeRace(race);
 			importRunners(runners, histories, newRace);
-		}		
+		}	
 	}
 
 	private void importRunners(List<Runner> runners, boolean histories, boolean newRace) throws Exception {

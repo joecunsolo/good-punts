@@ -12,8 +12,8 @@ import com.goodpunts.GoodPuntsServices;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.taskqueue.Queue;
-
 import com.joe.springracing.business.ImportBusiness;
+import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 
 /**
@@ -32,16 +32,16 @@ public class ImportHistoryQueueServlet extends GenericServlet {
 	public void service(ServletRequest arg0, ServletResponse arg1)
 			throws ServletException, IOException {
 		ImportBusiness importer = new ImportBusiness(GoodPuntsServices.getSpringRacingDAO());
-		List<Runner> runners = importer.fetchRunnerWithoutHistories();
+		List<Race> races = importer.fetchRacesWithoutHistories();
 		
-		for (Runner runner : runners) {
-			if (runner.getHorse() != null) {
+		for (Race race : races) {
+//			if (runner.getHorse() != null) {
 				Queue queue = QueueFactory.getDefaultQueue();
 				queue.
 					add(TaskOptions.Builder.
 							withUrl(ImportRunnerHistoriesServlet.URL).
-							param(ImportRunnerHistoriesServlet.KEY_HORSECODE, runner.getHorse()));
-			}
+							param(ImportRunnerHistoriesServlet.KEY_RACECODE, race.getRaceCode()));
+//			}
 		}
 	}
 
