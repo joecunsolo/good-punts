@@ -36,7 +36,8 @@ public class ImportRunnerHistoriesServlet extends GenericServlet {
 			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
 			importer.importRace(race, true);
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to get histories for race " + raceCode, e);
+			e.printStackTrace();
+			System.out.println("Unable to get histories for race " + raceCode);
 		}
 	}
 

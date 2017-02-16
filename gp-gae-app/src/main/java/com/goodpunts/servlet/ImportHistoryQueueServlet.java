@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 
 import com.goodpunts.GoodPuntsServices;
 import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.RetryOptions;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.taskqueue.Queue;
 import com.joe.springracing.business.ImportBusiness;
@@ -40,7 +41,8 @@ public class ImportHistoryQueueServlet extends GenericServlet {
 				queue.
 					add(TaskOptions.Builder.
 							withUrl(ImportRunnerHistoriesServlet.URL).
-							param(ImportRunnerHistoriesServlet.KEY_RACECODE, race.getRaceCode()));
+							param(ImportRunnerHistoriesServlet.KEY_RACECODE, race.getRaceCode())
+							.retryOptions(RetryOptions.Builder.withTaskRetryLimit(0)));
 //			}
 		}
 	}
