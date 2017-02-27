@@ -10,7 +10,7 @@ import com.joe.springracing.objects.RunnerResult;
 
 public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 
-	public static final long A_YEAR = 1000 * 60 * 60 * 24 * 365;
+	public static final long A_YEAR = 31536000000l;
 	
 	@Override
 	protected Double[] careerToValues(List<RunnerResult> pastResults) {
