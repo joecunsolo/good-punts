@@ -6,15 +6,15 @@ import com.joe.springracing.objects.RunnerResult;
 
 public class FormStatistics extends SingleWeightedStatistics {
 	
-	protected double[] careerToValues(List<RunnerResult> pastResults) {
+	protected Double[] careerToValues(List<RunnerResult> pastResults) {
 		if (pastResults.size() == 0) {
-			return new double[0];
+			return new Double[0];
 		}
 		
-		double[] result = new double[pastResults.size()];
+		Double[] result = new Double[pastResults.size()];
 		int i = 0;
 		for (RunnerResult race : pastResults) {
-			result[i++] = race.getPosition();
+			result[i++] = Double.valueOf(race.getPosition());
 		}
 		
 		return result;	

@@ -53,7 +53,7 @@ public abstract class SingleWeightedStatistics implements Statistics {
 		return stat;
 	}
 	
-	protected abstract double[] careerToValues(List<RunnerResult> pastResults);
+	protected abstract Double[] careerToValues(List<RunnerResult> pastResults);
 
 	public Model getModel() {
 		return model;

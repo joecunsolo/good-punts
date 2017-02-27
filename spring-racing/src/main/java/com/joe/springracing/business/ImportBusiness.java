@@ -58,9 +58,8 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		Importer importer = new Importer();
 		for (Runner runner : runners) {
 			Horse horse = importer.fetchHorse(runner);
-			horse.setHistories(!newRace && horse.hasHistories());
-			getSpringRacingDAO().storeHorse(horse);
-
+//			horse.setHistories(!newRace && horse.hasHistories());
+//			getSpringRacingDAO().storeHorse(horse);
 			importRunner(horse, histories, newRace);
 		}
 	}

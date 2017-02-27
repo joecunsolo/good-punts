@@ -1,5 +1,6 @@
 package com.joe.springracing.business.probability;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -12,25 +13,29 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 	public static final long A_YEAR = 1000 * 60 * 60 * 24 * 365;
 	
 	@Override
-	protected double[] careerToValues(List<RunnerResult> pastResults) {
+	protected Double[] careerToValues(List<RunnerResult> pastResults) {
 		if (pastResults.size() == 0) {
-			return new double[0];
+			return new Double[0];
 		}
 		
 		Collections.sort(pastResults, new RunnerResultDateComparator());
 		
 		int numResults = pastResults.size() > 9 ? 9 : pastResults.size();
-		double[] result = new double[numResults];
-		int i = 0;
+		List<Double> list = new ArrayList<Double>();
 		for (RunnerResult runnerResult : pastResults) {
-			if (i == numResults) { // || 
-//					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() > A_YEAR) {
-				return result;
+			if (list.size() == numResults) {
+				Double[] result = new Double[list.size()];
+				return list.toArray(result);
 			}
-			result[i++] = runnerResult.getPrizeMoney();
+			
+			if (runnerResult.getRaceDate() != null &&
+					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() < A_YEAR) {
+				list.add(runnerResult.getPrizeMoney());
+			}
 		}
-		
-		return result;	
+
+		Double[] result = new Double[list.size()];
+		return list.toArray(result);
 	}
 
 	public boolean isDescending() {

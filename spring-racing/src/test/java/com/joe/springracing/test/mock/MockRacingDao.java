@@ -1,6 +1,7 @@
 package com.joe.springracing.test.mock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.joe.springracing.dao.SpringRacingDAO;
@@ -69,8 +70,7 @@ public class MockRacingDao implements SpringRacingDAO {
 	}
 
 	public List<Race> fetchRacesWithoutHistories() {
-		List<Race> result = new ArrayList<Race>();
-		return result;
+		return racesWithoutHistories;
 	}
 
 	public Meeting fetchMeet(String meetCode) throws Exception {
@@ -97,6 +97,12 @@ public class MockRacingDao implements SpringRacingDAO {
 	public Runner fetchRunner(String raceCode, String horseCode) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private List<Race> racesWithoutHistories;
+	public void setRacesWithoutHistories(Race... races2) {
+		racesWithoutHistories = Arrays.asList(races2);
+		races.addAll(racesWithoutHistories);
 	}
 
 }

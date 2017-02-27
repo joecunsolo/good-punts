@@ -1,16 +1,10 @@
 package com.joe.springracing.test;
 
-import java.util.List;
-
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ImportBusiness;
-import com.joe.springracing.dao.SpringRacingDAO;
-import com.joe.springracing.importer.Importer;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.test.mock.MockRacingDao;
 import com.joe.springracing.test.mock.MockSpringDataSource;
-
-import org.junit.Assert;
 
 import junit.framework.TestCase;
 
@@ -29,7 +23,50 @@ public class TestImport extends TestCase {
 		ImportBusiness importer = new ImportBusiness(new MockRacingDao());
 		importer.importRunner(horseCode, true, true);	
 	}
-//	
+	
+
+	/**
+	 * Given a Races histories have been imported
+	 * And the race histories are imported successfully
+	 * When the histories are imported
+	 * Then the horses histories should NOT be imported
+	 */
+
+	/**
+	 * Given a Race has been imported
+	 * And the race histories have not been imported
+	 * And a horses histories were imported
+	 * When the histories are imported
+	 * Then the successful horses histories should NOT be imported
+	 * @throws Exception 
+	 */
+	public static void testRetryFailedRace() throws Exception {
+		String horseNotImported = "not-imported";
+		String horseImported = "imported";
+		
+		//Given a Race has been imported
+		Race race = new Race();
+		race.setName("failed import");
+		race.setVenue("mixed result");
+		//And the race histories have not been imported
+		race.setHistories(false);
+		MockRacingDao dao = new MockRacingDao();
+		dao.setRacesWithoutHistories(race);
+		//And a horses histories were imported
+		
+		ImportBusiness importer = new ImportBusiness(dao);
+		importer.importRace(race, true);
+	}
+	
+	/**
+	 * Given a Races histories have not been imported
+	 * And a horses histories were imported previously
+	 * When the histories are imported
+	 * Then the horses histories should be imported
+	 */
+
+	
+	//	
 //	/**
 //	 * Given a race is in the datasource
 //	 * When I fetch the list of races

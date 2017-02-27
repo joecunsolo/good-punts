@@ -14,7 +14,18 @@ public class SingleVariateStatistic implements AnalysableObjectStatistic {
 	public SingleVariateStatistic(double[] myResults) {
 		this.setValues(myResults);
 	}
+
+	public SingleVariateStatistic(Double[] myResults) {
+		this.setValues(myResults);
+	}
 	
+	private void setValues(Double[] myResults) {
+		int i = 0;
+		for (Double a : myResults) {
+			values[i++] = a.doubleValue();
+		}
+	}
+
 	public double[] getValues() {
 		return values;
 	}

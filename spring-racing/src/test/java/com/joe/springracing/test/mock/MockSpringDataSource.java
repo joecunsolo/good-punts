@@ -59,5 +59,4 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 		// TODO Auto-generated method stub
 		return new Horse();
 	}
-
 }
