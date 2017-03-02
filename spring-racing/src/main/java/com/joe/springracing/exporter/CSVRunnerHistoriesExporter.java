@@ -27,7 +27,8 @@ public class CSVRunnerHistoriesExporter implements RunnerHistoriesExporter {
 				"Trainer," +
 				"Venue," +
 				"Date," +
-				"PrizeMoney";
+				"PrizeMoney," +
+				"Weight";
 	}
 
 	/** Writer a runner history to CSV */
@@ -56,7 +57,8 @@ public class CSVRunnerHistoriesExporter implements RunnerHistoriesExporter {
 		} else {
 			result += "null,";
 		}
-		result += runnerResult.getPrizeMoney();
+		result += runnerResult.getPrizeMoney() + ",";
+		result += runnerResult.getWeight();
 		return result;
 	}
 

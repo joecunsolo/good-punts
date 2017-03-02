@@ -76,6 +76,7 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 	public static final String KEY_RESULT_HORSE = "Horse";
 	public static final String KEY_RESULT_TRAINER = "Trainer";
 	public static final String KEY_RESULT_JOCKEY = "Jockey";
+	public static final String KEY_RESULT_WEIGHT = "carriedweight";
 	public static final String KEY_SECTIONAL_HORSES = "Horses";
 	public static final String KEY_SECTIONAL_SPLITS = "SplitTimes";
 	public static final String KEY_SECTIONAL_SPLITS_TIME = "time";
@@ -236,6 +237,7 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 				Race race = parseRace(jObject.get(KEY_RESULT_RACE));
 				result.setRaceCode(race.getRaceCode());
 				result.setDistance(race.getDistance());
+				result.setWeight(Double.parseDouble(props.getProperty(KEY_RESULT_WEIGHT)));
 				
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);

@@ -27,6 +27,7 @@ public class ObjRunnerResult {
 	private int position;
 	private String venueName;
 	private double distance;
+	private double weight;
 
 	public ObjRunnerResult() {}
 	
@@ -101,6 +102,14 @@ public class ObjRunnerResult {
 	}
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
 }

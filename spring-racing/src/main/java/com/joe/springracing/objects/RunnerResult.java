@@ -26,6 +26,7 @@ public class RunnerResult {
 	private String raceName;
 	//TODO Splits and Sectionals
 	private boolean resultsFetched;
+	private double weight;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -225,6 +226,14 @@ public class RunnerResult {
 
 	public void setResultsFetched(boolean resultsFetched) {
 		this.resultsFetched = resultsFetched;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
 

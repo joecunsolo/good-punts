@@ -193,6 +193,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setSplits(runner.getSplits());
 		result.setTrainer(runner.getTrainer());
 		result.setVenueName(runner.getVenueName());
+		result.setWeight(runner.getWeight());
 		return result;
 	}
 

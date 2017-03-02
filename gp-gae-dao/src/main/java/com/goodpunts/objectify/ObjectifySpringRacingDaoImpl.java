@@ -129,6 +129,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		result.setResultType(objResult.getResultType());
 		result.setTrainer(objResult.getTrainer());
 		result.setVenueName(objResult.getVenueName());
+		result.setWeight(objResult.getWeight());
 		return result;
 	}
 
