@@ -30,12 +30,16 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 			
 			if (runnerResult.getRaceDate() != null &&
 					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() < A_YEAR) {
-				list.add(runnerResult.getPrizeMoney());
+				list.add(getResult(runnerResult));
 			}
 		}
 
 		Double[] result = new Double[list.size()];
 		return list.toArray(result);
+	}
+	
+	protected Double getResult(RunnerResult runnerResult) {
+		return runnerResult.getPrizeMoney();
 	}
 
 	public boolean isDescending() {

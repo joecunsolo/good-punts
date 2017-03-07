@@ -55,7 +55,7 @@
 						<td>Name</td>
 						<td>Mean</td>
 						<td>SD</td>
-						<td>Sims</td>
+						<td>Weight</td>
 						<td>%</td>
 						<td>Odds</td>
 					</tr>
@@ -77,7 +77,7 @@
 						</a></td>
 						<td><%=df.format(svs.getMean())%></td>
 						<td><%=df.format(svs.getStandardDeviation())%></td>
-						<td><%=runner.getProbability().getNumberWins()%></td> 
+						<td><%=df.format(runner.getWeight())%></td>
 						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
 						<td><%=runner.getOdds().getWin()%></td>
 					</tr>

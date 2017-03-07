@@ -90,6 +90,7 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 	private static final String KEY_RUNNER_NUMBER = "number";
 	private static final String KEY_RUNNER_JOCKEY = "urlsegment";
 	private static final String KEY_RUNNER_TRAINER = "urlsegment";
+	public static final String KEY_RUNNER_WEIGHT = "weight";
 
 	private static final String KEY_HORSE_CODE = "code";
 	private static final String KEY_HORSE_URL = "urlsegment";
@@ -186,8 +187,14 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 			//need a map to the horse
 			Horse horse = parseHorse(jObject.get(KEY_HORSE)); 
 		
-			//weight
 			RacingDotComRunner runner = new RacingDotComRunner();
+			String weight = props.getProperty(KEY_RUNNER_WEIGHT);
+			try {
+				weight = weight.substring(0, weight.length() - 2);
+				runner.setWeight(Double.parseDouble(weight));
+			} catch (Exception ex) {
+				//do nothing - it's ok if it doesn't have a weight
+			}
 			runner.setEmergency(Boolean.valueOf(props.getProperty(KEY_RUNNER_EMEGENCY)));
 			runner.setScratched(Boolean.valueOf(props.getProperty(KEY_RUNNER_SCRATCHED)));
 			runner.setNumber(Integer.parseInt(props.getProperty(KEY_RUNNER_NUMBER)));

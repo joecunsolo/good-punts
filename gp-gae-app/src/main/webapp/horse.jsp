@@ -32,6 +32,7 @@
 					<%=r.getVenueName()%>&nbsp;
 					<%=r.getPosition() %>&nbsp;
 					<%=r.getPrizeMoney() %>&nbsp;
+					<%=r.getWeight() %>&nbsp;
 				</p>
 <% 			}%>
 <!-- @TODO Need to be able to get upcoming races for a horse -->

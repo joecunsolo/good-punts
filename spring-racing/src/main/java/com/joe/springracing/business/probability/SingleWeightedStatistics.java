@@ -25,7 +25,7 @@ public abstract class SingleWeightedStatistics implements Statistics {
 		List<AnalysableObjectStatistic> stats = new ArrayList<AnalysableObjectStatistic>();
 //		List<RunnerResult> pastResults = getRunner().getHorse().getPastResults();
 		
-		stats.add(evaluate(o, ((Horse)o).getPastResults(), m.getAttributes().getHorseInfluence()));
+		stats.add(evaluate(o, ((Horse)o).getPastResults(), getInfluence()));
 //		stats.add(evaluate(runner.getJockey(), pastResults, m.getAttributes().getJockeyInfluence()));
 //		stats.add(evaluate(runner.getTrainer(), pastResults, m.getAttributes().getTrainerInfluence()));
 //		runner.getDistance().evaluate(pastResults);
@@ -54,6 +54,10 @@ public abstract class SingleWeightedStatistics implements Statistics {
 	}
 	
 	protected abstract Double[] careerToValues(List<RunnerResult> pastResults);
+	
+	protected double getInfluence() {
+		return this.getModel().getAttributes().getHorseInfluence();
+	}
 
 	public Model getModel() {
 		return model;

@@ -20,6 +20,7 @@ public class ObjRunner {
 	@Index
 	private boolean histories;
 	private String raceCode;
+	private double weight;
 	
 	public ObjRunner() {}
 	
@@ -79,6 +80,14 @@ public class ObjRunner {
 
 	public void setRaceCode(String raceCode) {
 		this.raceCode = raceCode;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
 }

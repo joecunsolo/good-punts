@@ -9,6 +9,7 @@ import com.joe.springracing.business.Simulator;
 import com.joe.springracing.business.Statistics;
 import com.joe.springracing.business.probability.MonteCarloSimulation;
 import com.joe.springracing.business.probability.PrizeMoneyStatistics;
+import com.joe.springracing.business.probability.WeightedPrizeMoneyStatistics;
 import com.joe.springracing.dao.LocalRaceDAOImpl;
 import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.dao.SpringRacingDAO;
@@ -32,7 +33,7 @@ public class SpringRacingServices {
 		return new MonteCarloSimulation();
 	}
 
-	private static Statistics statistics = new PrizeMoneyStatistics();
+	private static Statistics statistics = new WeightedPrizeMoneyStatistics();
 	public static Statistics getStatistics() {
 		return statistics;
 	}

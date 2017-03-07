@@ -133,6 +133,8 @@ public class ObjectifyBaseDaoImpl {
 		r.setTrainer(oRunner.getTrainer());
 //		r.setHistories(oRunner.isHistories());
 		r.setRaceCode(oRunner.getRaceCode());
+		r.setWeight(oRunner.getWeight());
+	
 		return r;
 	}
 	
@@ -145,6 +147,8 @@ public class ObjectifyBaseDaoImpl {
 		o.setNumber(runner.getNumber());
 		o.setScratched(runner.isScratched());
 		o.setTrainer(runner.getTrainer());
+		o.setWeight(runner.getWeight());
+		
 		return o;
 	}
 
