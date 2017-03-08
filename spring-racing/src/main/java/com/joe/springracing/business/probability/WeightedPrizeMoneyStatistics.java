@@ -19,7 +19,7 @@ public class WeightedPrizeMoneyStatistics extends PrizeMoneyStatistics {
 	 * The prize money of the result with the weight as handicap
 	 */
 	@Override
-	protected Double getResult(RunnerResult runnerResult) {
+	public Double getResult(RunnerResult runnerResult) {
 		double weight = runnerResult.getWeight();
 		double handicap = 1 + getHandicap(weight);
 		return handicap * runnerResult.getPrizeMoney();
@@ -29,11 +29,8 @@ public class WeightedPrizeMoneyStatistics extends PrizeMoneyStatistics {
 	 * The handicap
 	 */
 	@Override
-	protected double getInfluence() {
+	public double getInfluence() {
 		double weight = this.getRunner().getWeight(); 
-		if (weight == 0) {
-			return 1.0;
-		}
 		return 1 - getHandicap(weight);
 	}
 	
@@ -43,6 +40,9 @@ public class WeightedPrizeMoneyStatistics extends PrizeMoneyStatistics {
 	 * @return the fractional handicap
 	 */
 	private double getHandicap(double weight) {
+		if (weight == 0) {
+			return 0;
+		}
 		double handicap = (weight - MIN_WEIGHT) * WEIGHT_HANDICAP;
 		return handicap;
 	}
