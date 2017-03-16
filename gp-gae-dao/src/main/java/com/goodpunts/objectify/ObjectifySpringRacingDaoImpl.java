@@ -200,6 +200,28 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		}
 	}
 
+	public List<Meeting> fetchUpcomingMeets() throws Exception {
+		//TODO this should probably all be done by Objectify
+		try {
+			List<Meeting> meets = fetchExistingMeets();
+			List<Meeting> upcoming = new ArrayList<Meeting>();
+			
+			for (Meeting meeting : meets) {
+				try {
+					if (meeting.getDate().getTime() > System.currentTimeMillis() - 24 * 60 * 60 * 1000) {
+						upcoming.add(meeting);
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			return upcoming;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 //	public Runner fetchRunner(String raceCode, String horseCode) {
 //		// TODO Auto-generated method stub
 //		return null;

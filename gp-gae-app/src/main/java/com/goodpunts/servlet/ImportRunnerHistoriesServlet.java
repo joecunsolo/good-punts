@@ -32,7 +32,7 @@ public class ImportRunnerHistoriesServlet extends GenericServlet {
 //		String horseCode = req.getParameter(KEY_HORSECODE);
 		String raceCode = req.getParameter(KEY_RACECODE);
 		try {
-			ImportBusiness importer = new ImportBusiness(GoodPuntsServices.getSpringRacingDAO());
+			ImportBusiness importer = new ImportBusiness();
 			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
 			importer.importRace(race, true);
 		} catch (Exception e) {

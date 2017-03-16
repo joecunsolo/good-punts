@@ -8,14 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.goodpunts.GoodPuntsServices;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.RetryOptions;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.taskqueue.Queue;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.objects.Race;
-import com.joe.springracing.objects.Runner;
 
 /**
  * Gets all the races where the horse histories have not been loaded and adds them to a push queue
@@ -32,7 +30,7 @@ public class ImportHistoryQueueServlet extends GenericServlet {
 	@Override
 	public void service(ServletRequest arg0, ServletResponse arg1)
 			throws ServletException, IOException {
-		ImportBusiness importer = new ImportBusiness(GoodPuntsServices.getSpringRacingDAO());
+		ImportBusiness importer = new ImportBusiness();
 		List<Race> races = importer.fetchRacesWithoutHistories();
 		
 		for (Race race : races) {

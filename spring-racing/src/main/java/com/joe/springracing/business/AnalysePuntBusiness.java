@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
@@ -11,7 +12,7 @@ import com.joe.springracing.objects.Race;
 public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
 	
 	public AnalysePuntBusiness(SpringRacingDAO dao) {
-		super(dao, new PrintWriter(System.out));
+		super(new PrintWriter(System.out));
 	}
 	
 	public double getReturnOnGoodPunts(List<Punt> goodPunts) throws Exception {
@@ -45,7 +46,7 @@ public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
 	}
 
 	public int[] getResultsForRace(String raceCode) throws Exception {
-		Race race = getSpringRacingDAO().fetchRace(raceCode);
+		Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 		return race.getResult();
 //		RaceResult raceResult = race.getResult();
 //		int[] result = new int[raceResult.getRunners().size()];

@@ -10,7 +10,10 @@ import com.goodpunts.objectify.ObjRace;
 import com.goodpunts.objectify.ObjRunner;
 import com.goodpunts.objectify.ObjRunnerResult;
 import com.goodpunts.objectify.ObjStatistic;
+import com.goodpunts.objectify.ObjectifyPuntingDaoImpl;
+import com.goodpunts.objectify.ObjectifySpringRacingDaoImpl;
 import com.googlecode.objectify.ObjectifyService;
+import com.joe.springracing.SpringRacingServices;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
@@ -35,6 +38,9 @@ public class OfyHelper implements ServletContextListener {
     ObjectifyService.register(ObjProbability.class);
     ObjectifyService.register(ObjStatistic.class);
     ObjectifyService.register(ObjPuntEvent.class);
+    
+    SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
+    SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
   }
 
   public void contextDestroyed(ServletContextEvent event) {

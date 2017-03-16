@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
-import com.joe.springracing.dao.SpringRacingDAO;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.importer.Importer;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
@@ -14,8 +14,8 @@ import com.joe.springracing.objects.RunnerResult;
 
 public class ImportBusiness extends AbstractSpringRacingBusiness {
 
-	public ImportBusiness(SpringRacingDAO dao) {
-		super(dao, new PrintWriter(System.out));
+	public ImportBusiness() {
+		super(new PrintWriter(System.out));
 	}
 	
 	public void importUpcomingRaces(boolean histories) {
@@ -23,7 +23,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			Importer importer = new Importer();
 			List<Meeting> meets = importer.importUpcomingMeets();	
 			for (Meeting meet : meets) {
-				getSpringRacingDAO().storeMeet(meet);
+				SpringRacingServices.getSpringRacingDAO().storeMeet(meet);
 				
 				importRaces(meet.getRaces(), histories);
 			}
@@ -47,9 +47,9 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		race.setRunners(runners);
 		if (runners != null) {
 			race.setHistories(histories || race.hasHistories());
-			boolean newRace = getSpringRacingDAO().fetchRace(race.getRaceCode()) == null;
+			boolean newRace = SpringRacingServices.getSpringRacingDAO().fetchRace(race.getRaceCode()) == null;
 
-			getSpringRacingDAO().storeRace(race);
+			SpringRacingServices.getSpringRacingDAO().storeRace(race);
 			importRunners(runners, histories, newRace);
 		}	
 	}
@@ -72,7 +72,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	 * @throws Exception when importing the runner fails
 	 */
 	public void importRunner(String horseCode, boolean histories, boolean newRace) throws Exception {
-		Horse horse = getSpringRacingDAO().fetchHorse(horseCode);
+		Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(horseCode);
 		if (horse == null) {
 			horse = fetchHorse(horseCode);
 		}
@@ -106,18 +106,18 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		//Import the horse History
 		if (histories) {
 			List<RunnerResult> results = importer.fetchPastResults(horse);
-			getSpringRacingDAO().storeResults(results);			
+			SpringRacingServices.getSpringRacingDAO().storeResults(results);			
 			//We've just successfully imported the history of this horse
 			horse.setHistories(true);
 		}
-		getSpringRacingDAO().storeHorse(horse);
+		SpringRacingServices.getSpringRacingDAO().storeHorse(horse);
 	}
 
 	public void importRaceResults() {
 		Importer importer = new Importer();
 		
 		try {
-			List<Race> races = getSpringRacingDAO().fetchRacesWithoutResults();
+			List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults();
 			for (Race race : races) {
 				getWriter().println();
 				getWriter().println(race.getVenue() + " "  + race.getRaceNumber() + " " + race.getDate());
@@ -126,7 +126,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 				int[] result = importer.importRaceResults(race);
 				race.setResult(result);
 				
-				getSpringRacingDAO().storeRace(race);
+				SpringRacingServices.getSpringRacingDAO().storeRace(race);
 			}
 
 		} catch (Exception e) {
@@ -141,14 +141,14 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		Importer importer = new Importer();
 
 		try {
-			List<Meeting> meets = getSpringRacingDAO().fetchExistingMeets();
+			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
 			
 			for (Meeting meeting : meets) {
 				getWriter().println();
 				getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 				
 				importer.importExistingMeet(meeting);
-				getSpringRacingDAO().storeMeet(meeting);
+				SpringRacingServices.getSpringRacingDAO().storeMeet(meeting);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -157,12 +157,12 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	}
 
 	public List<Race> fetchRacesWithoutHistories() {
-		return getSpringRacingDAO().fetchRacesWithoutHistories();
+		return SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutHistories();
 	}
 
 	public List<Runner> fetchRunnerWithoutHistories() {
 		try {
-			return getSpringRacingDAO().fetchRunnersWithoutHistories();
+			return SpringRacingServices.getSpringRacingDAO().fetchRunnersWithoutHistories();
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to fetch runner histories", e);
 		}

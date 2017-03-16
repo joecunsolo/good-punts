@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.PuntingBusiness;
-import com.joe.springracing.business.model.Model;
-import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
@@ -22,7 +20,6 @@ public class GeneratePunts {
 		try {
 			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
 		
-			Model m = new Model(new ModelAttributes());
 			for (Meeting meeting : meets) {
 				if (meeting.getDate().getTime() > System.currentTimeMillis() - 24 * 60 * 60 * 1000) {
 					System.out.println();
@@ -30,14 +27,8 @@ public class GeneratePunts {
 					
 					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 					meeting.setRaces(races);
-					new ProbabilityBusiness(SpringRacingServices.getSpringRacingDAO(),
-							SpringRacingServices.getPuntingDao(), 
-							SpringRacingServices.getStatistics(),
-							SpringRacingServices.getSimulator(),
-							m).generateProbabilitiesForRaces(races);
-					List<Punt> goodPunts = new PuntingBusiness(
-							SpringRacingServices.getPuntingDao(),
-							m).generateGoodPuntsForMeet(meeting);
+					new ProbabilityBusiness().generateProbabilitiesForRaces(races);
+					List<Punt> goodPunts = new PuntingBusiness().generateGoodPuntsForMeet(meeting);
 					printGoodPunts(goodPunts);
 					
 					if (PRINT_STATISTICS) {

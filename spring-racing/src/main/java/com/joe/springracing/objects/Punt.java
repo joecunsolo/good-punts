@@ -10,7 +10,7 @@ public class Punt {
 	private double joesOdds;
 	private double bookieOdds;
 	private List<Runner> runners;
-	private double puntReturn;
+	private List<Stake> stakes;
 	
 	public enum Type {
 		WIN,
@@ -18,13 +18,17 @@ public class Punt {
 		TRIFECTA
 	}
 	
+	public Punt() {
+		this.runners = new ArrayList<Runner>();
+	}
+	
 	public Punt(Race r, Type t, double odds, double bookieOdds) {
+		this();
 		this.setRace(r);
 		this.setType(t);
 		this.setJoesOdds(odds);
 		this.setBookieOdds(bookieOdds);
-		this.runners = new ArrayList<Runner>();
-	}
+	}	
 
 	public Race getRace() {
 		return race;
@@ -70,12 +74,11 @@ public class Punt {
 		return bookieOdds / joesOdds;
 	}
 
-	public double getPuntReturn() {
-		return puntReturn;
+	public List<Stake> getStakes() {
+		return stakes;
 	}
 
-	public void setPuntReturn(double puntReturn) {
-		this.puntReturn = puntReturn;
+	public void setStakes(List<Stake> stakes) {
+		this.stakes = stakes;
 	}
-
 }

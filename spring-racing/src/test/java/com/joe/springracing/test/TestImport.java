@@ -20,7 +20,9 @@ public class TestImport extends TestCase {
 	public static void testImportNullHorse() throws Exception {
 		String horseCode = "not-in-db";
 		SpringRacingServices.setSpringRacingDataSource(new MockSpringDataSource());
-		ImportBusiness importer = new ImportBusiness(new MockRacingDao());
+		SpringRacingServices.setSpringRacingDAO(new MockRacingDao());
+
+		ImportBusiness importer = new ImportBusiness();
 		importer.importRunner(horseCode, true, true);	
 	}
 	
@@ -52,9 +54,10 @@ public class TestImport extends TestCase {
 		race.setHistories(false);
 		MockRacingDao dao = new MockRacingDao();
 		dao.setRacesWithoutHistories(race);
+		SpringRacingServices.setSpringRacingDAO(dao);
 		//And a horses histories were imported
 		
-		ImportBusiness importer = new ImportBusiness(dao);
+		ImportBusiness importer = new ImportBusiness();
 		importer.importRace(race, true);
 	}
 	

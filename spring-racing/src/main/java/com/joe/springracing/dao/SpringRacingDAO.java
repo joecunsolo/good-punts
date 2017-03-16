@@ -28,6 +28,9 @@ public interface SpringRacingDAO {
 	 * @return true if the meet didn't already exist
 	 */
 	public boolean storeMeet(Meeting meet) throws Exception;
+	
+	/** Meets that start after now less 24 hrs */
+	public List<Meeting> fetchUpcomingMeets() throws Exception;
 
 	public List<Race> fetchRacesWithoutResults() throws Exception;
 

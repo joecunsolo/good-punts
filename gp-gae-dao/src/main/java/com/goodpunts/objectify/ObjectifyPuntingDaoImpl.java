@@ -294,4 +294,14 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		return null;
 	}
 
+	public List<Punt> fetchSettledPunts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Punt> fetchOpenPunts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

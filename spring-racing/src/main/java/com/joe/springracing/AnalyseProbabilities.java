@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
-import com.joe.springracing.business.model.Model;
-import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
@@ -20,18 +18,14 @@ public class AnalyseProbabilities {
 		try {
 			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
 		
-			Model m = new Model(new ModelAttributes());
+//			Model m = new Model(new ModelAttributes());
 			for (Meeting meeting : meets) {
 				if (meeting.getDate().getTime() > System.currentTimeMillis() - 96 * 60 * 60 * 1000) {
 					System.out.println();
 					System.out.println(meeting.getDate() + " "  + meeting.getVenue());
 					
 					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
-					new ProbabilityBusiness(SpringRacingServices.getSpringRacingDAO(),
-							SpringRacingServices.getPuntingDao(), 
-							SpringRacingServices.getStatistics(),
-							SpringRacingServices.getSimulator(),
-							m).generateProbabilitiesForRaces(races);
+					new ProbabilityBusiness().generateProbabilitiesForRaces(races);
 					
 					printAndSortMeet(meeting);
 				}

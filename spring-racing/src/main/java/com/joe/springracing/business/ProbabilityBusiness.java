@@ -1,51 +1,39 @@
 package com.joe.springracing.business;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.model.Model;
+import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.business.probability.distributions.GatheredDistribution;
-import com.joe.springracing.dao.PuntingDAO;
-import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 
 public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
-		
-	private Model model;
-	private PuntingDAO puntingDAO;
-	private Statistics statistics;
-	private Simulator simulator;
 	
-	public ProbabilityBusiness(SpringRacingDAO dao, PuntingDAO puntingDAO, Statistics stats, Simulator sim, Model model) {
-		super(dao, new PrintWriter(System.out, true));
-		this.setPuntingDAO(puntingDAO);
-		this.setModel(model);
-		this.setStatistics(stats);
-		this.setSimulator(sim);
+	private Model model;
+	
+	public ProbabilityBusiness() {
+		this(new Model(new ModelAttributes()));
 	}
 	
+	public ProbabilityBusiness(Model model) {
+		this(model, new PrintWriter(System.out));
+	}
+
+	public ProbabilityBusiness(Model model, PrintWriter pw) {
+		super(pw);
+		this.setModel(model);
+	}
+
 	public List<Meeting> fetchUpcomingMeets() {
-		SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
 		try {
-			List<Meeting> meets = springRacingDao.fetchExistingMeets();
-			List<Meeting> upcoming = new ArrayList<Meeting>();
-			
-			for (Meeting meeting : meets) {
-				try {
-					if (meeting.getDate().getTime() > System.currentTimeMillis() - 24 * 60 * 60 * 1000) {
-						upcoming.add(meeting);
-					}
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-			return upcoming;
+			return SpringRacingServices.getSpringRacingDAO().fetchUpcomingMeets();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,12 +41,11 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 	}
 	
 	public List<Race> fetchRacesForMeet(Meeting meeting) {
-		SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
 		getWriter().println();
 		getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 		
 		try {
-			return springRacingDao.fetchRacesForMeet(meeting);
+			return SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to fetch races for meet " + meeting.getMeetCode(), e);
 		}		
@@ -66,11 +53,10 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 	
 	public void generateProbabilitiesForMeet(Meeting meeting) {
 		try {
-			SpringRacingDAO springRacingDao = super.getSpringRacingDAO();
 			getWriter().println();
 			getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
 			
-			List<Race> races = springRacingDao.fetchRacesForMeet(meeting);
+			List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 			generateProbabilitiesForRaces(races);			
 		} catch (Exception ex) {
 			throw new RuntimeException("Unable to generate probabilities for: " + meeting.getMeetCode(), ex);
@@ -85,54 +71,33 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 
 	public void generateProbabilitiesForRace(Race race) throws Exception {
 		//load the runners
-		List<Runner> runners = this.getSpringRacingDAO().fetchRunnersForRace(race);
+		List<Runner> runners = SpringRacingServices.getSpringRacingDAO().fetchRunnersForRace(race);
 		race.setRunners(runners);
 		
-		this.getModel().setRace(race);
-		Statistics statistics = getStatistics();
+		//Generate the probabilities
+		model.setRace(race);
+		Statistics statistics = SpringRacingServices.getStatistics();
 		for (Runner runner : race.getRunners()) {
 			if (!(runner.isScratched() || runner.isEmergency())) {
-				Horse o = getSpringRacingDAO().fetchHorse(runner.getHorse());
-				List<AnalysableObjectStatistic> stats = statistics.evaluate(runner, o, this.getModel());
+				Horse o = SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse());
+				List<AnalysableObjectStatistic> stats = statistics.evaluate(runner, o, model);
 				runner.setStatistics(stats);
 			}
 		}
 		GatheredDistribution gd = new GatheredDistribution(model);
-		getSimulator().simulate(race, model.getAttributes().getSimulations(), gd, statistics.isDescending());
+		SpringRacingServices.getSimulator().simulate(race, model.getAttributes().getSimulations(), gd, statistics.isDescending());
 		
-		getPuntingDAO().storeProbabilities(race);
-	}
-
-	public Model getModel() {
-		return model;
+		//Store the results
+		SpringRacingServices.getPuntingDAO().storeProbabilities(race);
 	}
 
 	public void setModel(Model model) {
 		this.model = model;
 	}
-
-	public Simulator getSimulator() {
-		return simulator;
+	
+	public Model getModel() {
+		return model;
 	}
 
-	public void setSimulator(Simulator simulator) {
-		this.simulator = simulator;
-	}
-
-	public Statistics getStatistics() {
-		return statistics;
-	}
-
-	public void setStatistics(Statistics statistics) {
-		this.statistics = statistics;
-	}
-
-	public PuntingDAO getPuntingDAO() {
-		return puntingDAO;
-	}
-
-	public void setPuntingDAO(PuntingDAO puntingDAO) {
-		this.puntingDAO = puntingDAO;
-	}
 
 }

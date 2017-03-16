@@ -13,6 +13,12 @@ public interface PuntingDAO {
 	/** Runners with probabilities populated */
 	List<Runner> fetchProbabilitiesForRace(Race race) throws Exception;
 	
+	/**
+	 * 
+	 * @param meet a competition with Punts
+	 * @return the Open, Settled and Live Punts for the meet
+	 * @throws Exception
+	 */
 	List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception;
 
 	void storePunts(Race race, List<Punt> punts);
@@ -25,4 +31,8 @@ public interface PuntingDAO {
 	
 	List<Punt> fetchPuntResults() throws Exception;
 
+	List<Punt> fetchSettledPunts();
+	
+	List<Punt> fetchOpenPunts();
+	
 }

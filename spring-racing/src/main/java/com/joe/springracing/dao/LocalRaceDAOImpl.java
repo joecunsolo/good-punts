@@ -542,4 +542,9 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		return null;
 	}
 
+	public List<Meeting> fetchUpcomingMeets() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

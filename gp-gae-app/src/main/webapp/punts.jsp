@@ -51,12 +51,7 @@
 <% 			MeetBusiness mb = new MeetBusiness();
 			Model m = new Model(new ModelAttributes());
 
-			ProbabilityBusiness business = new ProbabilityBusiness(
-				GoodPuntsServices.getSpringRacingDAO(),
-				GoodPuntsServices.getPuntingDAO(),
-				SpringRacingServices.getStatistics(), 
-				SpringRacingServices.getSimulator(), 
-				m);
+			ProbabilityBusiness business = new ProbabilityBusiness();
 			List<Meeting> upcoming = business.fetchUpcomingMeets();
 			mb.sortMeetingsByDate(upcoming);
 			DecimalFormat df = new DecimalFormat("0.0");

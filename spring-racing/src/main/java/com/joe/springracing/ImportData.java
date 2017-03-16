@@ -12,7 +12,7 @@ public class ImportData {
 	public static final int IMPORT_FLAG = IMPORT_FUTURE_MEETS;
 	
 	public static void main(String[] args) {	
-		ImportBusiness importer = new ImportBusiness(SpringRacingServices.getSpringRacingDAO());
+		ImportBusiness importer = new ImportBusiness();
 		if (IMPORT_FLAG == IMPORT_FUTURE_MEETS) {
 			importer.importUpcomingRaces(true);
 		} else

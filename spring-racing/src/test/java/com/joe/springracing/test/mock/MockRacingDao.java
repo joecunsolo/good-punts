@@ -105,4 +105,9 @@ public class MockRacingDao implements SpringRacingDAO {
 		races.addAll(racesWithoutHistories);
 	}
 
+	public List<Meeting> fetchUpcomingMeets() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -3,11 +3,11 @@ package com.joe.springracing.business;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.model.Model;
-import com.joe.springracing.dao.PuntingDAO;
+import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.Type;
@@ -17,20 +17,26 @@ import com.joe.springracing.objects.Runner;
 public class PuntingBusiness {
 
 	private Model model;
-	private PuntingDAO dao;
+//	private PuntingDAO dao;
 	
 	private boolean puntOnWin;
 	private boolean puntOnPlace;
 	private boolean puntOnTrifecta;
 	private boolean puntOnFlexi;
 	
-	public PuntingBusiness(PuntingDAO puntingDAO, Model model) {
+	public PuntingBusiness(Model model) {
 		this.setModel(model);
-		this.setDao(puntingDAO);
+//		this.setDao(puntingDAO);
 		updatePuntTypes(model.getAttributes().getGoodPuntTypes());
 	}
 	
-	public void updatePuntTypes(Type[] goodPuntTypes) {
+	public PuntingBusiness() {
+		this(new Model(new ModelAttributes()));
+//		this.setDao(SpringRacingServices.getPuntingDao());
+//		updatePuntTypes(model.getAttributes().getGoodPuntTypes());
+	}
+
+	private void updatePuntTypes(Type[] goodPuntTypes) {
 		for (Type t : goodPuntTypes) {
 			if (Type.WIN.equals(t)) {
 				this.setPuntOnWin(true);
@@ -57,19 +63,23 @@ public class PuntingBusiness {
 //		}
 //	}
 	
-	public void generateAndStoreGoodPuntsForRaces(List<Race> races) throws Exception {
-		for (Race race : races) {
-			generateAndStoreGoodPuntsForRace(race);
-		}
-	}
+//	public void generateAndStoreGoodPuntsForRaces(List<Race> races) throws Exception {
+//		for (Race race : races) {
+//			generateAndStoreGoodPuntsForRace(race);
+//		}
+//	}
 
-	public void generateAndStoreGoodPuntsForRace(Race race) throws Exception {
-		List<Punt> punts = generateGoodPuntsForRace(race);
-		this.getDao().storePunts(race, punts);
-	}
+//	public void generateAndStoreGoodPuntsForRace(Race race) throws Exception {
+//		List<Punt> punts = generateGoodPuntsForRace(race);
+//		this.getDao().storePunts(race, punts);
+//	}
 
-	public Date fetchLastPuntEvent(Race r) {
-		return this.getDao().fetchLastPuntEvent(r);
+//	public Date fetchLastPuntEvent(Race r) {
+//		return this.getDao().fetchLastPuntEvent(r);
+//	}
+	
+	public List<Punt> fetchSettledPunts() {
+		return SpringRacingServices.getPuntingDAO().fetchSettledPunts();
 	}
 
 	public List<Punt> generateGoodPuntsForMeet(Meeting meet) throws Exception {
@@ -82,7 +92,7 @@ public class PuntingBusiness {
 
 	
 	public List<Punt> generateGoodPuntsForRace(Race race) throws Exception {
-		race.setRunners(this.getDao().fetchProbabilitiesForRace(race));
+		race.setRunners(SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race));
 		List<Punt> puntsForRace = getAllGoodPuntsForRace(race);
 		
 		List<Punt> flexiBets = filterFlexiBets(puntsForRace);
@@ -99,6 +109,31 @@ public class PuntingBusiness {
 		
 		return puntsForRace;
 	}
+	
+	public void generate(Race race) throws Exception {
+		List<Punt> punts = generateGoodPuntsForRace(race);
+		BettingBusiness bet = new BettingBusiness();
+		punts = bet.placeBets(punts);
+		SpringRacingServices.getPuntingDAO().storePunts(race, punts);
+	}
+	
+	public void generate() {	
+		try {
+			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchUpcomingMeets();
+			for (Meeting meeting : meets) {
+				try {
+					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
+					for (Race r : races) {
+						generate(r);
+					}
+				} catch (Exception e) {
+					throw new RuntimeException("Unable to generate punts for " + meeting.getMeetCode(), e);
+				}
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException("Unable to generate any punts", ex);
+		}
+	}
 
 	private List<Punt> filterFlexiBets(List<Punt> puntsForMeet) {
 		List<Punt> flexiBets = new ArrayList<Punt>();
@@ -109,22 +144,22 @@ public class PuntingBusiness {
 		}
 		return flexiBets;
 	}
-
-	public List<Punt> addWinAndPlacePunts(List<Punt> wins) {
-		List<Punt> result = new ArrayList<Punt>();
-		for (Punt punt : wins) {
-			result.add(punt);
-			if (Punt.Type.WIN.equals(punt.getType()) &&
-					!containsPlacePunt(punt.getRunners().get(0), wins)) {
-				Punt placePunt = getPlacePunt(punt);
-				if (placePunt != null) {
-					result.add(placePunt);
-				}
-			}
-		} 
-		return result;
-	}
-	
+//
+//	private List<Punt> addWinAndPlacePunts(List<Punt> wins) {
+//		List<Punt> result = new ArrayList<Punt>();
+//		for (Punt punt : wins) {
+//			result.add(punt);
+//			if (Punt.Type.WIN.equals(punt.getType()) &&
+//					!containsPlacePunt(punt.getRunners().get(0), wins)) {
+//				Punt placePunt = getPlacePunt(punt);
+//				if (placePunt != null) {
+//					result.add(placePunt);
+//				}
+//			}
+//		} 
+//		return result;
+//	}
+//	
 	public List<Punt> getPlacePunts(List<Punt> wins) {
 		List<Punt> result = new ArrayList<Punt>();
 		for (Punt punt : wins) {
@@ -139,7 +174,7 @@ public class PuntingBusiness {
 		return result;
 	}
 	
-	public Punt getPlacePunt(Punt punt) {
+	private Punt getPlacePunt(Punt punt) {
 		Race race = punt.getRace();
 		for (Runner runner : race.getRunners()) {
 			if (runner.getNumber() == punt.getRunners().get(0).getNumber()) {
@@ -155,7 +190,7 @@ public class PuntingBusiness {
 		return null;
 	}
 
-	public boolean containsPlacePunt(Runner runner, List<Punt> wins) {
+	private boolean containsPlacePunt(Runner runner, List<Punt> wins) {
 		for (Punt punt : wins) {
 			if (Punt.Type.PLACE.equals(punt.getType()) &&
 					punt.getRunners().get(0).getNumber() == runner.getNumber()) {
@@ -165,7 +200,7 @@ public class PuntingBusiness {
 		return false;
 	}
 	
-	public List<Punt> getAllGoodPuntsForRace(Race r) {
+	private List<Punt> getAllGoodPuntsForRace(Race r) {
 		List<Punt> punts = new ArrayList<Punt>();
 		double bookieHigh =  model.getAttributes().getBookieHigh();
 		
@@ -227,7 +262,7 @@ public class PuntingBusiness {
 		return bestPunt;
 	}
 	
-	public Punt getTrifecta(Race r, int number) {
+	private Punt getTrifecta(Race r, int number) {
 		List<Runner> runners = r.getRunners();
 		Collections.sort(runners, new ProbailityComparator());
 
@@ -266,7 +301,7 @@ public class PuntingBusiness {
 		return p;
 	}
 
-	public double probabilityToOdds(double probability) {
+	private double probabilityToOdds(double probability) {
 		double joesWinOdds = probability / (1 - probability);
 		joesWinOdds = 1 /probability;
 
@@ -315,14 +350,6 @@ public class PuntingBusiness {
 
 	public void setPuntOnFlexi(boolean puntOnFlexi) {
 		this.puntOnFlexi = puntOnFlexi;
-	}
-
-	public PuntingDAO getDao() {
-		return dao;
-	}
-
-	public void setDao(PuntingDAO dao) {
-		this.dao = dao;
 	}
 
 	public class ProbailityComparator implements Comparator<Runner> {

@@ -1,14 +1,11 @@
 package com.joe.springracing;
 
 import java.net.Authenticator;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
 import java.net.Proxy;
 
 import com.joe.springracing.business.Simulator;
 import com.joe.springracing.business.Statistics;
 import com.joe.springracing.business.probability.MonteCarloSimulation;
-import com.joe.springracing.business.probability.PrizeMoneyStatistics;
 import com.joe.springracing.business.probability.WeightedPrizeMoneyStatistics;
 import com.joe.springracing.dao.LocalRaceDAOImpl;
 import com.joe.springracing.dao.PuntingDAO;
@@ -21,14 +18,6 @@ public class SpringRacingServices {
 	public static final String OFFLINE_DIRECTORY = "C:\\racing2\\";
 	public static final boolean USE_PROXY = false;
 	
-//	public static final HorseDAO getHorseDAO() {
-//		return new RacingDotComHorseDAOImpl();
-//	}
-//	
-//	public static final RaceDAO getRaceDAO() {
-//		return new RacingDotComRaceDAOImpl();
-//	}
-
 	public static Simulator getSimulator() {
 		return new MonteCarloSimulation();
 	}
@@ -64,11 +53,15 @@ public class SpringRacingServices {
 		return null;
 	}
 
-	public static PuntingDAO getPuntingDao() {
-		// TODO Auto-generated method stub
-		return null;
+	private static PuntingDAO puntingDao = null;
+	public static PuntingDAO getPuntingDAO() {
+		return puntingDao;
 	}
 
+	public static void setPuntingDAO(PuntingDAO dao) {
+		puntingDao = dao;
+	}
+	
 	private static SpringRacingDataSource datasource = new RacingDotComDataSource();
 	public static SpringRacingDataSource getSpringRacingDataSource() {
 		return datasource;

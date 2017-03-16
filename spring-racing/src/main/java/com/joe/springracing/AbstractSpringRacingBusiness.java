@@ -2,24 +2,12 @@ package com.joe.springracing;
 
 import java.io.PrintWriter;
 
-import com.joe.springracing.dao.SpringRacingDAO;
-
 public class AbstractSpringRacingBusiness {
 
-	private SpringRacingDAO springRacingDAO;
 	private PrintWriter writer;
 
-	public AbstractSpringRacingBusiness(SpringRacingDAO dao, PrintWriter pw) {
-		setSpringRacingDAO(dao);
+	public AbstractSpringRacingBusiness(PrintWriter pw) {
 		setWriter(pw);
-	}
-	
-	public SpringRacingDAO getSpringRacingDAO() {
-		return springRacingDAO;
-	}
-
-	public void setSpringRacingDAO(SpringRacingDAO springRacingDAO) {
-		this.springRacingDAO = springRacingDAO;
 	}
 
 	public PrintWriter getWriter() {
