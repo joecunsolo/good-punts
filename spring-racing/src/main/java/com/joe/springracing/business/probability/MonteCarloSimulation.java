@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.joe.springracing.business.Simulatable;
 import com.joe.springracing.business.Simulator;
 import com.joe.springracing.business.probability.distributions.GatheredDistribution;
-import com.joe.springracing.objects.Race;
-import com.joe.springracing.objects.Runner;
 
 public class MonteCarloSimulation implements Simulator {
 	public int[] wins;
@@ -17,8 +16,8 @@ public class MonteCarloSimulation implements Simulator {
 	
 	private GatheredDistribution distribution;
 	
-	public void simulate(Race race, int simulations, GatheredDistribution distribution, boolean desc) {
-		int horsesInRace = race.getMaxRunnerNumber();
+	public void simulate(List<? extends Simulatable> race, int simulations, GatheredDistribution distribution, boolean desc) {
+		int horsesInRace = getMaxRunnerNumber(race);
 		this.wins = new int[horsesInRace + 1];
 		this.places = new int[horsesInRace + 1];
 		this.simulations = simulations;
@@ -26,37 +25,51 @@ public class MonteCarloSimulation implements Simulator {
 		
 		int[][] results = new int[simulations][horsesInRace + 1];
 		for (int i = 0; i < simulations; i++) {
-			results[i] = simulate(race, desc);
+			results[i] = simulate(race, horsesInRace, desc);
 		}
 		
 		setOdds(race);
 	}
 
-	private void setOdds(Race race) {
+	private int getMaxRunnerNumber(List<? extends Simulatable> race) {
+		int max = Integer.MIN_VALUE;
+		for (Simulatable s : race) {
+			if (s.getNumber() > max) {
+				max = s.getNumber();
+			}
+		}
+		return max;
+	}
+
+	/** Determines the Odds based on the simulation results */
+	private void setOdds(List<? extends Simulatable> race) {
 		double checkSum = 0;
-		for (int i = 0; i < race.getRunners().size(); i++) {
-			Runner runner = race.getRunners().get(i);
+		for (Simulatable runner : race) {
+			//Calculate the probabilities
+			Probability probability = new Probability();
 			checkSum += wins[runner.getNumber()];
-			runner.getProbability().setNumberWins(wins[runner.getNumber()]);
-			double win = runner.getProbability().getNumberWins() / (double)this.simulations;
-			runner.getProbability().setWin(win);
-			runner.getProbability().setNumberPlaces(places[runner.getNumber()]);
-			double place = runner.getProbability().getNumberPlaces() / (double)this.simulations;
-			runner.getProbability().setPlace(place);			
+			probability.setNumberWins(wins[runner.getNumber()]);
+			double win = probability.getNumberWins() / (double)this.simulations;
+			probability.setWin(win);
+			probability.setNumberPlaces(places[runner.getNumber()]);
+			double place = probability.getNumberPlaces() / (double)this.simulations;
+			probability.setPlace(place);
+			
+			runner.setProbability(probability);
 		}
 		if (checkSum > this.simulations) {
 			throw new RuntimeException("Sum does not sum to the number of simulations");
 		}
 	}
 
-	public int[] simulate(Race race, boolean desc) {
+	public int[] simulate(List<? extends Simulatable> race, int horsesInRace, boolean desc) {
 		List<Simulation> probabilities = new ArrayList<Simulation>();
 
 		//calc the probability of each horse
-		for (Runner runner : race.getRunners()) {
+		for (Simulatable runner : race) {
 			Simulation s = new Simulation();
 			s.number = runner.getNumber();
-			if (runner.isScratched() || runner.isEmergency()) {
+			if (!runner.isEligible()) {
 				s.probability = Double.MIN_VALUE;
 			}
 			else {
@@ -76,7 +89,7 @@ public class MonteCarloSimulation implements Simulator {
 		
 		//order the horses
 		Collections.sort(probabilities, new SimulationComparator(desc));
-		int[] result = new int[race.getMaxRunnerNumber() + 1];
+		int[] result = new int[horsesInRace + 1];
 		for (int p = 0; p < probabilities.size(); p++) {
 			result[probabilities.get(p).number] = p+1;
 			//add wins and places
@@ -118,5 +131,4 @@ public class MonteCarloSimulation implements Simulator {
 			} 
 		}
 	}
-
 }

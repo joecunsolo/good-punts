@@ -85,7 +85,7 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 			}
 		}
 		GatheredDistribution gd = new GatheredDistribution(model);
-		SpringRacingServices.getSimulator().simulate(race, model.getAttributes().getSimulations(), gd, statistics.isDescending());
+		SpringRacingServices.getSimulator().simulate(race.getRunners(), model.getAttributes().getSimulations(), gd, statistics.isDescending());
 		
 		//Store the results
 		SpringRacingServices.getPuntingDAO().storeProbabilities(race);

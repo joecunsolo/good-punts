@@ -58,6 +58,7 @@
 						<td>Weight</td>
 						<td>%</td>
 						<td>Odds</td>
+						<td></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -80,6 +81,10 @@
 						<td><%=df.format(runner.getWeight())%></td>
 						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
 						<td><%=runner.getOdds().getWin()%></td>
+						<td>
+							<%=runner.isScratched() ? "SCR" : ""%>
+							<%=runner.isEmergency() ? "EMG" : ""%>
+						</td>
 					</tr>
 <%				}
 			}%>

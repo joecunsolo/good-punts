@@ -1,7 +1,8 @@
 package com.joe.springracing.business;
 
+import java.util.List;
+
 import com.joe.springracing.business.probability.distributions.GatheredDistribution;
-import com.joe.springracing.objects.Race;
 
 /**
  * Simulates a race
@@ -17,6 +18,6 @@ public interface Simulator {
 	 * @param distribution A distribution to compare against
 	 * @param desc True - low is a good result; False - high is a good result
 	 */
-	public void simulate(Race race, int i, GatheredDistribution distribution, boolean desc);
+	public void simulate(List<? extends Simulatable> race, int i, GatheredDistribution distribution, boolean desc);
 
 }

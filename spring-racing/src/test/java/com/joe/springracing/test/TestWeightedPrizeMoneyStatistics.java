@@ -27,4 +27,5 @@ public class TestWeightedPrizeMoneyStatistics extends TestCase {
 		double influence = stat.getInfluence();
 		Assert.assertEquals(1, influence, 0.1);
 	}
+	
 }

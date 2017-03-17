@@ -2,10 +2,11 @@ package com.joe.springracing.objects;
 
 import java.util.List;
 
+import com.joe.springracing.business.Simulatable;
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.probability.Probability;
 
-public class Runner {
+public class Runner implements Simulatable {
 	
 	private String horse;
 	private String jockey;
@@ -126,6 +127,10 @@ public class Runner {
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public boolean isEligible() {
+		return !isScratched() && !isEmergency();
 	}
 
 }
