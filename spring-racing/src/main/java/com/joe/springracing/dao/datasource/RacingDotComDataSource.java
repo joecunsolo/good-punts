@@ -231,7 +231,7 @@ public class RacingDotComDataSource extends JsonReaderIO implements SpringRacing
 		} catch (Exception ex) {
 			object = (JsonObject)struct;
 		}
-		for (int i = 0; i < array.size(); i++) {
+		for (int i = 0; i < array.size() && i < 15; i++) {
 			RunnerResult result = new RunnerResult();
 			JsonObject jObject = array.getJsonObject(i);
 			
