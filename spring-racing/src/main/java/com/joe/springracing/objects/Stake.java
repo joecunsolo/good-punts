@@ -1,6 +1,9 @@
 package com.joe.springracing.objects;
 
-/** An amount wagered on a #Punt */
+/** 
+ * An amount wagered on a #Punt 
+ * This is the bookies
+ */
 public class Stake {
 	/** The amount staked */
 	private double amount;
@@ -8,14 +11,6 @@ public class Stake {
 	private double retrn;
 	/** The odds taken on the punt */
 	private double odds;
-	/** The state of the punt */
-	private State state = State.LIVE;
-	
-	public enum State {
-		LIVE,
-		OPEN,
-		SETTLED
-	}
 
 	public double getAmount() {
 		return amount;
@@ -40,13 +35,4 @@ public class Stake {
 	public void setOdds(double odds) {
 		this.odds = odds;
 	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
 }

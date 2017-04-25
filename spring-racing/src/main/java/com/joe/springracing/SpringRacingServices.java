@@ -3,6 +3,7 @@ package com.joe.springracing;
 import java.net.Authenticator;
 import java.net.Proxy;
 
+import com.joe.springracing.account.BookieAccount;
 import com.joe.springracing.business.Simulator;
 import com.joe.springracing.business.Statistics;
 import com.joe.springracing.business.probability.MonteCarloSimulation;
@@ -69,5 +70,14 @@ public class SpringRacingServices {
 	
 	public static void setSpringRacingDataSource(SpringRacingDataSource srdsource) {
 		datasource = srdsource;
+	}
+	
+	public static BookieAccount account = null;
+	public static BookieAccount getBookieAccount() {
+		return account;
+	}
+	
+	public static void setBookieAccount(BookieAccount srAccount) {
+		account = srAccount;
 	}
 }

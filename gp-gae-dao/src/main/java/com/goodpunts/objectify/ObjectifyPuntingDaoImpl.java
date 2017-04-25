@@ -304,4 +304,9 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		return null;
 	}
 
+	public void updateStakes(Punt punt) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

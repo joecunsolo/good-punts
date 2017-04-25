@@ -1,16 +1,10 @@
 package com.example.guestbook;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +21,9 @@ import com.googlecode.objectify.ObjectifyService;
  */
 public class SignGuestbookServlet extends HttpServlet {
 
-  // Process the http POST of the form
+  private static final long serialVersionUID = 6072762665443089294L;
+
+// Process the http POST of the form
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     Greeting greeting;

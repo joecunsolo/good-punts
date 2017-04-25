@@ -34,5 +34,7 @@ public interface PuntingDAO {
 	List<Punt> fetchSettledPunts();
 	
 	List<Punt> fetchOpenPunts();
+
+	void updateStakes(Punt punt);
 	
 }

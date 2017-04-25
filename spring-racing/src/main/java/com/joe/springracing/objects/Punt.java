@@ -11,6 +11,20 @@ public class Punt {
 	private double bookieOdds;
 	private List<Runner> runners;
 	private List<Stake> stakes;
+	private Confidence confidence;
+	/** The state of the punt */
+	private State state;
+	
+	public enum State {
+		LIVE,
+		OPEN,
+		SETTLED
+	}
+
+	public enum Confidence {
+		HIGH,
+		LOW
+	}
 	
 	public enum Type {
 		WIN,
@@ -20,6 +34,7 @@ public class Punt {
 	
 	public Punt() {
 		this.runners = new ArrayList<Runner>();
+		this.stakes = new ArrayList<Stake>();
 	}
 	
 	public Punt(Race r, Type t, double odds, double bookieOdds) {
@@ -80,5 +95,25 @@ public class Punt {
 
 	public void setStakes(List<Stake> stakes) {
 		this.stakes = stakes;
+	}
+
+	public Confidence getConfidence() {
+		return confidence;
+	}
+
+	public void setConfidence(Confidence confidence) {
+		this.confidence = confidence;
+	}
+
+	public void addStake(Stake stake) {
+		stakes.add(stake);
+	}
+	
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 }
