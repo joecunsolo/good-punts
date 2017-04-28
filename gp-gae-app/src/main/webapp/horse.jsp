@@ -3,7 +3,7 @@
 
 <%-- //[START imports]--%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.goodpunts.GoodPuntsServices" %>
+<%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="com.joe.springracing.objects.RunnerResult" %>
 <%@ page import="com.joe.springracing.objects.Horse" %>
 <%@ page import="java.text.DecimalFormat" %>
@@ -22,7 +22,7 @@
 	<jsp:include page="menu.jsp" />
 
 <% 			String horseCode = request.getParameter("horse_code");
-			Horse horse = GoodPuntsServices.getSpringRacingDAO().fetchHorse(horseCode); %>
+			Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(horseCode); %>
 						
 			<p><%=horse.getName() %></p>					
 <%			List<RunnerResult> results =  horse.getPastResults();%>

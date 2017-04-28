@@ -10,6 +10,7 @@ import com.goodpunts.objectify.ObjRace;
 import com.goodpunts.objectify.ObjRunner;
 import com.goodpunts.objectify.ObjRunnerResult;
 import com.goodpunts.objectify.ObjStatistic;
+import com.goodpunts.objectify.ObjectifyGoodPuntsBookieImpl;
 import com.goodpunts.objectify.ObjectifyPuntingDaoImpl;
 import com.goodpunts.objectify.ObjectifySpringRacingDaoImpl;
 import com.googlecode.objectify.ObjectifyService;
@@ -24,7 +25,7 @@ import javax.servlet.ServletContextEvent;
  **/
 public class OfyHelper implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
-    // This will be invoked as part of a warmup request, or the first user request if no warmup
+    // This will be invoked as part of a warm-up request, or the first user request if no warm-up
     // request.
     ObjectifyService.register(Guestbook.class);
     ObjectifyService.register(Greeting.class);
@@ -41,6 +42,7 @@ public class OfyHelper implements ServletContextListener {
     
     SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
     SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
+    SpringRacingServices.setBookieAccount(new ObjectifyGoodPuntsBookieImpl());
   }
 
   public void contextDestroyed(ServletContextEvent event) {

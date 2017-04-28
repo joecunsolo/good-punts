@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.goodpunts.GoodPuntsServices;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.PuntingBusiness;
 import com.joe.springracing.objects.Race;
@@ -26,7 +26,7 @@ public class GenerateProbabilitiesServlet extends GenericServlet {
 		
 		ProbabilityBusiness probabilities = new ProbabilityBusiness();
 		try {
-			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
+			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 			System.out.println(race.getVenue() + " " + race.getRaceNumber() + " " + race.getName());
 			probabilities.generateProbabilitiesForRace(race);
 			

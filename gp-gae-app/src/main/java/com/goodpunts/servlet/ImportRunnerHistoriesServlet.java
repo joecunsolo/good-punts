@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.goodpunts.GoodPuntsServices;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.objects.Race;
 
@@ -33,7 +33,7 @@ public class ImportRunnerHistoriesServlet extends GenericServlet {
 		String raceCode = req.getParameter(KEY_RACECODE);
 		try {
 			ImportBusiness importer = new ImportBusiness();
-			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
+			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 			importer.importRace(race, true);
 		} catch (Exception e) {
 			e.printStackTrace();

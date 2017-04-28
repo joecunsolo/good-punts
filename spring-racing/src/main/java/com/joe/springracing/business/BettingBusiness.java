@@ -1,6 +1,7 @@
 package com.joe.springracing.business;
 
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
@@ -31,11 +32,16 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	/** 
 	 * Calculates to the stake and places the bet 
 	 * @return the punts with stakes updated
+	 * @throws Exception 
 	 */
 	public List<Punt> placeBets(List<Punt> punts) {
 		for (Punt punt : punts) {
 			double stake = calculateStake(punt);
-			placeBet(punt, stake);
+			try {
+				placeBet(punt, stake);
+			} catch (Exception ex) {
+				throw new RuntimeException("Unable to place bet of " + stake + " for " + punt.getRace().getRaceCode());
+			}
 		}
 		return punts;
 	}
@@ -43,8 +49,9 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	/** 
 	 * Places the bet for the specified amount 
 	 * @return the punts with stakes updated
+	 * @throws Exception 
 	 */
-	public List<Punt> placeBets(List<Punt> punts, double amount) {
+	public List<Punt> placeBets(List<Punt> punts, double amount) throws Exception {
 		for (Punt punt : punts) {
 			placeBet(punt, amount);
 		}
@@ -55,8 +62,9 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	 * Places a bet with the bookie and updates the stakes
 	 * A bet is only paced if the amount > 0
 	 * @return the punts with stakes updated
+	 * @throws Exception 
 	 */
-	public Punt placeBet(Punt punt, double amount) {
+	public Punt placeBet(Punt punt, double amount) throws Exception {
 		if (amount > 0) {
 			Stake stake = SpringRacingServices.getBookieAccount().placeBet(punt, amount);
 			punt.addStake(stake);
@@ -169,5 +177,10 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	public boolean hasHighConfidence(Punt punt) {
 		return punt.getJoesOdds() < this.getModel().getAttributes().getHighJoeConfidence() &&
 				punt.getBookieOdds() < this.getModel().getAttributes().getHighBookieConfidence();
-	}	
+	}
+	
+	public void updateBets() throws Exception {
+		Date lastUpdatedTime = SpringRacingServices.getPuntingDAO().getLastBookieUpdateTimestamp();
+		List<Stake> settled = SpringRacingServices.getBookieAccount().getSettledBets(lastUpdatedTime);
+	}
 }

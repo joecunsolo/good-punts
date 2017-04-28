@@ -346,8 +346,9 @@ public class TestBettingBusiness extends TestCase {
 	 * |5|High|0|
 	 * |1|Low|0|
 	 * |0.5|Low|0|
+	 * @throws Exception 
 	 */
-	public static void testLowPuntIsUpdatedWhenHigh() {
+	public static void testLowPuntIsUpdatedWhenHigh() throws Exception {
 		BettingBusiness biz = new BettingBusiness();
 		BookieAccount account = new MockBookieAccount();
 		

@@ -36,5 +36,7 @@ public interface PuntingDAO {
 	List<Punt> fetchOpenPunts();
 
 	void updateStakes(Punt punt);
+
+	Date getLastBookieUpdateTimestamp();
 	
 }

@@ -9,7 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import com.goodpunts.GoodPuntsServices;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.exporter.CSVRunnerHistoriesExporter;
 
 public class ExportRunnerHistoriesServlet extends GenericServlet {
@@ -28,7 +28,7 @@ public class ExportRunnerHistoriesServlet extends GenericServlet {
 		
 		try {
 			CSVRunnerHistoriesExporter exporter = new CSVRunnerHistoriesExporter(writer);
-			GoodPuntsServices.getSpringRacingDAO().exportRunnerHistories(exporter);
+			SpringRacingServices.getSpringRacingDAO().exportRunnerHistories(exporter);
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to export histories", e);
 		} finally {

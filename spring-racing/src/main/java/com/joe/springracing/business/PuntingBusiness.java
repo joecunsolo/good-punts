@@ -110,21 +110,21 @@ public class PuntingBusiness {
 		return puntsForRace;
 	}
 	
-	public void generate(Race race) throws Exception {
+	public List<Punt> generate(Race race) throws Exception {
 		List<Punt> punts = generateGoodPuntsForRace(race);
-		BettingBusiness bet = new BettingBusiness();
-		punts = bet.placeBets(punts);
 		SpringRacingServices.getPuntingDAO().storePunts(race, punts);
+		return punts;
 	}
 	
-	public void generate() {	
+	public List<Punt> generate() {	
+		List<Punt> result = new ArrayList<Punt>();
 		try {
 			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchUpcomingMeets();
 			for (Meeting meeting : meets) {
 				try {
 					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 					for (Race r : races) {
-						generate(r);
+						result.addAll(generate(r));
 					}
 				} catch (Exception e) {
 					throw new RuntimeException("Unable to generate punts for " + meeting.getMeetCode(), e);
@@ -133,6 +133,7 @@ public class PuntingBusiness {
 		} catch (Exception ex) {
 			throw new RuntimeException("Unable to generate any punts", ex);
 		}
+		return result;
 	}
 
 	private List<Punt> filterFlexiBets(List<Punt> puntsForMeet) {

@@ -4,7 +4,7 @@
 <%-- //[START imports]--%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.joe.springracing.business.MeetBusiness" %>
-<%@ page import="com.goodpunts.GoodPuntsServices" %>
+<%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="com.joe.springracing.objects.Meeting" %>
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
@@ -27,12 +27,12 @@
 	<jsp:include page="menu.jsp" />
 
 <% 			String raceCode = request.getParameter("race_code");
-			Race race = GoodPuntsServices.getSpringRacingDAO().fetchRace(raceCode);
+			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 			String meetCode = race.getMeetCode();
-			Meeting meet = GoodPuntsServices.getSpringRacingDAO().fetchMeet(meetCode); %>
+			Meeting meet = SpringRacingServices.getSpringRacingDAO().fetchMeet(meetCode); %>
 						
 			<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
-<%			List<Race> races =  GoodPuntsServices.getSpringRacingDAO().fetchRacesForMeet(meet);
+<%			List<Race> races =  SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meet);
 			MeetBusiness mb = new MeetBusiness();
 			mb.sortRacesByNumber(races); %>
 			
@@ -62,7 +62,7 @@
 					</tr>
 				</thead>
 				<tbody>
-<% 			List<Runner> runners = GoodPuntsServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+<% 			List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {
 				List<AnalysableObjectStatistic> stats = runner.getStatistics();

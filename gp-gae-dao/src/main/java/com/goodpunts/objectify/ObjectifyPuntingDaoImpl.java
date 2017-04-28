@@ -309,4 +309,9 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		
 	}
 
+	public Date getLastBookieUpdateTimestamp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

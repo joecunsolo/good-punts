@@ -30,7 +30,7 @@ public class MockRacingDao implements SpringRacingDAO {
 	}
 
 	public boolean storeMeet(Meeting meet) throws Exception {
-		// TODO Auto-generated method stub
+		meetings.add(meet);
 		return false;
 	}
 
@@ -40,8 +40,7 @@ public class MockRacingDao implements SpringRacingDAO {
 	}
 
 	public void storeMeets(List<Meeting> meets) throws Exception {
-		// TODO Auto-generated method stub
-
+		meetings.addAll(meets);
 	}
 
 	public Race fetchRace(String raceCode) throws Exception {
@@ -105,9 +104,9 @@ public class MockRacingDao implements SpringRacingDAO {
 		races.addAll(racesWithoutHistories);
 	}
 
+	private List<Meeting> meetings = new ArrayList<Meeting>();
 	public List<Meeting> fetchUpcomingMeets() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return meetings;
 	}
 
 }

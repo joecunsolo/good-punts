@@ -7,7 +7,7 @@
 <%@ page import="com.joe.springracing.business.ProbabilityBusiness" %>
 <%@ page import="com.joe.springracing.business.model.Model" %>
 <%@ page import="com.joe.springracing.business.model.ModelAttributes" %>
-<%@ page import="com.goodpunts.GoodPuntsServices" %>
+<%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="com.joe.springracing.objects.Meeting" %>
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
@@ -40,7 +40,7 @@
 			mb.sortMeetingsByDate(upcoming);
 			for (Meeting meet : upcoming) {%>
 				<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
-<%					List<Race> races =  GoodPuntsServices.getSpringRacingDAO().fetchRacesForMeet(meet);
+<%					List<Race> races =  SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meet);
 				mb.sortRacesByNumber(races);
 				for (Race race : races) {%>
 					<p style="margin-left:40px">

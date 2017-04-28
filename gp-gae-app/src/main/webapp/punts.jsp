@@ -7,7 +7,7 @@
 <%@ page import="com.joe.springracing.business.ProbabilityBusiness" %>
 <%@ page import="com.joe.springracing.business.model.Model" %>
 <%@ page import="com.joe.springracing.business.model.ModelAttributes" %>
-<%@ page import="com.goodpunts.GoodPuntsServices" %>
+<%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="com.joe.springracing.objects.Meeting" %>
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
@@ -58,7 +58,7 @@
 			for (Meeting meet : upcoming) {
 				//if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>
 					<tr><td colspan="6"><%=meet.getDate() %> <%=meet.getVenue() %></td></tr>		
-<%					List<Punt> punts = GoodPuntsServices.getPuntingDAO().fetchPuntsForMeet(meet);
+<%					List<Punt> punts = SpringRacingServices.getPuntingDAO().fetchPuntsForMeet(meet);
 					for (Punt punt : punts) {%>
 					<tr>
 						<td>&nbsp;</td>

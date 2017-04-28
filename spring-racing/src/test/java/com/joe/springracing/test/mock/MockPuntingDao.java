@@ -78,4 +78,9 @@ public class MockPuntingDao implements PuntingDAO {
 		punts = new ArrayList<Punt>();
 	}
 
+	public Date getLastBookieUpdateTimestamp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
