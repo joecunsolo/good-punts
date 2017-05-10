@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,15 +42,15 @@ public class TestGAEEndToEnd {
 		      new LocalDatastoreServiceTestConfig());
 	private static Closeable closeable;
 	
-	@BeforeClass
-	public static void setUpClass() {
+	@Before
+	public void setUp() {
 		helper.setUp();
 		closeable = ObjectifyService.begin();
 		OfyHelper.init();
 	}
 
-	@AfterClass 
-	public static void tearDownClass() {
+	@After
+	public void tearDown() {
 		helper.tearDown();
 		closeable.close();
 	}
@@ -129,7 +131,7 @@ public class TestGAEEndToEnd {
 		Assert.assertTrue(meets.contains(aMeet()));
 	}
 	
-	//--- Scenario the histories for a race are imported
+	//--- Scenario fetch races without histories
 	//Given a race
 	//And the race has a runner
 	//And the race is imported
@@ -163,6 +165,23 @@ public class TestGAEEndToEnd {
 		List<Race> races = importer.fetchRacesWithoutHistories();
 		//Then the race should NOT be in the list
 		Assert.assertFalse(races.contains(aRace()));		
+	}
+	
+	//Given the histories for a race are imported
+	//And the races are re-imported
+	//When the races without histories are fetched
+	//Then the race should NOT be in the list
+	@Test
+	public void testRetryImportHistories() throws Exception {
+		//Given the histories for a race are imported
+		testImportHistories();
+		ImportBusiness importer = new ImportBusiness();
+		//And the race is imported
+		importer.importRace(aRace(), false);
+		//When the races without histories are fetched
+		List<Race> races = importer.fetchRacesWithoutHistories();
+		//Then the race should NOT be in the list
+		Assert.assertFalse(races.contains(aRace()));
 	}
 	
 	//Given a race is imported

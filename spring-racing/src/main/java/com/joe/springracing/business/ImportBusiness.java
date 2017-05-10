@@ -46,11 +46,13 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		List<Runner> runners = importer.fetchRunners(race);
 		race.setRunners(runners);
 		if (runners != null) {
+			Race existing = SpringRacingServices.getSpringRacingDAO().fetchRace(race.getRaceCode());
+			if (existing != null) {
+				race.setHistories(existing.hasHistories());
+			}
+			importRunners(runners, histories, existing == null);			
 			race.setHistories(histories || race.hasHistories());
-			boolean newRace = SpringRacingServices.getSpringRacingDAO().fetchRace(race.getRaceCode()) == null;
-
 			SpringRacingServices.getSpringRacingDAO().storeRace(race);
-			importRunners(runners, histories, newRace);
 		}	
 	}
 
