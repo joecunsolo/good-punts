@@ -19,8 +19,13 @@ public class SpringRacingServices {
 	public static final String OFFLINE_DIRECTORY = "C:\\racing2\\";
 	public static final boolean USE_PROXY = false;
 	
+	private static Simulator simulator = new MonteCarloSimulation();
 	public static Simulator getSimulator() {
-		return new MonteCarloSimulation();
+		return simulator;
+	}
+	
+	public static void setSimulator(Simulator s) {
+		simulator = s;
 	}
 
 	private static Statistics statistics = new WeightedPrizeMoneyStatistics();

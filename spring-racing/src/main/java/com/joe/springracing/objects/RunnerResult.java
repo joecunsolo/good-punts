@@ -236,5 +236,17 @@ public class RunnerResult {
 		this.weight = weight;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof RunnerResult) {
+			return this.hashCode() == o.hashCode();
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getRaceCode().hashCode() + this.getHorse().hashCode();
+	}
 
 }

@@ -62,5 +62,19 @@ public class Horse extends AnalysableRacePropertyObject {
 	public boolean hasHistories() {
 		return histories;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Horse) {
+			return this.hashCode() == o.hashCode();
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getName().hashCode();
+	}
+
 
 }

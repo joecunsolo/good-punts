@@ -65,5 +65,18 @@ public class Meeting { //extends RacingObject {
 		return false;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Meeting) {
+			return this.hashCode() == o.hashCode();
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getMeetCode().hashCode();
+	}
+
 	
 }

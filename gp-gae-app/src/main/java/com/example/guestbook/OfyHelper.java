@@ -27,22 +27,26 @@ public class OfyHelper implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     // This will be invoked as part of a warm-up request, or the first user request if no warm-up
     // request.
-    ObjectifyService.register(Guestbook.class);
-    ObjectifyService.register(Greeting.class);
-    ObjectifyService.register(ObjMeet.class);
-    ObjectifyService.register(ObjRace.class);
-    ObjectifyService.register(ObjRunner.class);
-    ObjectifyService.register(ObjOdds.class);
-    ObjectifyService.register(ObjHorse.class);
-    ObjectifyService.register(ObjRunnerResult.class);
-    ObjectifyService.register(ObjPunt.class);
-    ObjectifyService.register(ObjProbability.class);
-    ObjectifyService.register(ObjStatistic.class);
-    ObjectifyService.register(ObjPuntEvent.class);
-    
-    SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
-    SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
-    SpringRacingServices.setBookieAccount(new ObjectifyGoodPuntsBookieImpl());
+	  init();
+  }
+  
+  public static void init() {
+	    ObjectifyService.register(Guestbook.class);
+	    ObjectifyService.register(Greeting.class);
+	    ObjectifyService.register(ObjMeet.class);
+	    ObjectifyService.register(ObjRace.class);
+	    ObjectifyService.register(ObjRunner.class);
+	    ObjectifyService.register(ObjOdds.class);
+	    ObjectifyService.register(ObjHorse.class);
+	    ObjectifyService.register(ObjRunnerResult.class);
+	    ObjectifyService.register(ObjPunt.class);
+	    ObjectifyService.register(ObjProbability.class);
+	    ObjectifyService.register(ObjStatistic.class);
+	    ObjectifyService.register(ObjPuntEvent.class);
+	    
+	    SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
+	    SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
+	    SpringRacingServices.setBookieAccount(new ObjectifyGoodPuntsBookieImpl());	  
   }
 
   public void contextDestroyed(ServletContextEvent event) {
