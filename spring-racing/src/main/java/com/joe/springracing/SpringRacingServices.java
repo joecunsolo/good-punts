@@ -13,6 +13,10 @@ import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.dao.datasource.RacingDotComDataSource;
 import com.joe.springracing.dao.datasource.SpringRacingDataSource;
+import com.joe.springracing.services.ProbabilityService;
+import com.joe.springracing.services.ProbabilityServiceImpl;
+import com.joe.springracing.services.PuntingService;
+import com.joe.springracing.services.PuntingServiceImpl;
 
 public class SpringRacingServices {
 
@@ -84,5 +88,15 @@ public class SpringRacingServices {
 	
 	public static void setBookieAccount(BookieAccount srAccount) {
 		account = srAccount;
+	}
+
+	private static ProbabilityService probabilityService = new ProbabilityServiceImpl();
+	public static ProbabilityService getProbabilityService() {
+		return probabilityService;
+	}
+
+	private static PuntingService puntingService = new PuntingServiceImpl();
+	public static PuntingService getPuntingService() {
+		return puntingService;
 	}
 }

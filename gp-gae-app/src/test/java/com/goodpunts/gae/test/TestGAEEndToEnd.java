@@ -5,10 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.example.guestbook.OfyHelper;
@@ -218,22 +216,23 @@ public class TestGAEEndToEnd {
 		SpringRacingServices.setSimulator(simulator);
 		//And the probabilities for the race have been calculated
 		ProbabilityBusiness probabilities = new ProbabilityBusiness();
-		probabilities.generateProbabilitiesForRace(aRace());
+		probabilities.generate(aRace());
 		//When the probabilities for the race are fetched	
 		List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(aRace());
 		//Then the runner should have a probability of 1
 		Assert.assertEquals(1, runners.get(0).getProbability().getWin(), 0.1);
 	}
 	
-	//Given the histories for a race are imported
-	//And the probabilities for the race have been calculated
+	//Given the probabilities for the race have been calculated
 	//When the punts are generated
 	//Then the bets should be placed
 	@Test
-	public void testGeneratePunts() {
+	public void testGeneratePunts() throws Exception {
+		ProbabilityBusiness probabilities = new ProbabilityBusiness();
+		probabilities.generate(aRace());
 		
-//		GeneratePuntsServlet gs = new GeneratePuntsServlet();
-//		gs.service(null, null);
+		GeneratePuntsServlet gs = new GeneratePuntsServlet();
+		gs.service(null, null);
 		
 	}
 }

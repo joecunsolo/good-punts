@@ -28,8 +28,9 @@ public class GenerateProbabilitiesServlet extends GenericServlet {
 		try {
 			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 			System.out.println(race.getVenue() + " " + race.getRaceNumber() + " " + race.getName());
-			probabilities.generateProbabilitiesForRace(race);
+			probabilities.generate(race);
 			
+			//Generate the punts as well because we have them now..
 			PuntingBusiness punts = new PuntingBusiness();
 			punts.generate(race);
 		} catch (Exception e) {

@@ -18,6 +18,9 @@ public class MonteCarloSimulation implements Simulator {
 	
 	public void simulate(List<? extends Simulatable> race, int simulations, GatheredDistribution distribution, boolean desc) {
 		int horsesInRace = getMaxRunnerNumber(race);
+		if (horsesInRace < 1) {
+			return;
+		}
 		this.wins = new int[horsesInRace + 1];
 		this.places = new int[horsesInRace + 1];
 		this.simulations = simulations;
@@ -42,12 +45,12 @@ public class MonteCarloSimulation implements Simulator {
 	}
 
 	/** Determines the Odds based on the simulation results */
-	private void setOdds(List<? extends Simulatable> race) {
-		double checkSum = 0;
+	public void setOdds(List<? extends Simulatable> race) {
+//		double checkSum = 0;
 		for (Simulatable runner : race) {
 			//Calculate the probabilities
 			Probability probability = new Probability();
-			checkSum += wins[runner.getNumber()];
+//			checkSum += wins[runner.getNumber()];
 			probability.setNumberWins(wins[runner.getNumber()]);
 			double win = probability.getNumberWins() / (double)this.simulations;
 			probability.setWin(win);
@@ -57,9 +60,9 @@ public class MonteCarloSimulation implements Simulator {
 			
 			runner.setProbability(probability);
 		}
-		if (checkSum > this.simulations) {
-			throw new RuntimeException("Sum does not sum to the number of simulations");
-		}
+//		if (checkSum > this.simulations) {
+//			throw new RuntimeException("Sum does not sum to the number of simulations");
+//		}
 	}
 
 	public int[] simulate(List<? extends Simulatable> race, int horsesInRace, boolean desc) {
