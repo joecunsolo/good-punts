@@ -21,10 +21,12 @@ import com.googlecode.objectify.util.Closeable;
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.business.ProbabilityBusiness;
+import com.joe.springracing.business.PuntingBusiness;
 import com.joe.springracing.business.Simulator;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Odds;
+import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
@@ -80,7 +82,9 @@ public class TestGAEEndToEnd {
 	private static Runner aRunner() {
 		Runner runner = new Runner();
 		runner.setHorse(KEY_HORSECODE);
-		runner.setOdds(new Odds());
+		Odds o = new Odds();
+		o.setWin(30);
+		runner.setOdds(o);
 		return runner;
 	}
 	
@@ -221,6 +225,27 @@ public class TestGAEEndToEnd {
 		List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(aRace());
 		//Then the runner should have a probability of 1
 		Assert.assertEquals(1, runners.get(0).getProbability().getWin(), 0.1);
+	}
+
+	//Given the probabilities for the race have been calculated
+	//And the punts are generated
+	//When the punts for the race are fetched
+	//Then the confidence of the punts should be available
+	@Test
+	public void testConfidence() throws Exception {
+		//Given the probabilities for the race have been calculated
+		testGenerateProbabilities();
+		Race race = aRace();
+		race.setRunners(SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(aRace()));
+		//And the punts are generated
+		PuntingBusiness pb = new PuntingBusiness();
+		pb.generate(race);
+		//When the probabilities for the race are fetched
+		List<Punt> punts = SpringRacingServices.getPuntingDAO().fetchPuntsForRace(race);
+		//Then the confidence of the punts should be available
+		for (Punt punt : punts) {
+			Assert.assertNotNull(punt.getConfidence());
+		}
 	}
 	
 	//Given the probabilities for the race have been calculated

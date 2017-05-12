@@ -207,11 +207,12 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		result.setBookieOdds(punt.getBookieOdds());
 		result.setJoesOdds(punt.getJoesOdds());
 		result.setType(punt.getType());
+		result.setConfidence(punt.getConfidence());
 		return result;
 	}
 
 	private Punt toPunt(ObjPunt oPunt, Race race) {
-		Punt p = new Punt(race, oPunt.getType(), oPunt.getJoesOdds(), oPunt.getBookieOdds());
+		Punt p = new Punt(race, oPunt.getType(), oPunt.getJoesOdds(), oPunt.getBookieOdds(), oPunt.getConfidence());
 		return p;
 	}
 

@@ -37,12 +37,13 @@ public class Punt {
 		this.stakes = new ArrayList<Stake>();
 	}
 	
-	public Punt(Race r, Type t, double odds, double bookieOdds) {
+	public Punt(Race r, Type t, double odds, double bookieOdds, Confidence conf) {
 		this();
 		this.setRace(r);
 		this.setType(t);
 		this.setJoesOdds(odds);
 		this.setBookieOdds(bookieOdds);
+		this.setConfidence(conf);
 	}	
 
 	public Race getRace() {

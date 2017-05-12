@@ -18,6 +18,8 @@ import com.joe.springracing.objects.Punt.Type;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.Stake;
+import com.joe.springracing.services.PuntingService;
+import com.joe.springracing.services.PuntingServiceImpl;
 import com.joe.springracing.test.mock.MockBookieAccount;
 import com.joe.springracing.test.mock.MockPuntingDao;
 
@@ -90,7 +92,7 @@ public class TestBettingBusiness extends TestCase {
 	 * Then the Stake amounts should be the same
 	 */
 	public static void testSameEVEqualsSameStake() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingService biz = new PuntingServiceImpl();
 		
 		//Given there are two good Punts
 		Punt goodPunt1 = getGoodPunt();
@@ -102,8 +104,8 @@ public class TestBettingBusiness extends TestCase {
 		Assert.assertEquals(ev1, ev2, 0.001);
 		
 		//When the Stake amounts are calculated
-		double stakeAmount1 = biz.calculateStake(goodPunt1);
-		double stakeAmount2 = biz.calculateStake(goodPunt2);
+		double stakeAmount1 = biz.calculateStake(goodPunt1, null, 100);
+		double stakeAmount2 = biz.calculateStake(goodPunt2, null, 100);
 		
 		//Then the Stake amounts should be the same
 		Assert.assertEquals(stakeAmount1, stakeAmount2, 0.001);
@@ -130,7 +132,7 @@ public class TestBettingBusiness extends TestCase {
 	 *  |3|1|20|30|false|
 	 */
 	public static void testHighConfidence() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingServiceImpl biz = new PuntingServiceImpl();
 		
 		int[][] examples = {{3,1,20,10,1},
 		   {3,3,20,10,0},
@@ -153,7 +155,7 @@ public class TestBettingBusiness extends TestCase {
 			
 			biz.setModel(new Model(ma));
 			//Then the punt has High Confidence 
-			Assert.assertEquals(biz.hasHighConfidence(aGoodPunt) ? 1 : 0, data[4]);
+			Assert.assertEquals(biz.hasHighConfidence(aGoodPunt.getJoesOdds(), aGoodPunt.getBookieOdds()) ? 1 : 0, data[4]);
 		}
 	}
 	
@@ -169,7 +171,7 @@ public class TestBettingBusiness extends TestCase {
 	 * Then the Stake amount should equal $1
 	 */
 	public static void testMaximumStake() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingServiceImpl biz = new PuntingServiceImpl();
 		BookieAccount account = new MockBookieAccount();
 		
 		//Given there is a good Punt
@@ -184,7 +186,7 @@ public class TestBettingBusiness extends TestCase {
 		//And the Punt has High confidence
 		aGoodPunt.setConfidence(Confidence.HIGH);
 		// When the Stake amount is calculated
-		double stakeAmount1 = biz.calculateStake(aGoodPunt);
+		double stakeAmount1 = biz.calculateStake(aGoodPunt, null, 100);
 		//Then the Stake amount should equal $1 
 		Assert.assertEquals(1, stakeAmount1, 0.001);
 	}
@@ -206,7 +208,7 @@ public class TestBettingBusiness extends TestCase {
 	 * Then the Stake amount should equal $10 
 	 */
 	public static void testMinimumDollarStake() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingServiceImpl biz = new PuntingServiceImpl();
 		BookieAccount account = new MockBookieAccount();
 		
 		//Given there is a good Punt
@@ -221,7 +223,7 @@ public class TestBettingBusiness extends TestCase {
 		//And the Punt does NOT have High confidence
 		aGoodPunt.setConfidence(Confidence.LOW);
 		// When the Stake amount is calculated
-		double stakeAmount1 = biz.calculateStake(aGoodPunt);
+		double stakeAmount1 = biz.calculateStake(aGoodPunt, null, 100);
 		//Then the Stake amount should equal $10
 		Assert.assertEquals(10, stakeAmount1, 0.001);
 	}
@@ -239,7 +241,7 @@ public class TestBettingBusiness extends TestCase {
 	 * Then the Stake amount should equal $1 
 	 */
 	public static void testMinimumPercentageStake() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingServiceImpl biz = new PuntingServiceImpl();
 		BookieAccount account = new MockBookieAccount();
 		
 		//Given there is a good Punt
@@ -254,7 +256,7 @@ public class TestBettingBusiness extends TestCase {
 		//And the Punt does NOT have High confidence
 		aGoodPunt.setConfidence(Confidence.LOW);
 		// When the Stake amount is calculated
-		double stakeAmount1 = biz.calculateStake(aGoodPunt);
+		double stakeAmount1 = biz.calculateStake(aGoodPunt, null, 100);
 		//Then the Stake amount should equal $1 
 		Assert.assertEquals(1, stakeAmount1, 0.001);
 	}
@@ -272,7 +274,7 @@ public class TestBettingBusiness extends TestCase {
 	 * Then the Stake amount should equal $10
 	 */
 	public static void testDollarOverrulesPercentage() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingServiceImpl biz = new PuntingServiceImpl();
 		BookieAccount account = new MockBookieAccount();
 		
 		//Given there is a good Punt
@@ -287,7 +289,7 @@ public class TestBettingBusiness extends TestCase {
 		//And the minimum percentage Stake equals 1%
 		ma.setMinimumPercentageStake(1);
 		// When the Stake amount is calculated
-		double stakeAmount1 = biz.calculateStake(aGoodPunt);
+		double stakeAmount1 = biz.calculateStake(aGoodPunt, null, 100);
 		//Then the Stake amount should equal $1 
 		Assert.assertEquals(10, stakeAmount1, 0.001);
 	}
@@ -305,7 +307,7 @@ public class TestBettingBusiness extends TestCase {
 	 * Then the Stake amount should equal $10
 	 */
 	public static void testPercentageOverrulesDollar() {
-		BettingBusiness biz = new BettingBusiness();
+		PuntingServiceImpl biz = new PuntingServiceImpl();
 		BookieAccount account = new MockBookieAccount();
 		
 		//Given there is a good Punt
@@ -320,7 +322,7 @@ public class TestBettingBusiness extends TestCase {
 		//And the minimum percentage Stake equals 10%
 		ma.setMinimumPercentageStake(10);
 		// When the Stake amount is calculated
-		double stakeAmount1 = biz.calculateStake(aGoodPunt);
+		double stakeAmount1 = biz.calculateStake(aGoodPunt, null, 100);
 		//Then the Stake amount should equal $1 
 		Assert.assertEquals(10, stakeAmount1, 0.001);
 	}
@@ -349,6 +351,7 @@ public class TestBettingBusiness extends TestCase {
 	 * @throws Exception 
 	 */
 	public static void testLowPuntIsUpdatedWhenHigh() throws Exception {
+		PuntingServiceImpl srv = new PuntingServiceImpl();
 		BettingBusiness biz = new BettingBusiness();
 		BookieAccount account = new MockBookieAccount();
 		
@@ -370,7 +373,7 @@ public class TestBettingBusiness extends TestCase {
 	
 			//And the Account has $100
 			((MockBookieAccount)account).setAmount(100);
-			ModelAttributes ma = biz.getModel().getAttributes();
+			ModelAttributes ma = srv.getModel().getAttributes();
 			//And the maximum percentage Stake equals 5% 
 			ma.setMaximumPercentageStake(5);
 			//And the minimum percentage Stake equals 1%
@@ -381,7 +384,7 @@ public class TestBettingBusiness extends TestCase {
 			//When there is the same Punt with high confidence
 			aGoodPunt.setConfidence(data[1] == 1.0 ? Confidence.HIGH: Confidence.LOW);
 			//And the stake amount is calculated
-			double stakeAmount1 = biz.calculateStake(aGoodPunt);
+			double stakeAmount1 = srv.calculateStake(aGoodPunt, aGoodPunt, 100);
 			
 			//Then the Stake amount should equal $4
 			Assert.assertEquals(data[2], stakeAmount1, 0.001);	

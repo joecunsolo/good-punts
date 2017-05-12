@@ -56,7 +56,8 @@ public class TestImport extends TestCase {
 		dao.setRacesWithoutHistories(race);
 		SpringRacingServices.setSpringRacingDAO(dao);
 		//And a horses histories were imported
-		
+		SpringRacingServices.setSpringRacingDataSource(new MockSpringDataSource());
+
 		ImportBusiness importer = new ImportBusiness();
 		importer.importRace(race, true);
 	}

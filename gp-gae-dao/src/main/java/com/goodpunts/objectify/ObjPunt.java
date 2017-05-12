@@ -8,6 +8,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
+import com.joe.springracing.objects.Punt.Confidence;
 import com.joe.springracing.objects.Punt.Type;
 
 @Entity
@@ -22,6 +23,7 @@ public class ObjPunt {
 	private double joesOdds;
 	private double bookieOdds;
 	private List<Key<ObjRunner>> runners;
+	private Confidence confidence;
 	
 	public ObjPunt() {
 		runners = new ArrayList<Key<ObjRunner>>();		
@@ -71,4 +73,11 @@ public class ObjPunt {
 		this.raceCode = raceCode;
 	}
 
+	public Confidence getConfidence() {
+		return confidence;
+	}
+
+	public void setConfidence(Confidence confidence) {
+		this.confidence = confidence;
+	}
 }
