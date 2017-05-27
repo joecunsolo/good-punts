@@ -19,6 +19,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.Closeable;
 import com.joe.springracing.SpringRacingServices;
+import com.joe.springracing.business.BettingBusiness;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.PuntingBusiness;
@@ -83,7 +84,7 @@ public class TestGAEEndToEnd {
 		Runner runner = new Runner();
 		runner.setHorse(KEY_HORSECODE);
 		Odds o = new Odds();
-		o.setWin(30);
+		o.setWin(10);
 		runner.setOdds(o);
 		return runner;
 	}
@@ -253,11 +254,35 @@ public class TestGAEEndToEnd {
 	//Then the bets should be placed
 	@Test
 	public void testGeneratePunts() throws Exception {
-		ProbabilityBusiness probabilities = new ProbabilityBusiness();
-		probabilities.generate(aRace());
+		testGenerateProbabilities();
 		
-		GeneratePuntsServlet gs = new GeneratePuntsServlet();
-		gs.service(null, null);
+		PuntingBusiness punt = new PuntingBusiness();
+		List<Punt> punts = punt.generate();
 		
+		List<Punt> open = punt.fetchOpenPunts();
+		Assert.assertTrue(open.contains(punts.get(0)));
 	}
+	
+	//Given a punt has been generated
+	//And a bets has been placed for the punt
+	//When the open bets are fetched
+	//Then the punt should have a stake
+	@Test
+	public void testPlacePunts() throws Exception {
+		//Given a punt has been generated
+		testGeneratePunts();
+		PuntingBusiness biz = new PuntingBusiness();
+		List<Punt> punts = biz.fetchOpenPunts();
+
+		//And a bets has been placed for the punt
+		BettingBusiness bet = new BettingBusiness();
+		punts = bet.placeBets(punts);
+		//When the open bets are fetched
+		Punt punt = biz.fetchOpenPunts().get(0);
+		//Then the punt should have a stake
+		Assert.assertTrue(punt.getStakes().size() > 0);
+		Assert.assertTrue(bet.fetchAccountAmount() == 9900);
+	}
+	
+	//Place multiple bets on the same punt
 }

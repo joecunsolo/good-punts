@@ -1,5 +1,6 @@
 package com.example.guestbook;
 
+import com.goodpunts.objectify.ObjAccount;
 import com.goodpunts.objectify.ObjHorse;
 import com.goodpunts.objectify.ObjMeet;
 import com.goodpunts.objectify.ObjOdds;
@@ -9,6 +10,7 @@ import com.goodpunts.objectify.ObjPuntEvent;
 import com.goodpunts.objectify.ObjRace;
 import com.goodpunts.objectify.ObjRunner;
 import com.goodpunts.objectify.ObjRunnerResult;
+import com.goodpunts.objectify.ObjStakes;
 import com.goodpunts.objectify.ObjStatistic;
 import com.goodpunts.objectify.ObjectifyGoodPuntsBookieImpl;
 import com.goodpunts.objectify.ObjectifyPuntingDaoImpl;
@@ -43,6 +45,8 @@ public class OfyHelper implements ServletContextListener {
 	    ObjectifyService.register(ObjProbability.class);
 	    ObjectifyService.register(ObjStatistic.class);
 	    ObjectifyService.register(ObjPuntEvent.class);
+	    ObjectifyService.register(ObjAccount.class);
+	    ObjectifyService.register(ObjStakes.class);
 	    
 	    SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
 	    SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
