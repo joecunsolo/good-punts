@@ -29,7 +29,7 @@ public class GeneratePuntsServlet extends GenericServlet {
 			BettingBusiness bet = new BettingBusiness();
 			bet.placeBets(punts);
 		} catch (Exception ex) {
-			throw new RuntimeException("Unable to place bets");
+			throw new RuntimeException("Unable to place bets", ex);
 		}
 	}	
 }

@@ -30,6 +30,8 @@ public class ObjProbability {
 		this.setWin(p.getWin());
 		this.setNumberWins(p.getNumberWins());
 		this.setNumberPlaces(p.getNumberPlaces());
+		this.setMean(p.getMean());
+		this.setStandardDeviation(p.getStandardDeviation());
 	}
 		
 	public double getWin() {

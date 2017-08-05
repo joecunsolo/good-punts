@@ -15,7 +15,6 @@ import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.Confidence;
 import com.joe.springracing.objects.Punt.State;
 import com.joe.springracing.objects.Punt.Type;
-import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.Stake;
 import com.joe.springracing.services.PuntingService;
@@ -47,11 +46,11 @@ public class TestBettingBusiness extends TestCase {
 		runners.add(runner);		
 		punt.setRunners(runners);
 
-		Race race = new Race();
-		race.setDate(new Date(System.currentTimeMillis()));
-		race.setVenue("venue");
-		punt.setRace(race);
-		
+//		Race race = new Race();
+		punt.setDate(new Date(System.currentTimeMillis()));
+//		race.setVenue("venue");
+//		punt.setRaceCode(race);
+//		
 		punt.setBookieOdds(bookieOdds);
 		punt.setJoesOdds(joesOdds);
 		punt.setType(Type.WIN);
@@ -78,8 +77,9 @@ public class TestBettingBusiness extends TestCase {
 	 */
 	public static void testPuntIsPlaced() {
 		BettingBusiness biz = new BettingBusiness();
-		List<Punt> punts = biz.placeBets(getGoodPuntAsList());
-		Stake stake = punts.get(0).getStakes().get(0);
+		List<Stake> punts = biz.placeBets(getGoodPuntAsList());
+	
+		Stake stake = punts.get(0);
 		Assert.assertNotNull(stake);
 	}
 	
@@ -369,7 +369,7 @@ public class TestBettingBusiness extends TestCase {
 			//Given there is a good Punt
 			Punt aGoodPunt = getGoodPunt();
 			//And there is an existing Stake for that Punt of $1
-			biz.placeBets(getGoodPuntAsList(aGoodPunt), data[0]);
+			List<Stake> existing = biz.placeBets(getGoodPuntAsList(aGoodPunt), data[0]);
 	
 			//And the Account has $100
 			((MockBookieAccount)account).setAmount(100);
@@ -384,7 +384,7 @@ public class TestBettingBusiness extends TestCase {
 			//When there is the same Punt with high confidence
 			aGoodPunt.setConfidence(data[1] == 1.0 ? Confidence.HIGH: Confidence.LOW);
 			//And the stake amount is calculated
-			double stakeAmount1 = srv.calculateStake(aGoodPunt, aGoodPunt, 100);
+			double stakeAmount1 = srv.calculateStake(aGoodPunt, existing, 100);
 			
 			//Then the Stake amount should equal $4
 			Assert.assertEquals(data[2], stakeAmount1, 0.001);	

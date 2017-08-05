@@ -1,6 +1,7 @@
 package com.joe.springracing.business;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,23 +21,24 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	}	
 	
 	/** 
-	 * Calculates to the stake and places the bet 
+	 * Calculates the stake and places the bet 
 	 * @return the punts with stakes updated
 	 * @throws Exception 
 	 */
-	public List<Punt> placeBets(List<Punt> punts) {
+	public List<Stake> placeBets(List<Punt> punts) {
+		List<Stake> result = new ArrayList<Stake>();
 		for (Punt punt : punts) {
-			Punt existingPunt = getExistingOpenPunt(punt);		
+			List<Stake> existingPunt = getExistingOpenStakesForPunt(punt);		
 			double accountAmount = SpringRacingServices.getBookieAccount().fetchAccountAmount();
 			double stake = SpringRacingServices.getPuntingService().calculateStake(punt, existingPunt, accountAmount);
 
 			try {
-				placeBet(punt, stake);
+				result.add(placeBet(punt, stake));
 			} catch (Exception ex) {
-				throw new RuntimeException("Unable to place bet of " + stake + " for " + punt.getRace().getRaceCode());
+				throw new RuntimeException("Unable to place bet of " + stake + " for " + punt.getRaceCode(), ex);
 			}
 		}
-		return punts;
+		return result;
 	}
 	
 	/** 
@@ -44,11 +46,15 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	 * @return the punts with stakes updated
 	 * @throws Exception 
 	 */
-	public List<Punt> placeBets(List<Punt> punts, double amount) throws Exception {
+	public List<Stake> placeBets(List<Punt> punts, double amount) throws Exception {
+		List<Stake> stakes = new ArrayList<Stake>();
 		for (Punt punt : punts) {
-			placeBet(punt, amount);
+			Stake stake = placeBet(punt, amount);
+			if (stake != null) {
+				stakes.add(stake);
+			}
 		}
-		return punts;
+		return stakes;
 	}
 
 	/** 
@@ -57,13 +63,13 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	 * @return the punts with stakes updated
 	 * @throws Exception 
 	 */
-	public Punt placeBet(Punt punt, double amount) throws Exception {
+	public Stake placeBet(Punt punt, double amount) throws Exception {
 		if (amount > 0) {
 			Stake stake = SpringRacingServices.getBookieAccount().placeBet(punt, amount);
-			punt.addStake(stake);
-			SpringRacingServices.getPuntingDAO().updateStakes(punt);
+			SpringRacingServices.getPuntingDAO().storeStake(stake);
+			return stake;
 		}
-		return punt;
+		return null;
 	}
 
 	/**
@@ -71,18 +77,32 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	 * @param goodPunt something to check
 	 * @return an existing open Punt
 	 */
-	public Punt getExistingOpenPunt(Punt goodPunt) {
-		List<Punt> openPunts = SpringRacingServices.getPuntingDAO().fetchOpenPunts();
-		for (Punt open : openPunts) {
+	public List<Stake> getExistingOpenStakesForPunt(Punt goodPunt) {
+		List<Stake> result = new ArrayList<Stake>();
+		List<? extends Stake> openPunts = SpringRacingServices.getPuntingDAO().fetchOpenStakes();
+		for (Stake open : openPunts) {
 			if (open.equals(goodPunt)) {
-				return open;
+				result.add(open);
 			}
 		}
-		return null;
+		return result;
 	}
-
-	public void updateBets() throws Exception {
+	
+	/**
+	 * Asks the bookie for everything they've settled recently
+	 * And then settles the stakes in the punting dao
+	 * @throws Exception
+	 */
+	public void settleBets() throws Exception {
 		Date lastUpdatedTime = SpringRacingServices.getPuntingDAO().getLastBookieUpdateTimestamp();
 		List<Stake> settled = SpringRacingServices.getBookieAccount().getSettledBets(lastUpdatedTime);
+		for (Stake stake : settled) {
+			stake.setSettled(true);
+			SpringRacingServices.getPuntingDAO().updateStake(stake);
+		}
+	}
+	
+	public double fetchAccountAmount(String account) {
+		return SpringRacingServices.getBookieAccount().fetchAccountAmount();
 	}
 }

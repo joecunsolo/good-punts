@@ -65,19 +65,20 @@
 <% 			List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {
-				List<AnalysableObjectStatistic> stats = runner.getStatistics();
-				if (stats != null &&
-					stats.size() > 0 &&
-					stats.get(0) instanceof SingleVariateStatistic) {
-					SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);%>
+				//List<AnalysableObjectStatistic> stats = runner.getStatistics();
+				//if (stats != null &&
+				//	stats.size() > 0 &&
+				//	stats.get(0) instanceof SingleVariateStatistic) {
+				//	SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);
+				%>
 					
 					<tr>
 						<td><%=runner.getNumber()%></td> 
 						<td><a href="horse.jsp?horse_code=<%=runner.getHorse() %>">
 							<%=runner.getHorse()%>
 						</a></td>
-						<td><%=df.format(svs.getMean())%></td>
-						<td><%=df.format(svs.getStandardDeviation())%></td>
+						<td><%=df.format(runner.getProbability().getMean())%></td>
+						<td><%=df.format(runner.getProbability().getStandardDeviation())%></td>
 						<td><%=df.format(runner.getWeight())%></td>
 						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
 						<td><%=runner.getOdds().getWin()%></td>
@@ -86,11 +87,10 @@
 							<%=runner.isEmergency() ? "EMG" : ""%>
 						</td>
 					</tr>
-<%				}
+<%				//}
 			}%>
 				</tbody>
 			</table>
-			</p>
 </body>
 </html>
 <%-- //[END all]--%>

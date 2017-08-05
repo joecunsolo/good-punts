@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.joe.springracing.business.ProbabilityBusiness;
-import com.joe.springracing.business.PuntingBusiness;
 import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
@@ -54,8 +53,8 @@ public class GeneratePunts {
 //				for (RunnerResult result : runner.getHorse().getPastResults()) {
 //					System.out.print(result.getPosition() + ",");
 //				}
-				SingleVariateStatistic stat = (SingleVariateStatistic)runner.getStatistics().get(0);
-				System.out.println(" " + stat.getMean());
+//				SingleVariateStatistic stat = (SingleVariateStatistic)runner.getStatistics().get(0);
+//				System.out.println(" " + stat.getMean());
 			}
 		}
 	}
@@ -73,7 +72,7 @@ public class GeneratePunts {
 
 	public static void printGoodPunts(List<Punt> goodPunts) {
 		for (Punt punt : goodPunts) {
-			System.out.print(punt.getRace().getRaceNumber() + " " + 
+			System.out.print(punt.getRaceCode() + " " + 
 					punt.getType() + " " + 
 					punt.getJoesOdds() + " " +
 					punt.getBookieOdds());

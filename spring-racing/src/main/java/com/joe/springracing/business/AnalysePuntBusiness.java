@@ -19,14 +19,14 @@ public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
 		if (goodPunts.size() == 0) {
 			return 0;
 		}
-		if (goodPunts.get(0).getRace().getDate().getTime() > System.currentTimeMillis() - 12 * 60 * 60 * 1000) {
+		if (goodPunts.get(0).getDate().getTime() > System.currentTimeMillis() - 12 * 60 * 60 * 1000) {
 			throw new Exception("Future Punt");
 		}
 		double returnOnPunts = 0;
-		String raceCode = goodPunts.get(0).getRace().getRaceCode();
+		String raceCode = goodPunts.get(0).getRaceCode();
 		
 		for (Punt punt : goodPunts) {
-			int raceNumber = punt.getRace().getRaceNumber();
+//			int raceNumber = punt.getRace().getRaceNumber();
 			int[] result = new int[0];
 			result = getResultsForRace(raceCode);
 			//System.out.println("Unable to get results for " + meetCode + " " + raceNumber);
@@ -34,7 +34,7 @@ public class AnalysePuntBusiness extends AbstractSpringRacingBusiness {
 			
 			double returnOnPunt = getReturn(result, punt);
 			if (returnOnPunt > 0) {
-				getWriter().println(raceNumber + " " + 
+				getWriter().println(raceCode + " " + 
 						punt.getRunners().get(0).getNumber() + ":" + 
 						punt.getRunners().get(0).getHorse() + " " + 
 						returnOnPunt + " " +

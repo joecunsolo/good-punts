@@ -148,7 +148,6 @@ public class ObjectifyBaseDaoImpl {
 		o.setScratched(runner.isScratched());
 		o.setTrainer(runner.getTrainer());
 		o.setWeight(runner.getWeight());
-		
 		return o;
 	}
 
@@ -170,6 +169,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setPrizeMoney(race.getPrizeMoney());
 		result.setRaceNumber(race.getRaceNumber());
 		result.setResult(race.getResult());
+		result.setResults(race.getResult() != null);
 		result.setVenue(race.getVenue());
 		result.setHistories(race.hasHistories());
 		return result;

@@ -17,6 +17,7 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 	private List<Race> races;
 	private List<Meeting> meets;
 	private Map<String, List<RunnerResult>> pastResultsForHorse;
+	private Map<String, Race> raceResults = new HashMap<String, Race>();
 	
 	public MockSpringDataSource() {
 		races = new ArrayList<Race>();
@@ -56,8 +57,11 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 	}
 
 	public Race fetchRaceResult(String raceCode) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return raceResults.get(raceCode);
+	}
+	
+	public void addRaceResult(Race race) {
+		raceResults.put(race.getRaceCode(), race);
 	}
 
 	public List<Runner> fetchRunnnersForRace(Race race) throws Exception {

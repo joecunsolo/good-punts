@@ -14,6 +14,7 @@ import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
+import com.joe.springracing.objects.Stake;
 
 public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements PuntingDAO {
 
@@ -28,14 +29,15 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		Key<ObjRunner> runnerKey = super.getRunnerKey(race, runner.getHorse());
 
 		ObjProbability oProbability = toObjProbability(runnerKey, raceCode, runner);
-		Key<ObjProbability> key = ObjectifyService.ofy().save().entity(oProbability).now();
+//		Key<ObjProbability> key = 
+		ObjectifyService.ofy().save().entity(oProbability).now();
 		
-		if (runner.getStatistics() != null) {
-			for (AnalysableObjectStatistic stat : runner.getStatistics()) {
-				ObjStatistic objStat = new ObjStatistic(stat, oProbability.getId(), key);
-				ObjectifyService.ofy().save().entity(objStat).now();
-			}
-		}
+//		if (runner.getStatistics() != null) {
+//			for (AnalysableObjectStatistic stat : runner.getStatistics()) {
+//				ObjStatistic objStat = new ObjStatistic(stat, oProbability.getId(), key);
+//				ObjectifyService.ofy().save().entity(objStat).now();
+//			}
+//		}
 	}
 
 	private ObjProbability toObjProbability(Key<ObjRunner> runnerKey, String raceCode, Runner runner) {
@@ -55,9 +57,6 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 
 	private void storePunt(Key<ObjPuntEvent> event, Punt punt) {
-		System.out.println(punt.getRace().getVenue() + " " +
-				punt.getRace().getRaceNumber() + " " +
-				punt.getRunners().get(0).getHorse());
 		ObjPunt oPunt = toObjPunt(event, punt);
 		ObjectifyService.ofy().save().entity(oPunt).now();
 	}
@@ -90,15 +89,19 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		        .list();
 			
 			for (ObjPunt punt : punts) {
-				Punt p = toPunt(punt, race);
+				Punt p = toPunt(punt);
 				List<Runner> runners = fetchRunners(punt.getRunners());
 				p.setRunners(runners);
+				
+//				List<Stake> stakes = fetchStakesForPunt(p);
+//				p.setStakes(stakes);
+//				
 				result.add(p);
 			}
 		}
 		return result;		
 	}
-	
+
 	public List<Punt> fetchPuntResults() throws Exception {
 		List<Punt> result = new ArrayList<Punt>();
 		List<Meeting> meets = fetchExistingMeets();
@@ -203,16 +206,21 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		for (Runner r : punt.getRunners()) {
 			runnerIds.add(r.getHorse());
 		}
-		ObjPunt result = new ObjPunt(event, punt.getRace().getRaceCode(), runnerIds);
+		ObjPunt result = new ObjPunt(event, punt.getRaceCode(), runnerIds);
 		result.setBookieOdds(punt.getBookieOdds());
 		result.setJoesOdds(punt.getJoesOdds());
 		result.setType(punt.getType());
 		result.setConfidence(punt.getConfidence());
+		result.setDate(punt.getDate());
+		result.setState(punt.getState());
+		result.setRaceNumber(punt.getRaceNumber());
 		return result;
 	}
 
-	private Punt toPunt(ObjPunt oPunt, Race race) {
-		Punt p = new Punt(race, oPunt.getType(), oPunt.getJoesOdds(), oPunt.getBookieOdds(), oPunt.getConfidence());
+	private Punt toPunt(ObjPunt oPunt) {
+		Punt p = new Punt(oPunt.getRaceCode(), oPunt.getDate(), oPunt.getType(), oPunt.getJoesOdds(), oPunt.getBookieOdds(), oPunt.getConfidence(), oPunt.getState());
+		p.setId(oPunt.id);
+		p.setRaceNumber(oPunt.getRaceNumber());
 		return p;
 	}
 
@@ -236,12 +244,12 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 			ObjProbability objProb = fetchProbabilityForRunner(raceKey, runner);
 			if (objProb != null) {
 				runner.setProbability(toProbability(objProb));
-				///Where to ?
-				Key<ObjRunner> parent = super.getRunnerKey(raceKey, runner.getHorse());
-				Key<ObjProbability> key = Key.create(parent, ObjProbability.class, objProb.getId());
-				/////
-				List<ObjStatistic> objStats = fetchStatisticsForProbability(key);
-				runner.setStatistics(toStatistics(objStats));
+//				///Where to ?
+//				Key<ObjRunner> parent = super.getRunnerKey(raceKey, runner.getHorse());
+//				Key<ObjProbability> key = Key.create(parent, ObjProbability.class, objProb.getId());
+//				/////
+//				List<ObjStatistic> objStats = fetchStatisticsForProbability(key);
+//				runner.setStatistics(toStatistics(objStats));
 			}
 		}
 		return result;
@@ -276,6 +284,8 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		Probability probability = new Probability();
 		probability.setPlace(objProb.getPlace());
 		probability.setWin(objProb.getWin());
+		probability.setMean(objProb.getMean());
+		probability.setStandardDeviation(objProb.getStandardDeviation());
 		return probability;
 	}
 
@@ -296,23 +306,199 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 	}
 
 	public List<Punt> fetchSettledPunts() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ObjPunt> punts = ObjectifyService.ofy()
+		        .load()
+		        .type(ObjPunt.class) // We want only Punts
+		        .filter("state", Punt.State.FINISHED) //FINISHED Punts
+		        .list();
+		
+		List<Punt> result = new ArrayList<Punt>();
+		for (ObjPunt punt : punts) {
+			Punt p = toPunt(punt);
+			try {
+				List<Runner> runners = fetchRunners(punt.getRunners());
+				p.setRunners(runners);
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				ex.printStackTrace();
+			}
+//			List<Stake> stakes = fetchStakesForPunt(p);
+//			if (stakes != null) {
+//				p.setStakes(stakes);
+//			}
+			result.add(p);
+		}
+
+		return result;
 	}
 
 	public List<Punt> fetchOpenPunts() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ObjPunt> punts = ObjectifyService.ofy()
+		        .load()
+		        .type(ObjPunt.class) // We want only Punts
+		        .filter("state", Punt.State.OPEN) //Open Punts
+		        .list();
+		
+		List<Punt> result = new ArrayList<Punt>();
+		for (ObjPunt punt : punts) {
+			Punt p = toPunt(punt);
+			try {
+				List<Runner> runners = fetchRunners(punt.getRunners());
+				p.setRunners(runners);
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				ex.printStackTrace();
+			}
+//			List<Stake> stakes = fetchStakesForPunt(p);
+//			if (stakes != null) {
+//				p.setStakes(stakes);
+//			}
+			result.add(p);
+		}
+
+		return result;
 	}
 
-	public void updateStakes(Punt punt) {
-		// TODO Auto-generated method stub
+	/**
+	 * Get the existing stakes for the Punt
+	 * If there are none add them all
+	 * 
+	 * Otherwise get the new Stakes and add them 
+	 */
+//	public void updateStakes(Punt punt) {
+//		//Get the existing stakes
+//		List<Stake> oldStakes = fetchStakesForPunt(punt);
+//		//no stakes yet - so we can add all of the Punt's stakes
+//		if (oldStakes == null) {
+//			List<ObjStake> newStakes = toObjStakes(punt, punt.getStakes());
+//			storeStakes(newStakes);
+//		//Otherwise get the new Stakes 
+//		} else {
+//			for (Stake stake : punt.getStakes()) {
+//				if (!oldStakes.contains(stake)) {
+//					//and add them
+//					ObjStake oStake = toObjStake(stake);
+//					storeStake(oStake);
+//				}
+//			}
+//		}
+//	}
+	
+
+//	private void storeStakes(List<ObjStake> stakes) {
+//		for (ObjStake oStake : stakes) {
+//			storeStake(oStake);
+//		}
+//	}
+
+//	private void storeStake(ObjStake oStake) {
+//	}
+
+//	private List<ObjStake> toObjStakes(Punt p, List<Stake> stakes) {
+//		List<ObjStake> result = new ArrayList<ObjStake>();
+//		for (Stake stake : stakes) {
+//			result.add(toObjStake(stake));
+//		}
+//		return result;
+//	}
+
+	private ObjStake toObjStake(Stake stake) {
+		ObjStake result = new ObjStake(stake.hashCode());
 		
+		result.setAccount(stake.getAccount());
+		result.setAmount(stake.getAmount());
+		result.setBookieOdds(stake.getBookieOdds());
+		result.setConfidence(stake.getConfidence());
+		result.setDate(stake.getDate());
+		result.setJoesOdds(stake.getJoesOdds());
+		result.setOdds(stake.getOdds());
+		result.setRaceCode(stake.getRaceCode());
+		result.setRaceNumber(stake.getRaceNumber());
+		result.setReturn(stake.getReturn());
+		result.setResult(stake.getResult());
+		result.setRunners(stake.getRunners());
+		result.setSettled(stake.isSettled());
+		result.setState(stake.getState());
+		result.setType(stake.getType());
+		result.setTxnNo(stake.getTxnNo());
+		result.setVenue(stake.getVenue());
+		return result;
 	}
+
+//	public List<Stake> fetchStakesForPunt(Punt punt) {
+//		List<ObjStake> objStakes =  ObjectifyService.ofy()
+//		        .load()
+//		        .type(ObjStake.class) // We want only Stakes
+//		        .ancestor(key)	//For this punt
+//		        .list();
+//		
+//		return toStakeList(objStakes);
+//	}
+
+//	private List<Stake> toStakeList(List<ObjStake> objStakes) {
+//		List<Stake> result = new ArrayList<Stake>();
+//		for (ObjStake oStake : objStakes) {
+//			Stake stake = new Stake();
+//			stake.setAccount(oStake.getAccount());
+//			stake.setAmount(oStake.getAmount());
+//			stake.setDate(oStake.getDate());
+//			stake.setOdds(oStake.getOdds());
+//			stake.setReturn(oStake.getRetrn());
+//			stake.setTxnNo(oStake.getTxnNo());
+//			stake.setSettled(oStake.isSettled());
+//			result.add(stake);
+//		}
+//		return result;
+//	}
+
+//	private ObjStakeList toObjStakeList(long id, List<ObjStake> stakes) {
+//		return 
+//	}
 
 	public Date getLastBookieUpdateTimestamp() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void updateStake(Stake stake) {
+		storeStake(stake);
+	}
+
+	public List<Stake> fetchSettledStakes() {
+		return downgrade(ObjectifyService.ofy()
+		        .load()
+		        .type(ObjStake.class) // We want only Punts
+		        .filter("settled", true) //Open Punts
+		        .list());
+	}
+
+	public void storeStake(Stake stake) {
+		ObjStake oStake = toObjStake(stake);
+		ObjectifyService.ofy().save().entity(oStake).now();
+	}
+
+	public List<Stake> fetchOpenStakes() {
+		return downgrade(ObjectifyService.ofy()
+		        .load()
+		        .type(ObjStake.class) // We want only Punts
+		        .filter("settled", false) //Open Punts
+		        .list());
+	}
+
+	public List<Stake> fetchStakesForRace(Race race) {
+		return downgrade(ObjectifyService.ofy()
+		        .load()
+		        .type(ObjStake.class) // We want only Punts
+		        .filter("settled", false) //Open Punts
+		        .list());
+	}
+	
+	private List<Stake> downgrade(List<ObjStake> obj) {
+		List<Stake> result = new ArrayList<Stake>();
+		for (ObjStake s : obj) {
+			result.add(s);
+		}
+		return result;
 	}
 
 }

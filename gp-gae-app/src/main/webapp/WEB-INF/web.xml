@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE web-app PUBLIC "-//Oracle Corporation//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
@@ -23,6 +22,10 @@
 	  <servlet-class>com.goodpunts.servlet.ImportRaceResultsServlet</servlet-class>
 	</servlet>
 	<servlet>
+	  <servlet-name>race-results-queue</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.ImportRaceResultsQueueServlet</servlet-class>
+	</servlet>
+		<servlet>
 	  <servlet-name>import-races</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.ImportUpcomingRacesServlet</servlet-class>
 	</servlet>
@@ -46,11 +49,15 @@
 	  <servlet-name>probabilities-generate</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.GenerateProbabilitiesServlet</servlet-class>
 	</servlet>
-		<servlet>
+	<servlet>
 	  <servlet-name>probabilities-queue</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.GenerateProbabilitiesQueueServlet</servlet-class>
 	</servlet>
-				
+	<servlet>
+	  <servlet-name>stakes-settle</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.SettleStakesServlet</servlet-class>
+	</servlet>
+					
 	<servlet-mapping>
 	  <servlet-name>sign</servlet-name>
 	  <url-pattern>/sign</url-pattern>
@@ -72,6 +79,10 @@
 	  <url-pattern>race-results/import</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+	  <servlet-name>race-results-queue</servlet-name>
+	  <url-pattern>race-results/queue</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
 	  <servlet-name>import-queue</servlet-name>
 	  <url-pattern>/import/queue</url-pattern>
 	</servlet-mapping>
@@ -87,7 +98,11 @@
 	  <servlet-name>probabilities-queue</servlet-name>
 	  <url-pattern>/probabilities/queue</url-pattern>
 	</servlet-mapping>	
-				
+	<servlet-mapping>
+	  <servlet-name>stakes-settle</servlet-name>
+	  <url-pattern>/stakes/settle</url-pattern>
+	</servlet-mapping>	
+					
 	<welcome-file-list>
 	    <welcome-file>punts.jsp</welcome-file>
 	</welcome-file-list>

@@ -45,21 +45,20 @@ public class AnalyseProbabilities {
 			List<Runner> runners = race.getRunners();
 			Collections.sort(runners, ap.new RunnerProbabilitySort());
 			
-			printRunners(runners);
+//			printRunners(runners);
 		}
 	}
 	
-	private static void printRunners(List<Runner> runners) {
-		for (Runner runner : runners) {
-			List<AnalysableObjectStatistic> stats = runner.getStatistics();
+	private static void printRunners(List<List<AnalysableObjectStatistic>> runners) {
+		for (List<AnalysableObjectStatistic> stats : runners) {
 			if (stats.get(0) instanceof SingleVariateStatistic) {
 				SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);
-				System.out.println(runner.getNumber() + " " + 
-						runner.getHorse() + " " + 
-						runner.getProbability().getWin() + " " + 
-						svs.getMean() + " " + 
-						svs.getStandardDeviation() + " " + 
-						runner.getOdds().getWin());
+//				System.out.println(runner.getNumber() + " " + 
+//						runner.getHorse() + " " + 
+//						runner.getProbability().getWin() + " " + 
+//						svs.getMean() + " " + 
+//						svs.getStandardDeviation() + " " + 
+//						runner.getOdds().getWin());
 			}
 		}
 	}

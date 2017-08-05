@@ -3,6 +3,7 @@ package com.goodpunts.gae.test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -12,7 +13,7 @@ import org.junit.Test;
 import com.example.guestbook.OfyHelper;
 import com.goodpunts.gae.test.mock.MockSimulator;
 import com.goodpunts.gae.test.mock.MockSpringDataSource;
-import com.goodpunts.servlet.GeneratePuntsServlet;
+import com.goodpunts.objectify.ObjectifyGoodPuntsBookieImpl;
 import com.goodpunts.servlet.ImportUpcomingRacesServlet;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -31,6 +32,7 @@ import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
+import com.joe.springracing.objects.Stake;
 
 public class TestGAEEndToEnd {
 	
@@ -42,12 +44,19 @@ public class TestGAEEndToEnd {
 	private static final LocalServiceTestHelper helper = new LocalServiceTestHelper(
 		      new LocalDatastoreServiceTestConfig());
 	private static Closeable closeable;
+	private MockSpringDataSource datasource;
 	
 	@Before
 	public void setUp() {
 		helper.setUp();
 		closeable = ObjectifyService.begin();
 		OfyHelper.init();
+		
+		//set up mocks
+		datasource = new MockSpringDataSource();
+		SpringRacingServices.setSpringRacingDataSource(datasource);
+		Simulator simulator = new MockSimulator(1);
+		SpringRacingServices.setSimulator(simulator);
 	}
 
 	@After
@@ -60,7 +69,7 @@ public class TestGAEEndToEnd {
 		Race race = new Race();
 		race.setRaceCode(KEY_RACECODE);
 		race.setMeetCode(KEY_MEETCODE);
-		race.setDate(new Date());
+		race.setDate(new Date(System.currentTimeMillis() + 60000));
 		return race;
 	}
 	
@@ -86,6 +95,7 @@ public class TestGAEEndToEnd {
 		Odds o = new Odds();
 		o.setWin(10);
 		runner.setOdds(o);
+		runner.setNumber(1);
 		return runner;
 	}
 	
@@ -102,17 +112,19 @@ public class TestGAEEndToEnd {
 	//And the race has a runner
 	//And the runner has some past results
 	public void datasourceHasARace() {
+		datasourceHasARace(aRace());
+	}
+	
+	public void datasourceHasARace(Race aRace) {
 		//Given the data-source has a meet in the future
 		Meeting meet = aMeet();
-		MockSpringDataSource ds = new MockSpringDataSource();
-		SpringRacingServices.setSpringRacingDataSource(ds);
-		ds.addMeet(meet);
+		datasource.addMeet(meet);
 		//And the meet has a race
-		ds.addRace(aMeet(), aRace());
+		datasource.addRace(aMeet(), aRace);
 		//And the race has a runner
-		ds.addRunner(aRace(), aRunner());
+		datasource.addRunner(aRace, aRunner());
 		//And the runner has some past results
-		ds.addPastResults(aRunner(), somePastResults(aRunner()));
+		datasource.addPastResults(aRunner(), somePastResults(aRunner()));
 	}
 
 	
@@ -212,6 +224,8 @@ public class TestGAEEndToEnd {
 	//And the runner has a probability of 1
 	//When the probabilities for the race are fetched
 	//Then the runner should have a probability of 1
+	//And the mean should be 1
+	//And the Standard Deviation should be 1
 	@Test
 	public void testGenerateProbabilities() throws Exception {
 		//Given the histories for a race are imported
@@ -226,6 +240,10 @@ public class TestGAEEndToEnd {
 		List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(aRace());
 		//Then the runner should have a probability of 1
 		Assert.assertEquals(1, runners.get(0).getProbability().getWin(), 0.1);
+		//And the mean should be 1
+		//Assert.assertEquals(1, runners.get(0).getProbability().getMean(), 0.1);
+		//And the Standard Deviation should be 1
+		//Assert.assertEquals(1, runners.get(0).getProbability().getStandardDeviation(), 0.1);
 	}
 
 	//Given the probabilities for the race have been calculated
@@ -254,35 +272,156 @@ public class TestGAEEndToEnd {
 	//Then the bets should be placed
 	@Test
 	public void testGeneratePunts() throws Exception {
+		PuntingBusiness punt = new PuntingBusiness();
+		List<Punt> punts = generatePunts();
+		
+		List<Punt> open = punt.fetchPuntsForMeet(aMeet());
+		Assert.assertTrue(open.contains(punts.get(0)));
+	}
+	
+	private List<Punt> generatePunts() throws Exception {
 		testGenerateProbabilities();
 		
 		PuntingBusiness punt = new PuntingBusiness();
-		List<Punt> punts = punt.generate();
-		
-		List<Punt> open = punt.fetchOpenPunts();
-		Assert.assertTrue(open.contains(punts.get(0)));
+		return punt.generate();
+	}
+	
+	//Given a race is in the past 
+	//And the datasource has the race
+	//And the race histories are imported
+	//And the probabilities for the race have been calculated
+	//When the punts are generated
+	//Then there should be no punts on the race
+	@Test
+	public void testDontGeneratePuntsOnOldRaces() throws Exception {
+		//Given a race is in the past
+		String myOldRaceCode = "OLDRACECODE";
+		Race aRaceInThePast = aRace();
+		aRaceInThePast.setRaceCode(myOldRaceCode);
+		aRaceInThePast.setDate(new Date(System.currentTimeMillis() - 1000));
+		//And the datasource has the race
+		datasourceHasARace(aRaceInThePast);
+		//And the race histories are imported
+		ImportBusiness importer = new ImportBusiness();
+		importer.importRace(aRaceInThePast, true);
+		//And the probabilities for the race have been calculated
+		ProbabilityBusiness probabilities = new ProbabilityBusiness();
+		probabilities.generate(aRaceInThePast);
+		//When the punts are generated
+		List<Punt> punts = generatePunts();
+		//Then there should be no punts on the race
+		for (Punt punt : punts) {
+			if (myOldRaceCode.equals(punt.getRaceCode())) {
+				Assert.fail("Punt generated for " + myOldRaceCode);
+			}
+		}
+	}
+	
+	//Given a race has results
+	//And the datasource has the race
+	//And the datasource has the race result
+	//And the race histories are imported
+	//And the probabilities for the race have been calculated
+	//When the punts are generated
+	//Then there should be no punts on the race
+	@Test
+	public void testDontGeneratePuntsOnRacesWithResults() throws Exception {
+		//Given a race is in the past
+		String myResultsRaceCode = "RESULTSRACECODE";
+		Race aRaceInThePast = aRace();
+		aRaceInThePast.setRaceCode(myResultsRaceCode);
+		aRaceInThePast.setResult(new int[]{1});
+		//And the datasource has the race
+		datasourceHasARace(aRaceInThePast);
+		//And the datasource has the race result
+		datasource.addRaceResult(aRaceInThePast);
+		//And the race histories are imported
+		ImportBusiness importer = new ImportBusiness();
+		importer.importRace(aRaceInThePast, true);
+		//And the probabilities for the race have been calculated
+		ProbabilityBusiness probabilities = new ProbabilityBusiness();
+		probabilities.generate(aRaceInThePast);
+		//When the punts are generated
+		List<Punt> punts = generatePunts();
+		//Then there should be no punts on the race
+		for (Punt punt : punts) {
+			if (myResultsRaceCode.equals(punt.getRaceCode())) {
+				Assert.fail("Punt generated for " + myResultsRaceCode);
+			}
+		}
 	}
 	
 	//Given a punt has been generated
 	//And a bets has been placed for the punt
-	//When the open bets are fetched
+	//When the open stakes are fetched
 	//Then the punt should have a stake
+	//And the account should be debited
 	@Test
-	public void testPlacePunts() throws Exception {
+	public void testPlaceBets() throws Exception {
 		//Given a punt has been generated
-		testGeneratePunts();
-		PuntingBusiness biz = new PuntingBusiness();
-		List<Punt> punts = biz.fetchOpenPunts();
+		List<Punt> punts = generatePunts();
 
 		//And a bets has been placed for the punt
-		BettingBusiness bet = new BettingBusiness();
-		punts = bet.placeBets(punts);
-		//When the open bets are fetched
-		Punt punt = biz.fetchOpenPunts().get(0);
+		BettingBusiness bet = new BettingBusiness();		
+		bet.placeBets(punts);
+		
+		//When the stakes for the meet are fetched
+		PuntingBusiness pbiz = new PuntingBusiness();
+		Punt punt = pbiz.fetchPuntsForMeet(aMeet()).get(0);		
+		List<Stake> stakes = bet.getExistingOpenStakesForPunt(punt);
+		
 		//Then the punt should have a stake
-		Assert.assertTrue(punt.getStakes().size() > 0);
-		Assert.assertTrue(bet.fetchAccountAmount() == 9900);
+		Assert.assertTrue(stakes.size() > 0);
+		Assert.assertTrue(bet.fetchAccountAmount(ObjectifyGoodPuntsBookieImpl.ACCOUNT) == 9900);
+		
+		//return punt;
 	}
 	
+	
 	//Place multiple bets on the same punt
+	
+	
+	//-- Settle Stakes
+	//Given a punt has a stake
+	//And the punt is successful
+	//When the results are fetched
+	//And the stakes are settled
+	//Then the stakes should be settled 
+	//And the account should be credited
+	//And the account amount should equal the sum of the stakes
+	@Test
+	public void testSettleStakes() throws Exception {
+		BettingBusiness bbiz = new BettingBusiness();
+		
+		//Given a punt has a stake of 100 @ $10
+		testPlaceBets();
+		MockSpringDataSource ds = (MockSpringDataSource)SpringRacingServices.getSpringRacingDataSource();
+		double original = bbiz.fetchAccountAmount(ObjectifyGoodPuntsBookieImpl.ACCOUNT);
+		//And the punt is successful
+		Race aRace = aRace();
+		aRace.setResult(new int[]{1});
+		ds.addRaceResult(aRace);
+		//When the results are fetched
+		ImportBusiness importer = new ImportBusiness();
+		importer.importRaceResults();
+		//And the stakes are settled
+		bbiz.settleBets();
+		//Then the stakes should be settled 
+		List<Stake> settled = SpringRacingServices.getPuntingDAO().fetchSettledStakes();
+		double sumOfStakes = 0;
+		for (Stake stake : settled) {
+			Assert.assertTrue(stake.isSettled());
+			sumOfStakes += stake.getReturn();
+		}
+		//And the account should be credited $1000
+		double finalA = bbiz.fetchAccountAmount(ObjectifyGoodPuntsBookieImpl.ACCOUNT);
+		Assert.assertEquals(1000, finalA - original, 0.01);
+		//And the account amount should equal the sum of the stakes
+		Assert.assertEquals(1000, sumOfStakes, 0.01);		
+	}
+	
+	
+	//Alarm when a bookie settles wrong
+	
+	
 }

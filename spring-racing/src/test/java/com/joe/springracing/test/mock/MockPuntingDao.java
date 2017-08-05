@@ -10,6 +10,7 @@ import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.State;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
+import com.joe.springracing.objects.Stake;
 
 public class MockPuntingDao implements PuntingDAO {
 
@@ -53,7 +54,7 @@ public class MockPuntingDao implements PuntingDAO {
 	public List<Punt> fetchSettledPunts() {
 		List<Punt> open = new ArrayList<Punt>();
 		for (Punt punt : punts) {
-			if (State.SETTLED.equals(punt.getState())) {
+			if (State.FINISHED.equals(punt.getState())) {
 				open.add(punt);
 			}
 		}
@@ -79,6 +80,31 @@ public class MockPuntingDao implements PuntingDAO {
 	}
 
 	public Date getLastBookieUpdateTimestamp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updateStake(Stake stake) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Stake> fetchOpenStakes() {
+		// TODO Auto-generated method stub
+		return new ArrayList<Stake>();
+	}
+
+	public List<Stake> fetchSettledStakes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void storeStake(Stake stake) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Stake> fetchStakesForRace(Race race) {
 		// TODO Auto-generated method stub
 		return null;
 	}

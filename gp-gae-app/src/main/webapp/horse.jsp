@@ -36,7 +36,7 @@
 				</p>
 <% 			}%>
 <!-- @TODO Need to be able to get upcoming races for a horse -->
-			</p>		
+
 </body>
 </html>
 <%-- //[END all]--%>

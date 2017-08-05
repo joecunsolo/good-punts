@@ -12,7 +12,8 @@
        <module>gp-gae-app</module>
        <module>gp-gae-dao</module>
        <module>spring-racing</module>
-  	</modules>
+       <module>racing-com-mock</module>
+    </modules>
 	
 	<build>
 		<plugins>

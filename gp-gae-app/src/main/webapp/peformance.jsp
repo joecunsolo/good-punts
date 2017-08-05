@@ -36,38 +36,68 @@
 	<jsp:include page="menu.jsp" />
 	<table>
 		<thead>
-			<th>Punt</th>
-			<th>Runner</th>
-			<th>Odds</th>
-			<th>Stake</th>
-			<th>Return</th>
+			<tr>
+				<th>Date</th>
+				<th>Venue</th>
+				<th>Race</th>
+				<th>Punt</th>
+				<th>Runners</th>
+				<th>Odds</th>
+				<th>Stake</th>
+				<th>Return</th>
+			</tr>
 		</thead>
 		<tbody>
+			<tr>
+				<td colspan="8">Open Stakes</td>
+			</tr>
 <% 			PuntingBusiness business = new PuntingBusiness();
-			List<Punt> settled = business.fetchSettledPunts();
+			List<Stake> open = business.fetchOpenStakes();
 			DecimalFormat df = new DecimalFormat("0.0");
-			for (Punt punt : settled) { 
-				for (Stake stake : punt.getStakes()) { %>
-				<tr>
-					<td><%=punt.getRace().getDate() %></td>
-					<td><%=punt.getRace().getVenue() %></td>
-					<td>
-						<a href="race_probabilities.jsp?race_code=<%=punt.getRace().getRaceCode()%>">
-						Race <%=punt.getRace().getRaceNumber()%>
-						</a>
-					</td>
-					<td><%=punt.getType()%></td>
-					<td>
-<% 					for (Runner horse : punt.getRunners()) {%>
-						<%= horse.getNumber() + ".&nbsp;" + horse.getHorse() %>
-<% 					}%>
-					</td>
-					<td><%=stake.getOdds()%></td>
-					<td><%=stake.getAmount()%></td>
-					<td><%=stake.getReturn()%></td>
-				</tr>
-<%				}
-			}%>
+			for (Stake stake : open) { %>
+			<tr>
+				<td><%=stake.getDate() %></td>
+				<td><%=stake.getVenue() %></td>
+				<td>
+					<a href="race_probabilities.jsp?race_code=<%=stake.getRaceCode()%>">
+					Race <%=stake.getRaceNumber()%>
+					</a>
+				</td>
+				<td><%=stake.getType()%></td>
+				<td>
+<% 				for (Runner horse : stake.getRunners()) {%>
+					<%= horse.getNumber() + ".&nbsp;" + horse.getHorse() %>
+<% 				}%>
+				</td>
+				<td><%=stake.getOdds()%></td>
+				<td><%=stake.getAmount()%></td>
+				<td><%=stake.getReturn()%></td>
+			</tr>
+<%			}%>
+			<tr>
+				<td colspan="8">Settled Stakes</td>
+			</tr>
+<% 			List<Stake> settled = business.fetchSettledStakes();
+			for (Stake stake : settled) { %>
+			<tr>
+				<td><%=stake.getDate() %></td>
+				<td><%=stake.getVenue() %></td>
+				<td>
+					<a href="race_probabilities.jsp?race_code=<%=stake.getRaceCode()%>">
+					Race <%=stake.getRaceNumber()%>
+					</a>
+				</td>
+				<td><%=stake.getType()%></td>
+				<td>
+<% 				for (Runner horse : stake.getRunners()) {%>
+					<%= horse.getNumber() + ".&nbsp;" + horse.getHorse() %>
+<% 				}%>
+				</td>
+				<td><%=stake.getOdds()%></td>
+				<td><%=stake.getAmount()%></td>
+				<td><%=stake.getReturn()%></td>
+			</tr>
+<%			}%>
 		</tbody>
 	</table>
 </body>

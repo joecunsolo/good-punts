@@ -1,12 +1,8 @@
 package com.joe.springracing.objects;
 
-import java.util.List;
-
-import com.joe.springracing.business.Simulatable;
-import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.probability.Probability;
 
-public class Runner implements Simulatable {
+public class Runner { //implements Simulatable {
 	
 	private String horse;
 	private String jockey;
@@ -19,7 +15,7 @@ public class Runner implements Simulatable {
 	private double weight;	
 	
 	//TODO Move these out
-	private List<AnalysableObjectStatistic> statistics;
+//	private List<AnalysableObjectStatistic> statistics;
 	private Probability probability = new Probability();
 	
 	private int number;
@@ -72,14 +68,14 @@ public class Runner implements Simulatable {
 	public void setProbability(Probability probability) {
 		this.probability = probability;
 	}
-
-	public List<AnalysableObjectStatistic> getStatistics() {
-		return statistics;
-	}
-
-	public void setStatistics(List<AnalysableObjectStatistic> statistics) {
-		this.statistics = statistics;
-	}
+//
+//	public List<AnalysableObjectStatistic> getStatistics() {
+//		return statistics;
+//	}
+//
+//	public void setStatistics(List<AnalysableObjectStatistic> statistics) {
+//		this.statistics = statistics;
+//	}
 
 	public int getNumber() {
 		return number;
@@ -132,5 +128,17 @@ public class Runner implements Simulatable {
 	public boolean isEligible() {
 		return !isScratched() && !isEmergency();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Runner) {
+			return this.hashCode() == o.hashCode();
+		}
+		return false;
+	}
 
+	@Override
+	public int hashCode() {
+		return this.getHorse().hashCode() + this.getRaceCode().hashCode();
+	}
 }

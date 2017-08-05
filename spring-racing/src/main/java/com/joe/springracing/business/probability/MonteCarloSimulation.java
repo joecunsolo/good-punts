@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.joe.springracing.business.Simulatable;
 import com.joe.springracing.business.Simulator;
+import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.business.probability.distributions.GatheredDistribution;
 
 public class MonteCarloSimulation implements Simulator {
@@ -29,6 +30,10 @@ public class MonteCarloSimulation implements Simulator {
 		int[][] results = new int[simulations][horsesInRace + 1];
 		for (int i = 0; i < simulations; i++) {
 			results[i] = simulate(race, horsesInRace, desc);
+			for (int j = 0; j < results[i].length; j++) {
+				System.out.print(results[i][j] + ",");
+			}
+			System.out.println();
 		}
 		
 		setOdds(race);
@@ -57,6 +62,10 @@ public class MonteCarloSimulation implements Simulator {
 			probability.setNumberPlaces(places[runner.getNumber()]);
 			double place = probability.getNumberPlaces() / (double)this.simulations;
 			probability.setPlace(place);
+			
+			//TODO This is a hack - FIXME...
+			probability.setMean(((SingleVariateStatistic)runner.getStatistics().get(0)).getMean());
+			probability.setStandardDeviation(((SingleVariateStatistic)runner.getStatistics().get(0)).getStandardDeviation());
 			
 			runner.setProbability(probability);
 		}

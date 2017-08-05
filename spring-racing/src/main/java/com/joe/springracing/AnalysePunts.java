@@ -2,11 +2,9 @@ package com.joe.springracing;
 
 import java.util.List;
 
-import com.joe.springracing.business.AnalysePuntBusiness;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.PuntingBusiness;
 import com.joe.springracing.objects.Meeting;
-import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 
 public class AnalysePunts {
@@ -22,7 +20,7 @@ public class AnalysePunts {
 				System.out.println(meeting.getDate() + " "  + meeting.getVenue() + "(" + meeting.getMeetCode() + ")");
 				
 				new ProbabilityBusiness().generate(meeting.getRaces());
-				PuntingBusiness pb = new PuntingBusiness();
+//				PuntingBusiness pb = new PuntingBusiness();
 				
 				List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
 				meeting.setRaces(races);

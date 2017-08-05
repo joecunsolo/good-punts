@@ -8,35 +8,31 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import com.joe.springracing.SpringRacingServices;
+import com.joe.springracing.business.BettingBusiness;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.objects.Race;
 
 /**
- * For a horse with a given horse code imports the horse histories
- * ... This has a max timeout of 10 mins.
+ * Settle the stakes with the bookie
  * 
  * @author joe.cunsolo
  *
  */
-public class ImportRunnerHistoriesServlet extends GenericServlet {
+public class SettleStakesServlet extends GenericServlet {
 
 	private static final long serialVersionUID = 303946065697290155L;
 	
-	public static final String URL = "/import/histories";
-	public static final String KEY_HORSECODE = "horsecode";
-	public static final String KEY_RACECODE = "racecode";
+	public static final String URL = "/stakes/settle";
 
 	@Override
 	public void service(ServletRequest req, ServletResponse res)
 			throws ServletException, IOException {
-		String raceCode = req.getParameter(KEY_RACECODE);
 		try {
-			ImportBusiness importer = new ImportBusiness();
-			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
-			importer.importRace(race, true);	
+			BettingBusiness bets = new BettingBusiness();
+			bets.settleBets();	
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Unable to get histories for race " + raceCode);
+			System.out.println("Unable to setlles the stakes with the bookie");
 		}
 	}
 

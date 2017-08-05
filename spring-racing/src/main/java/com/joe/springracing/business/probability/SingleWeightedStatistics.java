@@ -7,6 +7,7 @@ import com.joe.springracing.business.Statistics;
 import com.joe.springracing.business.model.AnalysableObject;
 import com.joe.springracing.business.model.AnalysableObjectStatistic;
 import com.joe.springracing.business.model.Model;
+import com.joe.springracing.business.model.SimulatableRunner;
 import com.joe.springracing.business.model.AnalysableObjectRaceResultFilter;
 import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.objects.Horse;
@@ -18,7 +19,7 @@ public abstract class SingleWeightedStatistics implements Statistics {
 	private Model model;
 	private Runner runner;
 	
-	public List<AnalysableObjectStatistic> evaluate(Runner r, AnalysableObject o, Model m) {
+	public SimulatableRunner evaluate(Runner r, AnalysableObject o, Model m) {
 		this.setModel(m);
 		this.setRunner(r);
 				
@@ -30,7 +31,7 @@ public abstract class SingleWeightedStatistics implements Statistics {
 //		stats.add(evaluate(runner.getTrainer(), pastResults, m.getAttributes().getTrainerInfluence()));
 //		runner.getDistance().evaluate(pastResults);
 		
-		return stats;
+		return new SimulatableRunner(runner, stats);
 	}
 
 	private AnalysableObjectStatistic evaluate(AnalysableObject sObject, List<RunnerResult> pastResults, double influence) {
@@ -49,7 +50,6 @@ public abstract class SingleWeightedStatistics implements Statistics {
 		stat.setMean(mean);
 		double standardDeviation = model.getStandardDeviationCalculator().calculate(values);
 		stat.setStandardDeviation(standardDeviation);
-		
 		return stat;
 	}
 	

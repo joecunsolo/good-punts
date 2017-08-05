@@ -41,12 +41,13 @@
 	<jsp:include page="menu.jsp" />
 	<table>
 		<thead>
-			<th></th>
-			<th>Race</th>
-			<th>Punt</th>
-			<th>Runner</th>
-			<th>Odds</th>
-			<th>Market</th>
+			<tr>
+				<th>Race</th>
+				<th>Punt</th>
+				<th>Runner</th>
+				<th>Odds</th>
+				<th>Market</th>
+			</tr>
 		</thead>
 		<tbody>
 <% 			MeetBusiness mb = new MeetBusiness();
@@ -75,16 +76,7 @@
 						</td>
 						<td><%=df.format(punt.getJoesOdds())%></td>
 						<td><%=punt.getBookieOdds()%></td>
-					</tr>
-<%						for (Stake stake : punt.getStakes()) {%>
-					<tr>
-						<td colspan="4">
-						<%=df.format(stake.getAmount()) %> @ <%=df.format(stake.getOdds()) %>&nbpsp;
-						<%=df.format(stake.getAmount() * stake.getOdds()) %></td>
-						<td><%=punt.getState()%></td>
-					</tr>
-<%						}	
-					}
+<%					}
 				//}
 			}
 %>			</tbody>

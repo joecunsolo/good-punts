@@ -7,6 +7,7 @@ import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
+import com.joe.springracing.objects.Stake;
 
 public interface PuntingDAO {
 
@@ -31,12 +32,20 @@ public interface PuntingDAO {
 	
 	List<Punt> fetchPuntResults() throws Exception;
 
-	List<Punt> fetchSettledPunts();
-	
-	List<Punt> fetchOpenPunts();
-
-	void updateStakes(Punt punt);
+//	List<Punt> fetchSettledPunts();
+//	
+//	List<Punt> fetchOpenPunts();
 
 	Date getLastBookieUpdateTimestamp();
+
+	List<Stake> fetchOpenStakes();
+
+	List<Stake> fetchSettledStakes();
+
+	void storeStake(Stake stake);
 	
+	void updateStake(Stake stake);
+
+	List<Stake> fetchStakesForRace(Race race);
+
 }

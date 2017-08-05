@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
-import com.joe.springracing.objects.Runner;
 
 public class MeetBusiness {
 
@@ -34,14 +33,14 @@ public class MeetBusiness {
 		return meets;
 	}
 	
-	private boolean oddsSet(Race race) {
-		for (Runner runner : race.getRunners()) {
-			if (runner.hasOdds()) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean oddsSet(Race race) {
+//		for (Runner runner : race.getRunners()) {
+//			if (runner.hasOdds()) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	private Meeting getMeeting(List<Meeting> meets, String meetCode) {
 		for (Meeting meet : meets) {

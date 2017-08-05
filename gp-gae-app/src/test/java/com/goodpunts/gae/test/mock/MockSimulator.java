@@ -21,6 +21,7 @@ public class MockSimulator implements Simulator {
 		probs.setPlace(probability);
 		probs.setNumberPlaces(probability);
 		probs.setNumberWins(probability);
+		
 		for (Simulatable s : race) {
 			s.setProbability(probs);
 		}

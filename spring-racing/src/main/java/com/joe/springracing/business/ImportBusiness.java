@@ -8,6 +8,8 @@ import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.importer.Importer;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Punt;
+import com.joe.springracing.objects.Punt.State;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
@@ -116,27 +118,45 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	}
 
 	public void importRaceResults() {
-		Importer importer = new Importer();
-		
 		try {
-			List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults();
+			List<Race> races = fetchRacesWithoutResults();
 			for (Race race : races) {
-				getWriter().println();
-				getWriter().println(race.getVenue() + " "  + race.getRaceNumber() + " " + race.getDate());
-				getWriter().flush();
-				
-				int[] result = importer.importRaceResults(race);
-				race.setResult(result);
-				
-				SpringRacingServices.getSpringRacingDAO().storeRace(race);
+				importRaceResults(race);
 			}
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Unable to import race results");
 		}
 	}
 	
+	public List<Race> fetchRacesWithoutResults() throws Exception {
+		return SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults();
+	}
+	
+	public void importRaceResults(String raceCode) {
+		try {
+			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
+			importRaceResults(race);
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to import race results for " + raceCode);
+		}
+	}
+	
+	public void importRaceResults(Race race) throws Exception {
+		Importer importer = new Importer();
+		PuntingBusiness punts = new PuntingBusiness();
+		
+		getWriter().println();
+		getWriter().println(race.getVenue() + " "  + race.getRaceNumber() + " " + race.getDate());
+		getWriter().flush();
+		
+		int[] result = importer.importRaceResults(race);
+		race.setResult(result);
+		SpringRacingServices.getSpringRacingDAO().storeRace(race);
+		if (result != null) {
+			punts.settlePunts(race);
+		}
+	}
+
 	/** Just imports the horse histories */
 	@Deprecated
 	public void importExistingMeets() {
