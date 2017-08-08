@@ -21,7 +21,7 @@ import com.joe.springracing.services.PuntingServiceImpl;
 public class SpringRacingServices {
 
 	public static final String OFFLINE_DIRECTORY = "C:\\racing2\\";
-	public static final String RACINGDOTCOM_URL = "http://127.0.0.1:9000/";//"https://api.racing.com/";
+	public static final String RACINGDOTCOM_URL = "https://api.racing.com/";
 	public static final boolean USE_PROXY = false;
 	
 	private static Simulator simulator = new MonteCarloSimulation();
