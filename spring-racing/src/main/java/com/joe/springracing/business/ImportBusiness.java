@@ -137,7 +137,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 			importRaceResults(race);
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to import race results for " + raceCode);
+			throw new RuntimeException("Unable to import race results for " + raceCode, e);
 		}
 	}
 	
