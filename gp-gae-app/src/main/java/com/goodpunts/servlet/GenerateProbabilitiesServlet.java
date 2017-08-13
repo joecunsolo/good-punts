@@ -1,6 +1,7 @@
 package com.goodpunts.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -8,8 +9,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import com.joe.springracing.SpringRacingServices;
+import com.joe.springracing.business.BettingBusiness;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.PuntingBusiness;
+import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 
 public class GenerateProbabilitiesServlet extends GenericServlet {
@@ -31,8 +34,16 @@ public class GenerateProbabilitiesServlet extends GenericServlet {
 			probabilities.generate(race);
 			
 			//Generate the punts as well because we have them now..
-			PuntingBusiness punts = new PuntingBusiness();
-			punts.generate(race);
+			PuntingBusiness pbix = new PuntingBusiness();
+			List<Punt> punts = pbix.generate(race);
+			
+			//And then place bets on them
+			try {
+				BettingBusiness bet = new BettingBusiness();
+				bet.placeBets(punts);
+			} catch (Exception ex) {
+				throw new RuntimeException("Unable to place bets", ex);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to generate punts for " + raceCode, e);
 		}
