@@ -20,4 +20,5 @@ public interface Simulator {
 	 */
 	public void simulate(List<? extends Simulatable> race, int i, GatheredDistribution distribution, boolean desc);
 
+	public Simulator clone();
 }

@@ -14,6 +14,10 @@ public class MockSimulator implements Simulator {
 		probability = p;
 	}
 	
+	public Simulator clone() {
+		return new MockSimulator(probability);
+	}
+	
 	public void simulate(List<? extends Simulatable> race, int i,
 			GatheredDistribution distribution, boolean desc) {
 		Probability probs = new Probability();
