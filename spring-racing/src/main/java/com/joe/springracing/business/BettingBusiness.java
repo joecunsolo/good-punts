@@ -66,7 +66,9 @@ public class BettingBusiness extends AbstractSpringRacingBusiness {
 	public Stake placeBet(Punt punt, double amount) throws Exception {
 		if (amount > 0) {
 			Stake stake = SpringRacingServices.getBookieAccount().placeBet(punt, amount);
-			SpringRacingServices.getPuntingDAO().storeStake(stake);
+			if (stake != null) {
+				SpringRacingServices.getPuntingDAO().storeStake(stake);
+			}
 			return stake;
 		}
 		return null;

@@ -490,6 +490,7 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		        .load()
 		        .type(ObjStake.class) // We want only Punts
 		        .filter("settled", false) //Open Punts
+		        .filter("raceCode", race.getRaceCode())
 		        .list());
 	}
 	

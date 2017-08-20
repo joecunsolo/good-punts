@@ -34,10 +34,6 @@ public class MonteCarloSimulation implements Simulator {
 		int[][] results = new int[simulations][horsesInRace + 1];
 		for (int i = 0; i < simulations; i++) {
 			results[i] = simulate(race, horsesInRace, desc);
-			for (int j = 0; j < results[i].length; j++) {
-				System.out.print(results[i][j] + ",");
-			}
-			System.out.println();
 		}
 		
 		setOdds(race);

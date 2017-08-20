@@ -15,8 +15,10 @@ import com.goodpunts.objectify.ObjStatistic;
 import com.goodpunts.objectify.ObjectifyGoodPuntsBookieImpl;
 import com.goodpunts.objectify.ObjectifyPuntingDaoImpl;
 import com.goodpunts.objectify.ObjectifySpringRacingDaoImpl;
+import com.goodpunts.racing.mock.MockRacingDotComReader;
 import com.googlecode.objectify.ObjectifyService;
 import com.joe.springracing.SpringRacingServices;
+import com.joe.springracing.dao.datasource.RacingDotComDataSource;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
@@ -29,10 +31,11 @@ public class OfyHelper implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     // This will be invoked as part of a warm-up request, or the first user request if no warm-up
     // request.
-	  init();
+	  String folder = event.getServletContext().getRealPath("WEB-INF/../");
+	  init(folder);
   }
   
-  public static void init() {
+  public static void init(String folder) {
 	    ObjectifyService.register(Guestbook.class);
 	    ObjectifyService.register(Greeting.class);
 	    ObjectifyService.register(ObjMeet.class);
@@ -50,7 +53,7 @@ public class OfyHelper implements ServletContextListener {
 	    
 	    SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
 	    SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
-	    SpringRacingServices.setBookieAccount(new ObjectifyGoodPuntsBookieImpl());	  
+	    SpringRacingServices.setBookieAccount(new ObjectifyGoodPuntsBookieImpl());
   }
 
   public void contextDestroyed(ServletContextEvent event) {

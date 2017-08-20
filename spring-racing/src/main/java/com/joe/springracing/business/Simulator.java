@@ -9,7 +9,7 @@ import com.joe.springracing.business.probability.distributions.GatheredDistribut
  * @author joe
  *
  */
-public interface Simulator {
+public interface Simulator extends Cloneable {
 
 	/**
 	 * Runs a simulation of a race i times

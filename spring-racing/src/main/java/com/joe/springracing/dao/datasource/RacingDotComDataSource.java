@@ -72,7 +72,7 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 	
 	public Race fetchRaceResult(String raceCode) throws Exception {
 		Race race = fetchRace(raceCode);
-		String urlToRead = getRaceResultURL(race.getMeetCode(), race.getRaceNumber());
+		String urlToRead = getRaceResultURL(race);
 		
 		int[] result = reader.readRaceResult(urlToRead);
 		race.setResult(result);
@@ -84,9 +84,14 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 		return rdRunner.getHorseObject();
 	}
 	
-	public String getRaceResultURL(String meetCode, int race) {
-		return SpringRacingServices.getRacingDotComURL() + PREFIX_RACE_RESULTS_URL + meetCode + "/" + race;
+	public String getRaceResultURL(Race race) {
+		return SpringRacingServices.getRacingDotComURL() + getRaceResulSuffix(race);
 	}
+	
+	public String getRaceResulSuffix(Race race) {
+		return PREFIX_RACE_RESULTS_URL + race.getMeetCode() + "/" + race.getRaceNumber();
+	}
+
 
 	public String getRaceDayURL(int page, int resultsPerPage) {
 		return SpringRacingServices.getRacingDotComURL() + PREFIX_RACE_DAY_URL + page + "/" + resultsPerPage;

@@ -40,7 +40,7 @@
 			mb.sortMeetingsByDate(upcoming);
 			for (Meeting meet : upcoming) {%>
 				<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
-<%					List<Race> races =  SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meet);
+<%				List<Race> races =  SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meet);
 				mb.sortRacesByNumber(races);
 				for (Race race : races) {%>
 					<p style="margin-left:40px">

@@ -50,7 +50,7 @@ public class TestGAEEndToEnd {
 	public void setUp() {
 		helper.setUp();
 		closeable = ObjectifyService.begin();
-		OfyHelper.init();
+		OfyHelper.init(null);
 		
 		//set up mocks
 		datasource = new MockSpringDataSource();

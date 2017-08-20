@@ -20,6 +20,15 @@ public class ObjectifyGoodPuntsBookieImpl implements BookieAccount {
 	
 	/** Just matches what you have placed */
 	public Stake placeBet(Punt punt, double amount) {
+		try {
+			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(punt.getRaceCode());
+			if (race.getResult() != null) {
+				return null;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Stake stake = new Stake();
 		stake.setAmount(amount);
 		stake.setOdds(punt.getBookieOdds());
@@ -98,7 +107,7 @@ public class ObjectifyGoodPuntsBookieImpl implements BookieAccount {
 	 * If the race has results, the stake is settled and returned
 	 */
 	public List<Stake> getSettledBets(Date from) throws Exception {
-		List<? extends Stake> stakes = SpringRacingServices.getPuntingDAO().fetchOpenStakes();
+		List<Stake> stakes = SpringRacingServices.getPuntingDAO().fetchOpenStakes();
 		List<Stake> result = new ArrayList<Stake>();
 		for (Stake stake : stakes) {
 			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(stake.getRaceCode());

@@ -11,7 +11,8 @@
 <%@ page import="com.joe.springracing.objects.Punt" %>
 <%@ page import="com.joe.springracing.business.model.AnalysableObjectStatistic" %>
 <%@ page import="com.joe.springracing.business.model.stats.SingleVariateStatistic" %>
- <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.Comparator" %>
  
 <%-- //[END imports]--%>
 
@@ -63,15 +64,15 @@
 				</thead>
 				<tbody>
 <% 			List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+			int[] result = race.getResult();
+			runners.sort(new Comparator<Runner>() {
+				public int compare(Runner a, Runner b) {
+					return a.getNumber() - b.getNumber();
+				}
+			});
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {
-				//List<AnalysableObjectStatistic> stats = runner.getStatistics();
-				//if (stats != null &&
-				//	stats.size() > 0 &&
-				//	stats.get(0) instanceof SingleVariateStatistic) {
-				//	SingleVariateStatistic svs = (SingleVariateStatistic)stats.get(0);
 				%>
-					
 					<tr>
 						<td><%=runner.getNumber()%></td> 
 						<td><a href="horse.jsp?horse_code=<%=runner.getHorse() %>">
@@ -85,6 +86,13 @@
 						<td>
 							<%=runner.isScratched() ? "SCR" : ""%>
 							<%=runner.isEmergency() ? "EMG" : ""%>
+							<%if (result != null) {
+								for (int i = 0; i < result.length; i++) {
+									if (runner.getNumber() == result[i]) {%>
+										<%=i+1 %>
+<%									}
+								}
+							} %>
 						</td>
 					</tr>
 <%				//}
