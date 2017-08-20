@@ -65,11 +65,6 @@
 				<tbody>
 <% 			List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
 			int[] result = race.getResult();
-			runners.sort(new Comparator<Runner>() {
-				public int compare(Runner a, Runner b) {
-					return a.getNumber() - b.getNumber();
-				}
-			});
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {
 				%>
