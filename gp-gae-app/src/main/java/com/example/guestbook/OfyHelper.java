@@ -15,10 +15,8 @@ import com.goodpunts.objectify.ObjStatistic;
 import com.goodpunts.objectify.ObjectifyGoodPuntsBookieImpl;
 import com.goodpunts.objectify.ObjectifyPuntingDaoImpl;
 import com.goodpunts.objectify.ObjectifySpringRacingDaoImpl;
-import com.goodpunts.racing.mock.MockRacingDotComReader;
 import com.googlecode.objectify.ObjectifyService;
 import com.joe.springracing.SpringRacingServices;
-import com.joe.springracing.dao.datasource.RacingDotComDataSource;
 
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
