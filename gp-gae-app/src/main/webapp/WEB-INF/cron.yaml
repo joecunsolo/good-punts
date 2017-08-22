@@ -1,0 +1,16 @@
+cron:
+- url: /import/races
+  description: Import Upcoming Races
+  schedule: every 12 hours
+- url: /import/queue
+  description: Import Runner Histories
+  schedule: every 12 hours
+- url: /probabilities/queue
+  description: Generate Probabilities
+  schedule: every 12 hours
+- url: /race-results/queue
+  description: Import Results
+  schedule: every 1 hours
+- url: /stakes/settle
+  description: Settle open stakes
+  schedule: every 4 hours
