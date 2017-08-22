@@ -6,7 +6,7 @@ import java.util.List;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.joe.springracing.dao.SpringRacingDAO;
-import com.joe.springracing.exporter.RunnerHistoriesExporter;
+import com.joe.springracing.exporter.Exporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
@@ -179,7 +179,22 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		return result;
 	}
 
-	public void exportRunnerHistories(RunnerHistoriesExporter exporter) throws Exception {
+	public List<Race> fetchRacesWithResults() throws Exception {
+		List<ObjRace> races = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRace.class) // We want only Races
+		          .filter("results", true) //with results
+		          .list();
+	
+		List<Race> result = new ArrayList<Race>();
+		for (ObjRace oRace : races) {
+			Race r = toRace(oRace);
+			result.add(r);
+		}
+		return result;
+	}
+	
+	public void exportRunnerHistories(Exporter<RunnerResult> exporter) throws Exception {
 		List<ObjRunner> runners = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRunner.class) // We want only Runners
@@ -189,7 +204,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		}
 	}
 	
-	private void exportRunnerHistories(RunnerHistoriesExporter exporter, ObjRunner runner) {
+	private void exportRunnerHistories(Exporter<RunnerResult> exporter, ObjRunner runner) {
 		List<ObjRunnerResult> objResults = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRunnerResult.class) // We want only RunnerResults
@@ -222,15 +237,17 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		return null;
 	}
 
-//	public Runner fetchRunner(String raceCode, String horseCode) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	public void exportRunners(Exporter<Runner> exporter) throws Exception {
+		List<Race> races = fetchRacesWithResults();
+		for (Race race : races) {
+			exportRunnersForRace(exporter, race);
+		}
+	}
 
-//	public Runner fetchRunner(String raceCode, String horseCode) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-
+	private void exportRunnersForRace(Exporter<Runner> exporter, Race race) throws Exception {
+		List<Runner> runners = super.fetchRunnersForRace(race);
+		for (Runner runner : runners) {
+			exporter.export(runner);
+		}
+	}
 }

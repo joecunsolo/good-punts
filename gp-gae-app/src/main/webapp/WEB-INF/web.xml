@@ -38,6 +38,10 @@
 	  <servlet-class>com.goodpunts.servlet.ExportRunnerHistoriesServlet</servlet-class>
 	</servlet>
 	<servlet>
+	  <servlet-name>runners-export</servlet-name>
+	  <servlet-class>com.goodpunts.servlet.ExportRunnersServlet</servlet-class>
+	</servlet>
+		<servlet>
 	  <servlet-name>import-queue</servlet-name>
 	  <servlet-class>com.goodpunts.servlet.ImportHistoryQueueServlet</servlet-class>
 	</servlet>
@@ -75,6 +79,10 @@
 	  <url-pattern>/histories/export</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+	  <servlet-name>runners-export</servlet-name>
+	  <url-pattern>/runners/export</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
 	  <servlet-name>race-results-import</servlet-name>
 	  <url-pattern>race-results/import</url-pattern>
 	</servlet-mapping>

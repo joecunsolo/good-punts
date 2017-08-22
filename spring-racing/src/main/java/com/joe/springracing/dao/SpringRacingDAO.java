@@ -2,7 +2,8 @@ package com.joe.springracing.dao;
 
 import java.util.List;
 
-import com.joe.springracing.exporter.RunnerHistoriesExporter;
+import com.joe.springracing.exporter.CSVExporter;
+import com.joe.springracing.exporter.Exporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
@@ -50,7 +51,9 @@ public interface SpringRacingDAO {
 
 	public Meeting fetchMeet(String meetCode) throws Exception;
 
-	public void exportRunnerHistories(RunnerHistoriesExporter exporter) throws Exception;
+	public void exportRunnerHistories(Exporter<RunnerResult> exporter) throws Exception;
 
 	public List<Runner> fetchRunnersWithoutHistories() throws Exception;
+
+	public void exportRunners(Exporter<Runner> exporter) throws Exception;
 }

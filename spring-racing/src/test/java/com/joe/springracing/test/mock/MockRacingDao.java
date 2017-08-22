@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.joe.springracing.dao.SpringRacingDAO;
-import com.joe.springracing.exporter.RunnerHistoriesExporter;
+import com.joe.springracing.exporter.Exporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
@@ -77,7 +77,7 @@ public class MockRacingDao implements SpringRacingDAO {
 		return null;
 	}
 
-	public void exportRunnerHistories(RunnerHistoriesExporter exporter)
+	public void exportRunnerHistories(Exporter<RunnerResult> exporter)
 			throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -107,6 +107,11 @@ public class MockRacingDao implements SpringRacingDAO {
 	private List<Meeting> meetings = new ArrayList<Meeting>();
 	public List<Meeting> fetchUpcomingMeets() throws Exception {
 		return meetings;
+	}
+
+	public void exportRunners(Exporter<Runner> exporter) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

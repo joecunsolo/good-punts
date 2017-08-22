@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import com.joe.springracing.exporter.RunnerHistoriesExporter;
+import com.joe.springracing.exporter.Exporter;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Odds;
@@ -523,7 +523,7 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		return null;
 	}
 
-	public void exportRunnerHistories(RunnerHistoriesExporter exporter) throws Exception {
+	public void exportRunnerHistories(Exporter<RunnerResult> exporter) throws Exception {
 		// TODO Auto-generated method stub
 	}
 
@@ -545,6 +545,11 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 	public List<Meeting> fetchUpcomingMeets() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void exportRunners(Exporter<Runner> exporter) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
