@@ -30,6 +30,13 @@ public class CSVRunnerExporter extends CSVExporter<RaceRunner> {
 	}
 	
 	public String[] toRecord(RaceRunner runner) {
+		if (runner.race.getResult() != null) {
+			for (int i = 0; i < runner.race.getResult().length; i++) {
+				if (runner.runner.getNumber() == runner.race.getResult()[i]) {
+					runner.runner.setResult(i+1);
+				}
+			}
+		}
 		return new String[]{
 				runner.race.getRaceCode(),
 				String.valueOf(runner.race.getDate()),
