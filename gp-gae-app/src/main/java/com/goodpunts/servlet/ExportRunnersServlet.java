@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.exporter.CSVExporter;
 import com.joe.springracing.exporter.CSVRunnerExporter;
-import com.joe.springracing.exporter.CSVRunnerHistoriesExporter;
+import com.joe.springracing.exporter.RaceRunner;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.Race;
 
@@ -23,7 +23,7 @@ public class ExportRunnersServlet extends GenericServlet {
 
 	public static final String URL = "/runners/export";
 	public static final String FILENAME = "runners_export.csv";
-	private CSVExporter<Runner> exporter;
+	private CSVExporter<RaceRunner> exporter;
 	
 	@Override
 	public void service(ServletRequest req, ServletResponse res)
@@ -54,7 +54,7 @@ public class ExportRunnersServlet extends GenericServlet {
 	private void exportRaceProbabilities(Race race) throws Exception {
 		List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
 		for (Runner runner : runners) {
-			exporter.printRecord(runner);
+			exporter.printRecord(new RaceRunner(race, runner));
 		}
 	}
 }
