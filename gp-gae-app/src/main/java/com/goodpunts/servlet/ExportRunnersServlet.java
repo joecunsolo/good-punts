@@ -2,6 +2,7 @@ package com.goodpunts.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import com.joe.springracing.exporter.CSVExporter;
 import com.joe.springracing.exporter.CSVRunnerExporter;
 import com.joe.springracing.exporter.CSVRunnerHistoriesExporter;
 import com.joe.springracing.objects.Runner;
+import com.joe.springracing.objects.Race;
 
 public class ExportRunnersServlet extends GenericServlet {
 
@@ -21,6 +23,7 @@ public class ExportRunnersServlet extends GenericServlet {
 
 	public static final String URL = "/runners/export";
 	public static final String FILENAME = "runners_export.csv";
+	private CSVExporter<Runner> exporter;
 	
 	@Override
 	public void service(ServletRequest req, ServletResponse res)
@@ -30,13 +33,28 @@ public class ExportRunnersServlet extends GenericServlet {
 		PrintWriter writer = ((HttpServletResponse)res).getWriter();
 		
 		try {
-			CSVExporter<Runner> exporter = new CSVRunnerExporter(writer);
-			SpringRacingServices.getSpringRacingDAO().exportRunners(exporter);
+			exporter = new CSVRunnerExporter(writer);
+			exportProbabilities();
+			
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to export histories", e);
 		} finally {
 			writer.flush();
 			writer.close();	
+		}
+	}
+	
+	private void exportProbabilities() throws Exception {
+		List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesWithResults();
+		for (Race race : races) {
+			exportRaceProbabilities(race);
+		}
+	}
+	
+	private void exportRaceProbabilities(Race race) throws Exception {
+		List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+		for (Runner runner : runners) {
+			exporter.printRecord(runner);
 		}
 	}
 }

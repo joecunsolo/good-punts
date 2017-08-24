@@ -114,4 +114,9 @@ public class MockRacingDao implements SpringRacingDAO {
 		
 	}
 
+	public List<Race> fetchRacesWithResults() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
