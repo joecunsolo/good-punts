@@ -133,6 +133,9 @@ public class Race { //extends RacingObject {
 	}
 
 	public double getPrizeMoney(int position) {
+		if (prizeMoney == null) {
+			return 0;
+		}
 		if (position - 1 < prizeMoney.length) {
 			return prizeMoney[position - 1];
 		}
