@@ -17,7 +17,6 @@
 <%-- //[END imports]--%>
 
 <%@ page import="java.util.List" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>

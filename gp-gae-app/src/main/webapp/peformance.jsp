@@ -14,8 +14,6 @@
 <%-- //[END imports]--%>
 
 <%@ page import="java.util.List" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
