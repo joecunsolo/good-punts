@@ -13,7 +13,7 @@
 	<jsp:include page="menu.jsp" />
 
 	<p><a href="/histories/export">Horse Histories</a></p>					
-	<p><a href="/runners/export">Runner Results</a></p>					
+	<p><a href="/runners_export.jsp">Runner Results</a></p>					
 	
 </body>
 </html>

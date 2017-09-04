@@ -21,6 +21,7 @@
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {%>
 				<%=race.getDate() %>,
+				<%=race.getRaceCode() %>,
 				<%=race.getDistance() %>,
 			    <%=race.getMaxRunnerNumber() %>,
 			    <%=race.getVenue() %>,
@@ -29,6 +30,7 @@
 			    <%=runner.getTrainer() %>,
 				<%=runner.getNumber()%>,
 				<%=runner.getHorse() %>,
+				<%=SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse()).getPastResults().size()%>
 				<%=df.format(runner.getProbability().getMean())%>,
 				<%=df.format(runner.getProbability().getStandardDeviation())%>,
 				<%=df.format(runner.getWeight())%>,
