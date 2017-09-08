@@ -67,6 +67,8 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 		
 		//Store the results
 		SpringRacingServices.getPuntingDAO().storeProbabilities(race);
+		SpringRacingServices.getSpringRacingDAO().storeRace(race);
+		
 	}
 
 }

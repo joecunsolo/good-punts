@@ -19,6 +19,8 @@ public class ModelAttributes {
 	public static final double DEFAULT_MINIMUM_PERCENTAGE_STAKE = 0.5;
 	public static final double DEFAULT_MINIMUM_DOLLAR_STAKE = 1;
 	public static final double DEFAULT_MAXIUM_DOLLAR_STAKE = 1000;
+	public static final int DEFAULT_LONG_SPELL = 70;
+	public static final int DEFAULT_MINIUM_HORSES = 3;
 
 	private int simulations = DEFAULT_SIMULATIONS;
 	private double bookieHigh = BOOKIE_HIGH;
@@ -35,6 +37,8 @@ public class ModelAttributes {
 	private double minimumPercentageStake = DEFAULT_MINIMUM_PERCENTAGE_STAKE;
 	private double minimumDollarStake = DEFAULT_MINIMUM_DOLLAR_STAKE;
 	private double maximumDollarStake = DEFAULT_MAXIUM_DOLLAR_STAKE;
+	private int longSpell = DEFAULT_LONG_SPELL;
+	private int minimumThreeRaceHorses = DEFAULT_MINIUM_HORSES;
 	
 	public ModelAttributes() {
 	}
@@ -159,4 +163,19 @@ public class ModelAttributes {
 		this.minimumDollarStake = minimumDollarStake;
 	}
 
+	public int getLongSpell() {
+		return longSpell;
+	}
+
+	public void setLongSpell(int longSpell) {
+		this.longSpell = longSpell;
+	}
+
+	public int getMinimumThreeRaceHorses() {
+		return minimumThreeRaceHorses;
+	}
+
+	public void setMinimumThreeRaceHorses(int minimum) {
+		minimumThreeRaceHorses = minimum;
+	}
 }

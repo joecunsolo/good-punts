@@ -13,6 +13,8 @@ public class ObjHorse {
 	private String id;
 	@Index
 	private boolean histories;
+	private int numberOfRaces;
+	private int spell;
 	
 	public ObjHorse() {}
 	
@@ -41,6 +43,22 @@ public class ObjHorse {
 	
 	public boolean hasHistories() {
 		return histories;
+	}
+
+	public int getNumberOfRaces() {
+		return numberOfRaces;
+	}
+
+	public void setNumberOfRaces(int numberOfRaces) {
+		this.numberOfRaces = numberOfRaces;
+	}
+
+	public int getSpell() {
+		return spell;
+	}
+
+	public void setSpell(int spell) {
+		this.spell = spell;
 	}
 
 }

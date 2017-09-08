@@ -3,6 +3,7 @@ package com.joe.springracing.test;
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.objects.Race;
+import com.joe.springracing.objects.Runner;
 import com.joe.springracing.test.mock.MockRacingDao;
 import com.joe.springracing.test.mock.MockSpringDataSource;
 
@@ -17,14 +18,14 @@ public class TestImport extends TestCase {
 	 * And the horse's history imported
 	 * @throws Exception 
 	 */
-	public static void testImportNullHorse() throws Exception {
-		String horseCode = "not-in-db";
-		SpringRacingServices.setSpringRacingDataSource(new MockSpringDataSource());
-		SpringRacingServices.setSpringRacingDAO(new MockRacingDao());
-
-		ImportBusiness importer = new ImportBusiness();
-		importer.importRunner(horseCode, true, true);	
-	}
+//	public static void testImportNullHorse() throws Exception {
+//		String horseCode = "not-in-db";
+//		SpringRacingServices.setSpringRacingDataSource(new MockSpringDataSource());
+//		SpringRacingServices.setSpringRacingDAO(new MockRacingDao());
+//
+//		ImportBusiness importer = new ImportBusiness();
+//		importer.importRunner(horseCode, true, true);	
+//	}
 	
 
 	/**

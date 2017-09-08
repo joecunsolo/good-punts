@@ -1,6 +1,7 @@
 package com.joe.springracing.business;
 
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
@@ -8,13 +9,14 @@ import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.importer.Importer;
 import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
-import com.joe.springracing.objects.Punt;
-import com.joe.springracing.objects.Punt.State;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
 
 public class ImportBusiness extends AbstractSpringRacingBusiness {
+
+	//The number of milliseconds in a day
+	private static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 	public ImportBusiness() {
 		super(new PrintWriter(System.out));
@@ -40,6 +42,12 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		}
 	}
 	
+	/**
+	 * Imports the race and calculates any meta-data
+	 * @param race
+	 * @param histories
+	 * @throws Exception
+	 */
 	public void importRace(Race race, boolean histories) throws Exception {
 		getWriter().println(race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
 		getWriter().flush();
@@ -52,20 +60,38 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			if (existing != null) {
 				race.setHistories(existing.hasHistories());
 			}
-			importRunners(runners, histories, existing == null);			
+			//import the runners
+			int lessThan3Races = importRunners(runners, histories, existing == null);			
 			race.setHistories(histories || race.hasHistories());
+			//calculate the meta-data
+			if (race.hasHistories()) {
+				race.setNumberOfRunnersLessThan3Races(lessThan3Races);
+			}
 			SpringRacingServices.getSpringRacingDAO().storeRace(race);
 		}	
 	}
 
-	private void importRunners(List<Runner> runners, boolean histories, boolean newRace) throws Exception {
+	/**
+	 * Import these runners and returns the number of runners less than 3 races
+	 * @param runners the list of runners to import
+	 * @param histories do we want to import the histories as well?
+	 * @param newRace have we imported this race before?
+	 * @return the number of runners with less than 3 races
+	 * @throws Exception when one of the imports fails
+	 */
+	private int importRunners(List<Runner> runners, boolean histories, boolean newRace) throws Exception {
 		Importer importer = new Importer();
+		int runnersLessThan3 = 0;
 		for (Runner runner : runners) {
 			Horse horse = importer.fetchHorse(runner);
 //			horse.setHistories(!newRace && horse.hasHistories());
 //			getSpringRacingDAO().storeHorse(horse);
-			importRunner(horse, histories, newRace);
+			int races = importRunner(horse, histories, newRace);
+			if (races < 3) {
+				runnersLessThan3++;
+			}
 		}
+		return runnersLessThan3;
 	}
 		
 	/**
@@ -75,31 +101,33 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	 * @param newRace have we imported this race before?
 	 * @throws Exception when importing the runner fails
 	 */
-	public void importRunner(String horseCode, boolean histories, boolean newRace) throws Exception {
-		Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(horseCode);
-		if (horse == null) {
-			horse = fetchHorse(horseCode);
-		}
-		importRunner(horse, histories, newRace);
-	}
+//	public void importRunner(String horseCode, boolean histories, boolean newRace) throws Exception {
+//		Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(horseCode);
+//		if (horse == null) {
+//			horse = fetchHorse(horseCode);
+//		}
+//		importRunner(null, horse, histories, newRace);
+//	}
 		
-	private Horse fetchHorse(String horseCode) throws Exception {
-		Horse result = new Horse();
-		result.setCode(horseCode);
-		result.setName(horseCode);
-		result.setId(horseCode);
-		
-		return result;
-	}
+//	private Horse fetchHorse(String horseCode) throws Exception {
+//		Horse result = new Horse();
+//		result.setCode(horseCode);
+//		result.setName(horseCode);
+//		result.setId(horseCode);
+//		
+//		return result;
+//	}
 	
 	/**
 	 * Import the runner from the {@link Importer}
+	 * Also adds any meta-data for the runner
 	 * @param runner a horse in the race to import
 	 * @param histories do we want to import the histories as well?
 	 * @param newRace have we imported this race before?
+	 * @return the number of races this horse has run
 	 * @throws Exception when importing the runner fails
 	 */
-	public void importRunner(Horse horse, boolean histories, boolean newRace) throws Exception {
+	public int importRunner(Horse horse, boolean histories, boolean newRace) throws Exception {
 		Importer importer = new Importer();	
 		//If this is a new race so this horse doesn't have any history
 		//Or it isn't a new race but the horse doesn't have any history
@@ -108,15 +136,35 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		getWriter().flush();
 		
 		//Import the horse History
+		int races = 0;
 		if (histories) {
 			List<RunnerResult> results = importer.fetchPastResults(horse);
 			SpringRacingServices.getSpringRacingDAO().storeResults(results);			
 			//We've just successfully imported the history of this horse
 			horse.setHistories(true);
+			//add some meta-data about the horse			
+			horse.setNumberOfRaces(results.size());
+			horse.setSpell(calculateSpell(results));
+			races = results.size();
 		}
 		SpringRacingServices.getSpringRacingDAO().storeHorse(horse);
+		return races;
 	}
 
+	//How long since this horse last raced in days
+	public int calculateSpell(List<RunnerResult> results) {
+		results.sort(new Comparator<RunnerResult>() {
+			public int compare(RunnerResult o1, RunnerResult o2) {
+				return (int)(o1.getRaceDate().getTime() - o2.getRaceDate().getTime());
+			}});
+		if (results.size() > 0 &&
+				results.get(0).getRaceDate() != null) {
+			long timeSinceLastRace = System.currentTimeMillis() - results.get(0).getRaceDate().getTime();
+			return (int)(timeSinceLastRace / MILLIS_IN_A_DAY);			
+		}
+		return 0;
+	}
+	
 	public void importRaceResults() {
 		try {
 			List<Race> races = fetchRacesWithoutResults();

@@ -10,6 +10,8 @@ public class Horse extends AnalysableRacePropertyObject {
 	private String code;
 	private String id;
 	private boolean histories = false;
+	private int numberOfRaces;
+	private int spell;
 	
 	public Horse() {
 		results = new ArrayList<RunnerResult>();
@@ -76,5 +78,20 @@ public class Horse extends AnalysableRacePropertyObject {
 		return this.getName().hashCode();
 	}
 
+	public int getNumberOfRaces() {
+		return numberOfRaces;
+	}
 
+	public void setNumberOfRaces(int numberOfRaces) {
+		this.numberOfRaces = numberOfRaces;
+	}
+
+	/** Days since last race */
+	public int getSpell() {
+		return spell;
+	}
+
+	public void setSpell(int spell) {
+		this.spell = spell;
+	}
 }

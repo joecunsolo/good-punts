@@ -25,6 +25,7 @@ public class ObjRace  {
 	private double distance;
 	@Index
 	private boolean histories;
+	private int lessThan3Races;
 	
 	public ObjRace() {}
 	
@@ -102,6 +103,14 @@ public class ObjRace  {
 
 	public void setResults(boolean results) {
 		this.results = results;
+	}
+
+	public int getLessThan3Races() {
+		return lessThan3Races;
+	}
+
+	public void setLessThan3Races(int lessThan3Races) {
+		this.lessThan3Races = lessThan3Races;
 	}
 
 }

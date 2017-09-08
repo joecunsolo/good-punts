@@ -20,6 +20,7 @@ public class Race { //extends RacingObject {
 	private String raceCode;
 	private double distance;
 	private boolean histories;
+	private int lessThan3Races;
 	
 	public Race() {
 		runners = new ArrayList<Runner>();
@@ -156,6 +157,14 @@ public class Race { //extends RacingObject {
 
 	public void setHistories(boolean histories) {
 		this.histories = histories;
+	}
+
+	public void setNumberOfRunnersLessThan3Races(int lessThan3Races) {
+		this.lessThan3Races = lessThan3Races;
+	}
+	
+	public int getNumberOfRunnersLessThan3Races() {
+		return lessThan3Races;
 	}
 
 }

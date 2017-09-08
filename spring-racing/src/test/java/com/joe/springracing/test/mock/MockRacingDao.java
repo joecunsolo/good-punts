@@ -2,7 +2,9 @@ package com.joe.springracing.test.mock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.exporter.Exporter;
@@ -53,9 +55,9 @@ public class MockRacingDao implements SpringRacingDAO {
 		races.add(race);
 	}
 
+	Map<String, Horse> horses = new HashMap<String, Horse>();
 	public void storeHorse(Horse horse) throws Exception {
-		// TODO Auto-generated method stub
-
+		horses.put(horse.getCode(), horse);
 	}
 
 	public void storeResults(List<RunnerResult> results) throws Exception {
@@ -64,8 +66,7 @@ public class MockRacingDao implements SpringRacingDAO {
 	}
 
 	public Horse fetchHorse(String horse) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return horses.get(horse);
 	}
 
 	public List<Race> fetchRacesWithoutHistories() {

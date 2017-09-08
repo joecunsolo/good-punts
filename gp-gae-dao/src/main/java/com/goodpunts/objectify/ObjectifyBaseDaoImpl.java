@@ -113,6 +113,7 @@ public class ObjectifyBaseDaoImpl {
 		race.setResult(r.getResult());
 		race.setVenue(r.getVenue());
 		race.setHistories(r.hasHistories());
+		race.setNumberOfRunnersLessThan3Races(r.getLessThan3Races());
 		return race;
 	}
 	
@@ -172,6 +173,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setResults(race.getResult() != null);
 		result.setVenue(race.getVenue());
 		result.setHistories(race.hasHistories());
+		result.setLessThan3Races(race.getNumberOfRunnersLessThan3Races());
 		return result;
 	}
 	
@@ -181,6 +183,8 @@ public class ObjectifyBaseDaoImpl {
 		result.setName(horse.getName());
 		result.setId(horse.getId());
 		result.setHistories(horse.hasHistories());
+		result.setNumberOfRaces(horse.getNumberOfRaces());
+		result.setSpell(horse.getSpell());
 		return result;
 	}
 	
@@ -207,6 +211,8 @@ public class ObjectifyBaseDaoImpl {
 		horse.setId(objHorse.getId());
 		horse.setName(objHorse.getName());
 		horse.setHistories(objHorse.hasHistories());
+		horse.setNumberOfRaces(objHorse.getNumberOfRaces());
+		horse.setSpell(objHorse.getSpell());
 		return horse;
 	}
 	protected Key<ObjMeet> getMeetKey(Meeting meet) {

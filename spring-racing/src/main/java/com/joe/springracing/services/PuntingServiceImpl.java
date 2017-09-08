@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.ModelAttributes;
+import com.joe.springracing.objects.Horse;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.State;
@@ -127,39 +129,53 @@ public class PuntingServiceImpl implements PuntingService {
 	
 	private List<Punt> getAllGoodPuntsForRace(Race r) {
 		List<Punt> punts = new ArrayList<Punt>();
+		//Not enough horses with experience to bet on this
+		if (r.getNumberOfRunnersLessThan3Races() > model.getAttributes().getMinimumThreeRaceHorses()) {
+			return punts;
+		}
+		
 		double bookieHigh =  model.getAttributes().getBookieHigh();
 		
 		Collections.sort(r.getRunners(), new ProbailityComparator());
 		for (Runner runner : r.getRunners()) {
-			double winProbability = runner.getProbability().getWin();
-			double placeProbability = runner.getProbability().getPlace();
-			
-			double joeWinOdds = probabilityToOdds(winProbability);
-			double joePlaceOdds = probabilityToOdds(placeProbability);
-			
-			if (isPuntOnWin() &&
-					runner.getOdds().getWin() < bookieHigh &&
-					runner.getOdds().getWin() - joeWinOdds * 2.5 > 0 &&
-					!runner.isEmergency() &&
-					joeWinOdds < 5) {
-				Confidence c = calcConfidence(joeWinOdds, runner.getOdds().getWin());
-				Punt p = new Punt(r.getRaceCode(), r.getDate(), Type.WIN, joeWinOdds, runner.getOdds().getWin(), c, State.OPEN);
-				p.setRaceNumber(r.getRaceNumber());
-				p.setVenue(r.getVenue());
-				p.getRunners().add(runner);
-				punts.add(p);
-			}
-			if (isPuntOnPlace() &&
-					runner.getOdds().getPlace() < bookieHigh &&
-					runner.getOdds().getPlace() - joePlaceOdds * 2.5 > 0 &&
-					!runner.isEmergency() &&
-					joePlaceOdds < 3) {
-				Confidence c = calcConfidence(joePlaceOdds, runner.getOdds().getPlace());
-				Punt p = new Punt(r.getRaceCode(), r.getDate(), Type.PLACE, joePlaceOdds, runner.getOdds().getPlace(), c, State.OPEN);
-				p.setRaceNumber(r.getRaceNumber());
-				p.setVenue(r.getVenue());
-				p.getRunners().add(runner);
-				punts.add(p);
+			try {
+				Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse());
+				double winProbability = runner.getProbability().getWin();
+				double placeProbability = runner.getProbability().getPlace();
+				
+				double joeWinOdds = probabilityToOdds(winProbability);
+				double joePlaceOdds = probabilityToOdds(placeProbability);
+				
+				if (isPuntOnWin() &&
+						runner.getOdds().getWin() < bookieHigh &&
+						runner.getOdds().getWin() - joeWinOdds * 2.5 > 0 &&
+						!runner.isEmergency() &&
+						horse.getNumberOfRaces() > 1 &&
+						horse.getSpell() < model.getAttributes().getLongSpell() &&
+						joeWinOdds < 5) {
+					Confidence c = calcConfidence(joeWinOdds, runner.getOdds().getWin());
+					Punt p = new Punt(r.getRaceCode(), r.getDate(), Type.WIN, joeWinOdds, runner.getOdds().getWin(), c, State.OPEN);
+					p.setRaceNumber(r.getRaceNumber());
+					p.setVenue(r.getVenue());
+					p.getRunners().add(runner);
+					punts.add(p);
+				}
+				if (isPuntOnPlace() &&
+						runner.getOdds().getPlace() < bookieHigh &&
+						runner.getOdds().getPlace() - joePlaceOdds * 2.5 > 0 &&
+						!runner.isEmergency() &&
+						horse.getNumberOfRaces() > 1 &&
+						horse.getSpell() < model.getAttributes().getLongSpell() &&
+						joePlaceOdds < 3) {
+					Confidence c = calcConfidence(joePlaceOdds, runner.getOdds().getPlace());
+					Punt p = new Punt(r.getRaceCode(), r.getDate(), Type.PLACE, joePlaceOdds, runner.getOdds().getPlace(), c, State.OPEN);
+					p.setRaceNumber(r.getRaceNumber());
+					p.setVenue(r.getVenue());
+					p.getRunners().add(runner);
+					punts.add(p);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
@@ -169,7 +185,7 @@ public class PuntingServiceImpl implements PuntingService {
 				punts.add(p);
 			}
 		}
-		
+	
 		return punts;
 	}
 	

@@ -20,6 +20,10 @@ public class SimulatableRunner implements Simulatable {
 	private List<AnalysableObjectStatistic> stats;
 	/** The runner that will be used to identify the sim object */
 	private Runner runner;
+	/** The number of races this horse has run */
+	private int numberOfRaces;
+	/** When did this horse last race (days) */
+	private int spell;
 
 	public SimulatableRunner(Runner runner, List<AnalysableObjectStatistic> stats) {
 		setRunner(runner);
@@ -57,5 +61,21 @@ public class SimulatableRunner implements Simulatable {
 
 	public boolean isEligible() {
 		return runner.isEligible();
+	}
+
+	public int getNumberOfRaces() {
+		return numberOfRaces;
+	}
+
+	public void setNumberOfRaces(int numberOfRaces) {
+		this.numberOfRaces = numberOfRaces;
+	}
+
+	public int getSpell() {
+		return spell;
+	}
+
+	public void setSpell(int spell) {
+		this.spell = spell;
 	}
 }

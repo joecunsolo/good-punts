@@ -1,9 +1,9 @@
 package com.goodpunts.gae.test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -86,6 +86,9 @@ public class TestGAEEndToEnd {
 		result.setRaceCode(KEY_PASTRACECODE);
 		result.setHorse(forWho.getHorse());
 		result.setJockey(forWho.getJockey());
+		Calendar c= Calendar.getInstance();
+		c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) - 7);
+		result.setRaceDate(c.getTime());
 		return result;
 	}
 
@@ -103,6 +106,8 @@ public class TestGAEEndToEnd {
 		List<RunnerResult> pastResults = new ArrayList<RunnerResult>();
 		RunnerResult aResult = aResult(forWho);
 		pastResults.add(aResult);
+		RunnerResult anotherResult = aResult(forWho);
+		pastResults.add(anotherResult);
 		return pastResults;
 	}
 	
@@ -216,6 +221,30 @@ public class TestGAEEndToEnd {
 		Horse o = SpringRacingServices.getSpringRacingDAO().fetchHorse(aRunner().getHorse());
 		//Then the horse should contain the past results
 		Assert.assertTrue(o.getPastResults().contains(aResult(aRunner())));
+	}
+	
+	//Given a race is imported
+	//And the race histories are imported
+	//When the horse is fetched
+	//Then the horse stats should be calculated
+	//And the race stats should be calculated
+	@Test
+	public void testRunnerStatsAreCalculated() throws Exception {
+		//MockSpringDataSource ds = (MockSpringDataSource)SpringRacingServices.getSpringRacingDataSource();
+		
+		//Given a race is imported
+		testImportRaces();
+		//And the race histories are imported
+		ImportBusiness importer = new ImportBusiness();
+		importer.importRace(aRace(), true);
+		//When the horse is fetched
+		Horse o = SpringRacingServices.getSpringRacingDAO().fetchHorse(aRunner().getHorse());
+		//Then the horse stats should be calculated
+		Assert.assertTrue(o.getNumberOfRaces() > 0);
+		Assert.assertTrue(o.getSpell() > 0);
+		//And the race stats should be calculated
+		Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(aRace().getRaceCode());
+		Assert.assertTrue(race.getNumberOfRunnersLessThan3Races() == 1);
 	}
 	
 	//--- Scenario probabilities are generated
