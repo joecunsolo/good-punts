@@ -19,7 +19,7 @@ public class ModelAttributes {
 	public static final double DEFAULT_MINIMUM_PERCENTAGE_STAKE = 0.5;
 	public static final double DEFAULT_MINIMUM_DOLLAR_STAKE = 1;
 	public static final double DEFAULT_MAXIUM_DOLLAR_STAKE = 1000;
-	public static final int DEFAULT_LONG_SPELL = 70;
+	public static final int DEFAULT_LONG_SPELL = 100;
 	public static final int DEFAULT_MINIUM_HORSES = 3;
 
 	private int simulations = DEFAULT_SIMULATIONS;
