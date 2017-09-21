@@ -60,6 +60,7 @@
 						<td>%</td>
 						<td>Odds</td>
 						<td>Spell</td>
+						<td># Races</td>
 						<td></td>
 					</tr>
 				</thead>
@@ -81,6 +82,7 @@
 						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
 						<td><%=runner.getOdds().getWin()%></td>
 						<td><%=h.getSpell()%></td>
+						<td><%=h.getNumberOfRaces()%></td>
 						<td>
 							<%=runner.isScratched() ? "SCR" : ""%>
 							<%=runner.isEmergency() ? "EMG" : ""%>
