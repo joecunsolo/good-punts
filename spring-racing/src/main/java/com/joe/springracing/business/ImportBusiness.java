@@ -136,6 +136,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		getWriter().flush();
 		
 		//Import the horse History
+		System.out.println(horse.getName());
 		int races = 0;
 		if (histories) {
 			List<RunnerResult> results = importer.fetchPastResults(horse);
@@ -144,7 +145,9 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			horse.setHistories(true);
 			//add some meta-data about the horse			
 			horse.setNumberOfRaces(results.size());
+			System.out.println("Races: " + horse.getNumberOfRaces());
 			horse.setSpell(calculateSpell(results));
+			System.out.println("Spell: " + horse.getSpell());
 			races = results.size();
 		}
 		SpringRacingServices.getSpringRacingDAO().storeHorse(horse);
