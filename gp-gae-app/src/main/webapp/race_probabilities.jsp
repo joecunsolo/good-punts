@@ -9,6 +9,7 @@
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
 <%@ page import="com.joe.springracing.objects.Punt" %>
+<%@ page import="com.joe.springracing.objects.Horse" %>
 <%@ page import="com.joe.springracing.business.model.AnalysableObjectStatistic" %>
 <%@ page import="com.joe.springracing.business.model.stats.SingleVariateStatistic" %>
 <%@ page import="java.text.DecimalFormat" %>
@@ -58,6 +59,7 @@
 						<td>Weight</td>
 						<td>%</td>
 						<td>Odds</td>
+						<td>Spell</td>
 						<td></td>
 					</tr>
 				</thead>
@@ -66,6 +68,7 @@
 			int[] result = race.getResult();
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Runner runner : runners) {
+				Horse h = SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse());
 				%>
 					<tr>
 						<td><%=runner.getNumber()%></td> 
@@ -77,6 +80,7 @@
 						<td><%=df.format(runner.getWeight())%></td>
 						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
 						<td><%=runner.getOdds().getWin()%></td>
+						<td><%=h.getSpell()%></td>
 						<td>
 							<%=runner.isScratched() ? "SCR" : ""%>
 							<%=runner.isEmergency() ? "EMG" : ""%>
