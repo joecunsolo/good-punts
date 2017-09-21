@@ -1,6 +1,7 @@
 package com.joe.springracing.business;
 
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -156,7 +157,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 
 	//How long since this horse last raced in days
 	public int calculateSpell(List<RunnerResult> results) {
-		results.sort(new Comparator<RunnerResult>() {
+		Collections.sort(results, new Comparator<RunnerResult>() {
 			public int compare(RunnerResult o1, RunnerResult o2) {
 				return (int)(o1.getRaceDate().getTime() - o2.getRaceDate().getTime());
 			}});
