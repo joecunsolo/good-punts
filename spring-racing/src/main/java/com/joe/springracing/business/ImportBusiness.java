@@ -17,7 +17,7 @@ import com.joe.springracing.objects.RunnerResult;
 public class ImportBusiness extends AbstractSpringRacingBusiness {
 
 	//The number of milliseconds in a day
-	private static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+	public static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 	public ImportBusiness() {
 		super(new PrintWriter(System.out));
@@ -137,7 +137,6 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		getWriter().flush();
 		
 		//Import the horse History
-		System.out.println(horse.getName());
 		int races = 0;
 		if (histories) {
 			List<RunnerResult> results = importer.fetchPastResults(horse);
@@ -159,7 +158,16 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	public int calculateSpell(List<RunnerResult> results) {
 		Collections.sort(results, new Comparator<RunnerResult>() {
 			public int compare(RunnerResult o1, RunnerResult o2) {
-				return (int)(o1.getRaceDate().getTime() - o2.getRaceDate().getTime());
+				if (o1.getRaceDate() == null && o2.getRaceDate() == null) {
+					return 0;
+				}
+				if (o1.getRaceDate() == null) {
+					return 1;
+				}
+				if (o2.getRaceDate() == null) {
+					return -1;
+				}
+				return (int)(o2.getRaceDate().getTime() - o1.getRaceDate().getTime());
 			}});
 		if (results.size() > 0 &&
 				results.get(0).getRaceDate() != null) {
