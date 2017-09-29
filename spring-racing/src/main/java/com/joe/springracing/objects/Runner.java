@@ -13,6 +13,7 @@ public class Runner { //implements Simulatable {
 //	private Properties goodAt;
 	private String raceCode;
 	private double weight;	
+	private int barrier;
 	
 	//TODO Move these out
 //	private List<AnalysableObjectStatistic> statistics;
@@ -140,5 +141,13 @@ public class Runner { //implements Simulatable {
 	@Override
 	public int hashCode() {
 		return this.getHorse().hashCode() + this.getRaceCode().hashCode();
+	}
+
+	public int getBarrier() {
+		return barrier;
+	}
+
+	public void setBarrier(int barrier) {
+		this.barrier = barrier;
 	}
 }

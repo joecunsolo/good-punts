@@ -1,6 +1,5 @@
 package com.joe.springracing.dao.datasource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.joe.springracing.objects.Race;

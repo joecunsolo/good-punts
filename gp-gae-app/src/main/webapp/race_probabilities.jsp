@@ -3,6 +3,8 @@
 
 <%-- //[START imports]--%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
 <%@ page import="com.joe.springracing.business.MeetBusiness" %>
 <%@ page import="com.joe.springracing.SpringRacingServices" %>
 <%@ page import="com.joe.springracing.objects.Meeting" %>
@@ -53,6 +55,7 @@
 				<thead>
 					<tr>
 						<td>#</td>
+						<td>Barrier</td>
 						<td>Name</td>
 						<td>Mean</td>
 						<td>SD</td>
@@ -65,14 +68,21 @@
 					</tr>
 				</thead>
 				<tbody>
-<% 			List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+<% 			DecimalFormat df = new DecimalFormat("0.0");
 			int[] result = race.getResult();
-			DecimalFormat df = new DecimalFormat("0.0");
+			List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+
+			Collections.sort(runners, new Comparator<Runner>() {
+				public int compare(Runner r1, Runner r2) {
+					return r1.getNumber() - r2.getNumber();
+				}
+			});
 			for (Runner runner : runners) {
 				Horse h = SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse());
 				%>
 					<tr>
 						<td><%=runner.getNumber()%></td> 
+						<td><%=runner.getBarrier()==0?"-":runner.getBarrier()%></td> 
 						<td><a href="horse.jsp?horse_code=<%=runner.getHorse() %>">
 							<%=runner.getHorse()%>
 						</a></td>

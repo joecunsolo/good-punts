@@ -21,6 +21,7 @@ public class ObjRunner {
 	private boolean histories;
 	private String raceCode;
 	private double weight;
+	private int barrier;
 	
 	public ObjRunner() {}
 	
@@ -88,6 +89,14 @@ public class ObjRunner {
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public int getBarrier() {
+		return barrier;
+	}
+
+	public void setBarrier(int barrier) {
+		this.barrier = barrier;
 	}
 
 }

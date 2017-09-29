@@ -88,6 +88,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RUNNER_EMEGENCY = "emergencyentry";
 	public static final String KEY_RUNNER_SCRATCHED = "scratched";
 	public static final String KEY_RUNNER_NUMBER = "number";
+	public static final String KEY_RUNNER_BARRIER = "barriernumber";
 	public static final String KEY_RUNNER_JOCKEY = "urlsegment";
 	public static final String KEY_RUNNER_TRAINER = "urlsegment";
 	public static final String KEY_RUNNER_WEIGHT = "weight";
@@ -175,6 +176,7 @@ public class RacingDotComParser extends JsonReaderIO {
 			runner.setHorse(horse.getId());
 			runner.setTrainer(parseTrainer(jObject.get(KEY_TRAINER)));
 			runner.setJockey(parseJockey(jObject.get(KEY_JOCKEY)));
+			runner.setBarrier(Integer.parseInt(props.getProperty(KEY_RUNNER_BARRIER)));
 //			runner.setRaceCode(raceCode);
 			
 			JsonValue odds = jObject.get(KEY_ODDS);
