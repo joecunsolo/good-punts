@@ -3,6 +3,8 @@
 
 <%-- //[START imports]--%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
 <%@ page import="com.joe.springracing.business.PuntingBusiness" %>
 <%@ page import="com.joe.springracing.objects.Race" %>
 <%@ page import="com.joe.springracing.objects.Runner" %>
@@ -76,6 +78,11 @@
 				<td colspan="8">Settled Stakes</td>
 			</tr>
 <% 			List<Stake> settled = business.fetchSettledStakes();
+			Collections.sort(settled, new Comparator<Stake>() {
+				public int compare(Stake s1, Stake s2) {
+					return s1.getDate().compareTo(s2.getDate());
+				}
+			});
 			for (Stake stake : settled) { %>
 			<tr>
 				<td><%=stake.getDate() %></td>

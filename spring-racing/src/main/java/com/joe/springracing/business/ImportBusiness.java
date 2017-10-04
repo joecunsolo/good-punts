@@ -89,7 +89,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			if (!newRace) {
 				horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse());
 			} 
-			//Don't have the horse? Let's build it.
+			//Don't have the horse? Let's import it.
 			if (horse == null) {
 				horse = importer.fetchHorse(runner);
 			}
