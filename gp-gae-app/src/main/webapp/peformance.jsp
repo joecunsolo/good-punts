@@ -73,6 +73,7 @@
 				<td><%=stake.getOdds()%></td>
 				<td><%=stake.getAmount()%></td>
 				<td><%=stake.getReturn()%></td>
+				<td><%=stake.getBalance()%></td>
 			</tr>
 <%			}%>
 			<tr>
