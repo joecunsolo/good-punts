@@ -79,8 +79,7 @@ public class TestImportBusiness extends TestCase {
 		int spell = biz.calculateSpell(results);
 		Assert.assertEquals(7, spell);
 	}
-
-
+	
 	private static RunnerResult aResultWithoutADate() {
 		return aResult(null);
 	}

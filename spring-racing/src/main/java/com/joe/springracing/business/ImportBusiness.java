@@ -50,7 +50,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	 * @throws Exception
 	 */
 	public void importRace(Race race, boolean histories) throws Exception {
-		getWriter().println(race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
+		getWriter().println("Race: " + race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
 		getWriter().flush();
 
 		Importer importer = new Importer();
@@ -84,9 +84,17 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		Importer importer = new Importer();
 		int runnersLessThan3 = 0;
 		for (Runner runner : runners) {
-			Horse horse = importer.fetchHorse(runner);
-//			horse.setHistories(!newRace && horse.hasHistories());
-//			getSpringRacingDAO().storeHorse(horse);
+			Horse horse = null;
+			//Get the horse we have with it's meta-data
+			if (!newRace) {
+				horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse());
+			} 
+			//Don't have the horse? Let's build it.
+			if (horse == null) {
+				horse = importer.fetchHorse(runner);
+			}
+
+			//import the runner
 			int races = importRunner(horse, histories, newRace);
 			if (races < 3) {
 				runnersLessThan3++;

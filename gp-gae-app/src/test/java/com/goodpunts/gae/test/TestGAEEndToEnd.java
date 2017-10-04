@@ -131,7 +131,6 @@ public class TestGAEEndToEnd {
 		//And the runner has some past results
 		datasource.addPastResults(aRunner(), somePastResults(aRunner()));
 	}
-
 	
 	//--- Scenario a race is imported
 	//Given the datasource has a race
@@ -449,6 +448,28 @@ public class TestGAEEndToEnd {
 		Assert.assertEquals(1000, sumOfStakes, 0.01);		
 	}
 	
+	/**
+	 * Given a horse has a race result with a date of today -7
+	 * And the Races histories have been imported
+	 * And the horses spell is calculated
+	 * When the race is imported
+	 * Then the horse spell should equal 7
+	 * @throws Exception 
+	 */
+	@Test
+	public void testSpellPersistsWhenImportingRace() throws Exception {
+		testImportHistories();
+		//And the horses spell is calculated
+		Horse h = SpringRacingServices.getSpringRacingDAO().fetchHorse(KEY_HORSECODE);
+		int spell = h.getSpell();
+		//When the race is imported
+		testImportRaces();
+		//Then the horse spell should equal 7
+		h = SpringRacingServices.getSpringRacingDAO().fetchHorse(KEY_HORSECODE);
+		int spell2 = h.getSpell();
+		Assert.assertEquals("Horse spell has changed", spell, spell2);
+		
+	}
 	
 	//Alarm when a bookie settles wrong
 	
