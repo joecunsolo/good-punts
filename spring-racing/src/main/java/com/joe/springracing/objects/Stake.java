@@ -21,7 +21,9 @@ public class Stake extends Punt {
 	private Date date;
 	/** Has the bookie paid out */
 	private boolean settled;
-
+	/** The balance when the stake is settled */
+	private double balance;
+	
 	public double getAmount() {
 		return amount;
 	}
@@ -95,6 +97,14 @@ public class Stake extends Punt {
 	
 	public void setSettled(boolean settled) {
 		this.settled = settled;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.goodpunts.objectify;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -46,22 +45,26 @@ public class ObjectifyGoodPuntsBookieImpl implements BookieAccount {
 		stake.setState(punt.getState());
 		stake.setType(punt.getType());
 		
-		deductAccount(amount);
+		deductAccount(stake);
 		return stake;
 	}
 
-	private void deductAccount(double amount) {
+	private void deductAccount(Stake stake) {
 		double accountAmount = fetchAccountAmount();
-		accountAmount -= amount;
+		accountAmount -= stake.getAmount();
 		setAmount(accountAmount);
+		
+		stake.setBalance(accountAmount);
 	}
 	
-	private void creditAccount(double amount) {
+	private void creditAccount(Stake stake) {
 		double accountAmount = fetchAccountAmount();
-		accountAmount += amount;
+		accountAmount += stake.getReturn();
 		setAmount(accountAmount);
+		
+		stake.setBalance(accountAmount);
 	}
-	
+		
 	public double fetchAccountAmount() {
 		ObjAccount account = ObjectifyService.ofy()
 		          .load()
@@ -143,7 +146,7 @@ public class ObjectifyGoodPuntsBookieImpl implements BookieAccount {
 		if (Punt.Result.WIN.equals(stake.getResult())) {
 			stake.setReturn(stake.getAmount() * stake.getOdds());
 		}
-		creditAccount(stake.getReturn());
+		creditAccount(stake);		
 	}
 	
 }

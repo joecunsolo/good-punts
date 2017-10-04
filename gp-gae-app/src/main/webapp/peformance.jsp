@@ -45,6 +45,7 @@
 				<th>Odds</th>
 				<th>Stake</th>
 				<th>Return</th>
+				<th>Balance</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -101,6 +102,7 @@
 				<td><%=stake.getOdds()%></td>
 				<td><%=stake.getAmount()%></td>
 				<td><%=stake.getReturn()%></td>
+				<td><%=stake.getBalance()%></td>
 			</tr>
 <%			}%>
 		</tbody>
