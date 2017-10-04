@@ -50,7 +50,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="8">Open Stakes</td>
+				<td colspan="9">Open Stakes</td>
 			</tr>
 <% 			PuntingBusiness business = new PuntingBusiness();
 			List<Stake> open = business.fetchOpenStakes();
@@ -77,7 +77,7 @@
 			</tr>
 <%			}%>
 			<tr>
-				<td colspan="8">Settled Stakes</td>
+				<td colspan="9">Settled Stakes</td>
 			</tr>
 <% 			List<Stake> settled = business.fetchSettledStakes();
 			Collections.sort(settled, new Comparator<Stake>() {
