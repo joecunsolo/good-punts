@@ -11,6 +11,7 @@
 		$<%=df.format(SpringRacingServices.getBookieAccount().fetchAccountAmount())%>
 	</div>
 	<div>
+		<a href="picks.jsp">Picks</a><br />
 		<a href="punts.jsp">Punts</a><br />
 		<a href="probabilities.jsp">Probabilities</a><br />
 		<a href="peformance.jsp">Performance</a><br />
