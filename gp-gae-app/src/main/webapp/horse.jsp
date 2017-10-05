@@ -8,6 +8,8 @@
 <%@ page import="com.joe.springracing.objects.Horse" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
  
 <%-- //[END imports]--%>
 
@@ -23,8 +25,21 @@
 			Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(horseCode); %>
 						
 			<p><%=horse.getName() %></p>					
-<%			List<RunnerResult> results =  horse.getPastResults();%>
-<% 			for (RunnerResult r : results) {%>
+<%			List<RunnerResult> results =  horse.getPastResults();
+			Collections.sort(results, new Comparator<RunnerResult>() {
+				public int compare(RunnerResult o1, RunnerResult o2) {
+					if (o1.getRaceDate() == null && o2.getRaceDate() == null) {
+						return 0;
+					}
+					if (o1.getRaceDate() == null) {
+						return 1;
+					}
+					if (o2.getRaceDate() == null) {
+						return -1;
+					}
+					return (int)(o2.getRaceDate().getTime() - o1.getRaceDate().getTime());
+				}});
+ 			for (RunnerResult r : results) {%>
 				<p style="margin-left:40px">
 					<%=r.getRaceDate() %>&nbsp;
 					<%=r.getVenueName()%>&nbsp;
