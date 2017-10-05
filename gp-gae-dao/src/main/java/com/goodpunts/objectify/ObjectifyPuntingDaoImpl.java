@@ -422,6 +422,7 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 		result.setType(stake.getType());
 		result.setTxnNo(stake.getTxnNo());
 		result.setVenue(stake.getVenue());
+		result.setBalance(stake.getBalance());
 		return result;
 	}
 
