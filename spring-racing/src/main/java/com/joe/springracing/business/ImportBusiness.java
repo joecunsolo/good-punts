@@ -1,6 +1,7 @@
 package com.joe.springracing.business;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -26,15 +27,51 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	public void importUpcomingRaces(boolean histories) {
 		try {
 			Importer importer = new Importer();
-			List<Meeting> meets = importer.importUpcomingMeets();	
+			List<Race> races = importer.importUpcomingRaces();	
+			List<Meeting> meets = organiseRacesByMeeting(races);
+
 			for (Meeting meet : meets) {
 				SpringRacingServices.getSpringRacingDAO().storeMeet(meet);
-				
-				importRaces(meet.getRaces(), histories);
 			}
+			importRaces(races, histories);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private List<Meeting> organiseRacesByMeeting(List<Race> races) {
+		List<Meeting> meets = new ArrayList<Meeting>();
+		for (Race race : races) {
+			Meeting meeting = getMeeting(meets, race);
+			if (meeting == null) {
+				meeting = new Meeting();
+				meets.add(meeting);
+			} 
+			meeting.addRace(race);
+		}
+		return meets;
+	}
+	
+	private Meeting getMeeting (List<Meeting> meets, Race race) {
+		Meeting meeting = getMeeting(meets, race.getMeetCode());
+		if (meeting == null) {
+			meeting = new Meeting();
+			meeting.setMeetCode(race.getMeetCode());
+			meeting.setDate(race.getDate());
+			meeting.setVenue(race.getVenue());
+			meets.add(meeting);			
+		}
+		meeting.addRace(race);
+		return meeting;
+	}
+
+	private Meeting getMeeting(List<Meeting> meets, String meetCode) {
+		for (Meeting meet : meets) {
+			if (meet.getMeetCode().equals(meetCode)) {
+				return meet;
+			}
+		}
+		return null;
 	}
 	
 	private void importRaces(List<Race> races, boolean histories) throws Exception {
@@ -65,7 +102,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			int lessThan3Races = importRunners(runners, histories, existing == null);			
 			race.setHistories(histories || race.hasHistories());
 			//calculate the meta-data
-			if (race.hasHistories()) {
+			if (histories) {
 				race.setNumberOfRunnersLessThan3Races(lessThan3Races);
 			}
 			SpringRacingServices.getSpringRacingDAO().storeRace(race);
@@ -96,7 +133,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 
 			//import the runner
 			int races = importRunner(horse, histories, newRace);
-			if (races < 3) {
+			if (races < 3 && histories) {
 				runnersLessThan3++;
 			}
 		}
@@ -175,7 +212,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 				if (o2.getRaceDate() == null) {
 					return -1;
 				}
-				return (int)(o2.getRaceDate().getTime() - o1.getRaceDate().getTime());
+				return o2.getRaceDate().compareTo(o1.getRaceDate());
 			}});
 		if (results.size() > 0 &&
 				results.get(0).getRaceDate() != null) {
@@ -226,25 +263,25 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	}
 
 	/** Just imports the horse histories */
-	@Deprecated
-	public void importExistingMeets() {
-		Importer importer = new Importer();
-
-		try {
-			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
-			
-			for (Meeting meeting : meets) {
-				getWriter().println();
-				getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
-				
-				importer.importExistingMeet(meeting);
-				SpringRacingServices.getSpringRacingDAO().storeMeet(meeting);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@Deprecated
+//	public void importExistingMeets() {
+//		Importer importer = new Importer();
+//
+//		try {
+//			List<Meeting> meets = SpringRacingServices.getSpringRacingDAO().fetchExistingMeets();
+//			
+//			for (Meeting meeting : meets) {
+//				getWriter().println();
+//				getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
+//				
+//				importer.importExistingMeet(meeting);
+//				SpringRacingServices.getSpringRacingDAO().storeMeet(meeting);
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	public List<Race> fetchRacesWithoutHistories() {
 		return SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutHistories();

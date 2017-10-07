@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
+import com.joe.springracing.business.MeetBusiness;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
@@ -20,12 +21,12 @@ public class GenerateProbabilitiesQueueServlet extends GenericServlet {
 	private static final long serialVersionUID = -574531141170405668L;
 	public static final String URL = "/probabilities/queue";
 
-	private ProbabilityBusiness business; 
+	private MeetBusiness business; 
 	
 	@Override
 	public void service(ServletRequest arg0, ServletResponse arg1)
 			throws ServletException, IOException {
-		business = new ProbabilityBusiness();
+		business = new MeetBusiness();
 		List<Meeting> upcoming = business.fetchUpcomingMeets();
 		
 		for (Meeting meet : upcoming) {

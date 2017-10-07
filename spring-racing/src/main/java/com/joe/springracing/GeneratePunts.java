@@ -25,7 +25,7 @@ public class GeneratePunts {
 					System.out.println(meeting.getDate() + " "  + meeting.getVenue());
 					
 					List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
-					meeting.setRaces(races);
+//					meeting.setRaces(races);
 					new ProbabilityBusiness().generate(races);
 //					List<Punt> goodPunts = new PuntingBusiness().generateGoodPuntsForMeet(meeting);
 //					printGoodPunts(goodPunts);
@@ -43,20 +43,20 @@ public class GeneratePunts {
 	
 	public static void printStatistics(Meeting meeting) {
 		GeneratePunts gp = new GeneratePunts();
-		for (Race race : meeting.getRaces()) {
-			System.out.println();
-			System.out.println(race.getRaceNumber() + " " + race.getName());
-			List<Runner> runners = race.getRunners();
-			Collections.sort(runners, gp.new RunnersByProbability());
-			for (Runner runner : race.getRunners()) {
-				System.out.print(runner.getNumber() + " " + runner.getHorse() + " " + runner.getProbability().getWin() + " " + runner.getProbability().getPlace() + " ");
-//				for (RunnerResult result : runner.getHorse().getPastResults()) {
-//					System.out.print(result.getPosition() + ",");
-//				}
-//				SingleVariateStatistic stat = (SingleVariateStatistic)runner.getStatistics().get(0);
-//				System.out.println(" " + stat.getMean());
-			}
-		}
+//		for (Race race : meeting.getRaces()) {
+//			System.out.println();
+//			System.out.println(race.getRaceNumber() + " " + race.getName());
+//			List<Runner> runners = race.getRunners();
+//			Collections.sort(runners, gp.new RunnersByProbability());
+//			for (Runner runner : race.getRunners()) {
+//				System.out.print(runner.getNumber() + " " + runner.getHorse() + " " + runner.getProbability().getWin() + " " + runner.getProbability().getPlace() + " ");
+////				for (RunnerResult result : runner.getHorse().getPastResults()) {
+////					System.out.print(result.getPosition() + ",");
+////				}
+////				SingleVariateStatistic stat = (SingleVariateStatistic)runner.getStatistics().get(0);
+////				System.out.println(" " + stat.getMean());
+//			}
+//		}
 	}
 
 	public class RunnersByProbability implements Comparator<Runner> {

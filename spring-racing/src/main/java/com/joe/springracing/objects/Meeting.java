@@ -15,9 +15,9 @@ public class Meeting { //extends RacingObject {
 		races = new ArrayList<Race>();
 	}
 
-	public Meeting(Race race) {
-		// TODO Auto-generated constructor stub
-	}
+//	public Meeting(Race race) {
+//		// TODO Auto-generated constructor stub
+//	}
 
 	public String getMeetCode() {
 //		return getProperty(KEY_MEETCODE);
@@ -40,13 +40,13 @@ public class Meeting { //extends RacingObject {
 		}
 	}
 
-	public List<Race> getRaces() {
-		return races;
-	}
-
-	public void setRaces(List<Race> races2) {
-		this.races = races2;
-	}
+//	public List<Race> getRaces() {
+//		return races;
+//	}
+//
+//	public void setRaces(List<Race> races2) {
+//		this.races = races2;
+//	}
 
 	public void setMeetCode(String meetCode) {
 		this.meetCode = meetCode;

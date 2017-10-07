@@ -53,7 +53,7 @@
 			Model m = new Model(new ModelAttributes());
 
 			ProbabilityBusiness business = new ProbabilityBusiness();
-			List<Meeting> upcoming = business.fetchUpcomingMeets();
+			List<Meeting> upcoming = mb.fetchUpcomingMeets();
 			mb.sortMeetingsByDate(upcoming);
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Meeting meet : upcoming) {

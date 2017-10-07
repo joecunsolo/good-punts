@@ -34,7 +34,7 @@
 			DecimalFormat df = new DecimalFormat("0.0");
 			
 			ProbabilityBusiness business = new ProbabilityBusiness();
-			List<Meeting> upcoming = business.fetchUpcomingMeets();
+			List<Meeting> upcoming = mb.fetchUpcomingMeets();
 			
 			mb.sortMeetingsByDate(upcoming);
 			for (Meeting meet : upcoming) {%>

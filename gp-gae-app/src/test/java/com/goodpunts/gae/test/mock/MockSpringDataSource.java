@@ -32,9 +32,9 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 	
 	public void addMeet(Meeting meet) {
 		meets.add(meet);
-		for (Race race : meet.getRaces()) {
-			races.add(race);
-		}
+//		for (Race race : meet.getRaces()) {
+//			races.add(race);
+//		}
 	}
 	
 	public List<Race> fetchRaces() throws Exception {

@@ -97,13 +97,14 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 	}
 	
 	public List<Race> fetchRacesForMeet(Meeting meet) throws Exception {
-		File[] raceFiles = getMeetDirectory(meet.getMeetCode()).listFiles();
-		for (File raceDirectory : raceFiles) {
-			if (raceDirectory.isDirectory()) {
-				meet.addRace(readRace(raceDirectory));
-			}
-		}
-		return meet.getRaces();
+//		File[] raceFiles = getMeetDirectory(meet.getMeetCode()).listFiles();
+//		for (File raceDirectory : raceFiles) {
+//			if (raceDirectory.isDirectory()) {
+//				meet.addRace(readRace(raceDirectory));
+//			}
+//		}
+//		return meet.getRaces();
+		return null;
 	}
 	
 	public List<Race> fetchRaces(List<String> raceCodes) throws Exception {
@@ -134,7 +135,7 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		
 		String[] sRaceCodes = fromString(props.getProperty(KEY_RACE_CODE)); 
 		List<Race> races = fetchRaces(Arrays.asList(sRaceCodes));
-		m.setRaces(races);
+//		m.setRaces(races);
 		
 		return m;
 	}
@@ -292,11 +293,11 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		props.setProperty(KEY_MEET_TIME, dateFormat.format(meet.getDate()));
 		props.setProperty(KEY_MEET_CODE, meet.getMeetCode());
 		props.setProperty(KEY_MEET_VENUENAME, meet.getVenue());
-		String[] raceCodes = new String[meet.getRaces().size()];
-		for (int i = 0; i < raceCodes.length; i++) {
-			raceCodes[i] = meet.getRaces().get(i).getRaceCode();
-		}
-		props.setProperty(KEY_RACE_CODE, Arrays.toString(raceCodes));
+//		String[] raceCodes = new String[meet.getRaces().size()];
+//		for (int i = 0; i < raceCodes.length; i++) {
+//			raceCodes[i] = meet.getRaces().get(i).getRaceCode();
+//		}
+//		props.setProperty(KEY_RACE_CODE, Arrays.toString(raceCodes));
 		
 		return props;
 	}

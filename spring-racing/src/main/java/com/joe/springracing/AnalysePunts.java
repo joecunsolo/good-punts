@@ -19,11 +19,11 @@ public class AnalysePunts {
 				System.out.println();
 				System.out.println(meeting.getDate() + " "  + meeting.getVenue() + "(" + meeting.getMeetCode() + ")");
 				
-				new ProbabilityBusiness().generate(meeting.getRaces());
+//				new ProbabilityBusiness().generate(meeting.getRaces());
 //				PuntingBusiness pb = new PuntingBusiness();
 				
 				List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
-				meeting.setRaces(races);
+//				meeting.setRaces(races);
 //				List<Punt> goodPunts = pb.generateGoodPuntsForMeet(meeting);
 				//goodPunts = new PuntingBusiness(m).addWinAndPlacePunts(goodPunts);
 //				goodPunts = pb.getPlacePunts(goodPunts);

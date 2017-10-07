@@ -1,67 +1,33 @@
 package com.joe.springracing.business;
 
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.joe.springracing.AbstractSpringRacingBusiness;
+import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
 
-public class MeetBusiness {
+public class MeetBusiness extends AbstractSpringRacingBusiness {
 
-	List<Meeting> meets = new ArrayList<Meeting>();
 	
-	public List<Meeting> organiseRacesByMeeting(List<Race> races) {
-		//List<Meeting> meets = new ArrayList<Meeting>();
-		for (Race race : races) {
-//			if (race.getRunners() != null &&
-//					race.getRunners().size() > 0 &&
-//					oddsSet(race)) {
-				Meeting meeting = getMeeting(race);
-				if (meeting == null) {
-					meeting = new Meeting(race);
-					meets.add(meeting);
-				} 
-				meeting.addRace(race);
-//			}
-		}
-		return meets;
+	public MeetBusiness() {
+		this(new PrintWriter(System.out));
+	}
+
+	public MeetBusiness(PrintWriter pw) {
+		super(pw);
 	}
 	
-	public List<Meeting> getMeetings() {
-		return meets;
-	}
-	
-//	private boolean oddsSet(Race race) {
-//		for (Runner runner : race.getRunners()) {
-//			if (runner.hasOdds()) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
-	private Meeting getMeeting(List<Meeting> meets, String meetCode) {
-		for (Meeting meet : meets) {
-			if (meet.getMeetCode().equals(meetCode)) {
-				return meet;
-			}
+	public List<Meeting> fetchUpcomingMeets() {
+		try {
+			return SpringRacingServices.getSpringRacingDAO().fetchUpcomingMeets();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	public Meeting getMeeting (Race race) {
-		Meeting meeting = getMeeting(meets, race.getMeetCode());
-		if (meeting == null) {
-			meeting = new Meeting();
-			meeting.setMeetCode(race.getMeetCode());
-			meeting.setDate(race.getDate());
-			meeting.setVenue(race.getVenue());
-			meets.add(meeting);			
-		}
-		meeting.addRace(race);
-		return meeting;
 	}
 	
 	public void sortMeetingsByDate(List<Meeting> meets) {
@@ -82,6 +48,25 @@ public class MeetBusiness {
 		public int compare(Race o1, Race o2) {
 			return o1.getRaceNumber() > o2.getRaceNumber() ? 1 : -1;
 		}
+	}
+
+	public List<Race> fetchRacesForMeet(Meeting meeting) {
+		getWriter().println();
+		getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
+		
+		try {
+			return SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meeting);
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to fetch races for meet " + meeting.getMeetCode(), e);
+		}		
+	}
+
+	public Meeting fetchMeet(String meetCode) {
+		try {
+			return SpringRacingServices.getSpringRacingDAO().fetchMeet(meetCode);
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to fetch meet " + meetCode, e);
+		}	
 	}
 
 }

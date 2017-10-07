@@ -54,13 +54,13 @@ public class PuntingServiceImpl implements PuntingService {
 		return puntsForRace;
 	}
 	
-	public List<Punt> generate(Meeting meet) throws Exception {
-		List<Punt> punts = new ArrayList<Punt>();
-		for (Race race : meet.getRaces()) {
-			punts.addAll(generate(race));
-		}
-		return punts;
-	}
+//	public List<Punt> generate(Meeting meet) throws Exception {
+//		List<Punt> punts = new ArrayList<Punt>();
+//		for (Race race : meet.getRaces()) {
+//			punts.addAll(generate(race));
+//		}
+//		return punts;
+//	}
 	
 	private void updatePuntTypes(Type[] goodPuntTypes) {
 		for (Type t : goodPuntTypes) {

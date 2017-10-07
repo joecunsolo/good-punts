@@ -18,12 +18,12 @@ public class Importer {
 		datasource = SpringRacingServices.getSpringRacingDataSource();
 	}
 		
-	public List<Meeting> importUpcomingMeets() throws Exception {
-		List<Race> races = importUpcomingRaces();
-		
-		List<Meeting> meets = new MeetBusiness().organiseRacesByMeeting(races);
-		return meets;
-	}
+//	public List<Meeting> importUpcomingMeets() throws Exception {
+//		List<Race> races = importUpcomingRaces();
+//		
+//		List<Meeting> meets = new MeetBusiness().organiseRacesByMeeting(races);
+//		return meets;
+//	}
 	
 	public List<Race> importUpcomingRaces() throws Exception {
 		List<Race> races = datasource.fetchRaces();				
@@ -104,18 +104,18 @@ public class Importer {
 		this.datasource = datasource;
 	}
 
-	public void importExistingMeet(Meeting meeting) throws Exception {
-		for (Race race : meeting.getRaces()) {
-			importExistingRace(race);
-		}
-	}
+//	public void importExistingMeet(Meeting meeting) throws Exception {
+//		for (Race race : meeting.getRaces()) {
+//			importExistingRace(race);
+//		}
+//	}
 
-	private void importExistingRace(Race race) throws Exception {
-		for (Runner runner : race.getRunners()) {
-//			List<RunnerResult> results = fetchPastResults(runner);
-//			runner.getHorse().setPastResults(results);
-		}
-	}
+//	private void importExistingRace(Race race) throws Exception {
+//		for (Runner runner : race.getRunners()) {
+////			List<RunnerResult> results = fetchPastResults(runner);
+////			runner.getHorse().setPastResults(results);
+//		}
+//	}
 
 	public Horse fetchHorse(Runner runner) throws Exception {
 		return this.datasource.fetchHorse(runner);

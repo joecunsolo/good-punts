@@ -69,8 +69,12 @@ public class PuntingBusiness {
 		SpringRacingServices.getPuntingDAO().storePunts(race, punts);
 	}
 
-	public List<Punt> fetchPuntsForMeet(Meeting meet) throws Exception {
-		return SpringRacingServices.getPuntingDAO().fetchPuntsForMeet(meet);
+	public List<Punt> fetchPuntsForMeet(Meeting meet) {
+		try {
+			return SpringRacingServices.getPuntingDAO().fetchPuntsForMeet(meet);
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to fetch punts for meet", e);
+		}
 	}
 
 }

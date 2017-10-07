@@ -1,6 +1,8 @@
 package com.joe.springracing.test;
 
 import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,24 @@ public class TestImportBusiness extends TestCase {
 		Assert.assertEquals(7, spell);
 	}
 	
+	public static void testCalculateSpellWithLongDates() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd HH:mm:ss yyyy");
+		List<RunnerResult> results = new ArrayList<RunnerResult>();
+		
+		results.add(aResult(sdf.parse("Dec 04 19:15:00 2015")));
+		results.add(aResult(sdf.parse("Feb 09 10:45:00 2015")));
+		results.add(aResult(sdf.parse("Nov 23 12:40:00 2015")));
+		results.add(aResult(sdf.parse("Jan 02 16:05:00 2016")));
+		results.add(aResult(sdf.parse("Jan 12 15:30:00 2017")));
+		results.add(aResult(sdf.parse("Jan 30 14:47:00 2016"))); 
+		results.add(aResult(sdf.parse("Jun 04 12:33:00 2016")));
+		results.add(aResult(sdf.parse("Jan 31 16:00:00 2017")));
+		
+		ImportBusiness biz = new ImportBusiness();
+		int spell = biz.calculateSpell(results);
+		System.out.println(spell);
+	}
+			
 	private static RunnerResult aResultWithoutADate() {
 		return aResult(null);
 	}

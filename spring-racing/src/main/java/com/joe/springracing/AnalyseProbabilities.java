@@ -38,15 +38,15 @@ public class AnalyseProbabilities {
 
 	private static void printAndSortMeet(Meeting meeting) {
 		AnalyseProbabilities ap = new AnalyseProbabilities();
-		for (Race race : meeting.getRaces()) {
-			System.out.println();
-			System.out.println(race.getRaceNumber() + " " + race.getName());
-
-			List<Runner> runners = race.getRunners();
-			Collections.sort(runners, ap.new RunnerProbabilitySort());
-			
-//			printRunners(runners);
-		}
+//		for (Race race : meeting.getRaces()) {
+//			System.out.println();
+//			System.out.println(race.getRaceNumber() + " " + race.getName());
+//
+//			List<Runner> runners = race.getRunners();
+//			Collections.sort(runners, ap.new RunnerProbabilitySort());
+//			
+////			printRunners(runners);
+//		}
 	}
 	
 	private static void printRunners(List<List<AnalysableObjectStatistic>> runners) {

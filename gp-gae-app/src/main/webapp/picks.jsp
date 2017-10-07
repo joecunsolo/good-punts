@@ -54,13 +54,13 @@
 			Model m = new Model(new ModelAttributes());
 
 			ProbabilityBusiness business = new ProbabilityBusiness();
-			List<Meeting> upcoming = business.fetchUpcomingMeets();
+			List<Meeting> upcoming = mb.fetchUpcomingMeets();
 			mb.sortMeetingsByDate(upcoming);
 			DecimalFormat df = new DecimalFormat("0.0");
 			for (Meeting meet : upcoming) {
 				//if (meet.getDate().getTime() > System.currentTimeMills() - 24 * 60 * 60 * 1000) { %>
 					<tr><td colspan="5"><%=meet.getDate() %> <%=meet.getVenue() %></td></tr>		
-<%				List<Race> races =  business.fetchRacesForMeet(meet);
+<%				List<Race> races =  mb.fetchRacesForMeet(meet);
 				Collections.sort(races, new Comparator<Race>() {
 						public int compare(Race r1, Race r2) {
 							return r1.getRaceNumber() - r2.getRaceNumber();

@@ -20,7 +20,7 @@ public class ImportData {
 			importer.importRaceResults();
 		} else 
 		if (IMPORT_FLAG == IMPORT_EXISTING_MEETS) {
-			importer.importExistingMeets();
+//			importer.importExistingMeets();
 		}
 	}
 }

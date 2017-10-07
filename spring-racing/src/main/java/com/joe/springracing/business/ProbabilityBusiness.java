@@ -19,15 +19,7 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 		super(pw);
 	}
 
-	public List<Meeting> fetchUpcomingMeets() {
-		try {
-			return SpringRacingServices.getSpringRacingDAO().fetchUpcomingMeets();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+	@Deprecated
 	public List<Race> fetchRacesForMeet(Meeting meeting) {
 		getWriter().println();
 		getWriter().println(meeting.getDate() + " "  + meeting.getVenue());
@@ -69,6 +61,14 @@ public class ProbabilityBusiness extends AbstractSpringRacingBusiness {
 		SpringRacingServices.getPuntingDAO().storeProbabilities(race);
 		SpringRacingServices.getSpringRacingDAO().storeRace(race);
 		
+	}
+
+	public List<Runner> fetchProbabilitiesForRace(Race race) {
+		try {
+			return SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to fetch probabilities for race", e);
+		}
 	}
 
 }

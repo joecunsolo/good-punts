@@ -52,12 +52,31 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 	}
 
 	private void storeOdds(Key<ObjRunner> runnerKey, Runner runner) {
-		ObjOdds odds = toObjOdds(runnerKey, runner);
+		//If there are already odds - 
+		List<ObjOdds> oddsList = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjOdds.class) // We want only Odds
+		          .ancestor(runnerKey)    // for this horse
+		          .list();
+		ObjOdds odds = null;
+		//Update them
+		if (oddsList.size() > 0) {
+			odds = oddsList.get(0);
+			odds.setPlace(runner.getOdds().getPlace());
+			odds.setWin(runner.getOdds().getWin());
+		}
+		//Create a new one
+		if (odds == null) {
+			odds = toObjOdds(runnerKey, runner);
+		}
 		ObjectifyService.ofy().save().entity(odds).now();
 	}
 
 	private ObjOdds toObjOdds(Key<ObjRunner> runnerKey, Runner runner) {
-		return new ObjOdds(runnerKey, runner);
+		ObjOdds odds = new ObjOdds(runnerKey, runner);
+		odds.setPlace(runner.getOdds().getPlace());
+		odds.setWin(runner.getOdds().getWin());
+		return odds;
 	}
 
 	public void storeHorse(Horse horse) throws Exception {
