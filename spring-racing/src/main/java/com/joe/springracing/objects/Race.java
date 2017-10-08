@@ -21,6 +21,7 @@ public class Race { //extends RacingObject {
 	private double distance;
 	private boolean histories;
 	private int lessThan3Races;
+	private boolean trial;
 	
 	public Race() {
 		runners = new ArrayList<Runner>();
@@ -165,6 +166,14 @@ public class Race { //extends RacingObject {
 	
 	public int getNumberOfRunnersLessThan3Races() {
 		return lessThan3Races;
+	}
+
+	public boolean isTrial() {
+		return trial;
+	}
+
+	public void setTrial(boolean trial) {
+		this.trial = trial;
 	}
 
 }

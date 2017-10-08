@@ -53,6 +53,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RACE_RESULT = "result";
 	public static final String KEY_RACE_DISTANCE = "distance";
 	public static final String KEY_RACE_PRIZEMONEY = "prizemoneydetails";
+	public static final String KEY_RACE_ISTRIAL = "istrial";
 	
 	public static final String KEY_RESULT_NUMBER = "raceentrynumber";
 	public static final String KEY_RESULT_POSITION = "position";
@@ -134,6 +135,7 @@ public class RacingDotComParser extends JsonReaderIO {
 		race.setName(props.getProperty(KEY_RACE_NAME));
 		race.setVenue(props.getProperty(KEY_RACE_VENUE));
 		race.setDistance(Double.parseDouble(props.getProperty(KEY_RACE_DISTANCE)));
+		race.setTrial(Boolean.TRUE.toString().equals(props.getProperty(KEY_RACE_ISTRIAL)));
 		try {
 			race.setDate(raceDateFormat.parse(props.getProperty(KEY_RACE_TIME)));
 		} catch (ParseException pe) {
@@ -219,6 +221,7 @@ public class RacingDotComParser extends JsonReaderIO {
 				result.setRaceCode(race.getRaceCode());
 				result.setDistance(race.getDistance());
 				result.setWeight(Double.parseDouble(props.getProperty(KEY_RESULT_WEIGHT)));
+				result.setTrial(race.isTrial());
 				
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);

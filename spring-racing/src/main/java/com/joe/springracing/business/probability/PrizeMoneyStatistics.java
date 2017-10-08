@@ -29,6 +29,7 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 			}
 			
 			if (runnerResult.getRaceDate() != null &&
+					! runnerResult.isTrial() &&
 					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() < A_YEAR) {
 				list.add(getResult(runnerResult));
 			}
@@ -61,10 +62,7 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 			if (d2 == null) {
 				return -1;
 			}
-			if (d1.getTime() > d2.getTime()) {
-				return -1;
-			}
-			return 1;
+			return d1.compareTo(d2);
 		}
 		
 		private Date toDate(RunnerResult arg) {

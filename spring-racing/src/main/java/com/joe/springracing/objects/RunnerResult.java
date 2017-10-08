@@ -27,6 +27,7 @@ public class RunnerResult {
 	//TODO Splits and Sectionals
 	private boolean resultsFetched;
 	private double weight;
+	private boolean trial;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -247,6 +248,14 @@ public class RunnerResult {
 	@Override
 	public int hashCode() {
 		return this.getRaceCode().hashCode() + this.getHorse().hashCode();
+	}
+
+	public boolean isTrial() {
+		return trial;
+	}
+
+	public void setTrial(boolean trial) {
+		this.trial = trial;
 	}
 
 }
