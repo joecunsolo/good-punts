@@ -28,8 +28,10 @@ public class PrizeMoneyStatistics extends SingleWeightedStatistics {
 				return list.toArray(result);
 			}
 			
+			Double result = getResult(runnerResult);
 			if (runnerResult.getRaceDate() != null &&
 					! runnerResult.isTrial() &&
+					result > 0 &&
 					System.currentTimeMillis() - runnerResult.getRaceDate().getTime() < A_YEAR) {
 				list.add(getResult(runnerResult));
 			}
