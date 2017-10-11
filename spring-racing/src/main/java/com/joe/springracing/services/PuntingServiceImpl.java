@@ -148,7 +148,7 @@ public class PuntingServiceImpl implements PuntingService {
 				
 				if (isPuntOnWin() &&
 						runner.getOdds().getWin() < bookieHigh &&
-						runner.getOdds().getWin() - joeWinOdds * 2.5 > 0 &&
+						runner.getOdds().getWin() - joeWinOdds * 1.5 > 0 &&
 						!runner.isEmergency() &&
 						horse.getNumberOfRaces() > 1 &&
 						horse.getSpell() < model.getAttributes().getLongSpell() &&
@@ -162,7 +162,7 @@ public class PuntingServiceImpl implements PuntingService {
 				}
 				if (isPuntOnPlace() &&
 						runner.getOdds().getPlace() < bookieHigh &&
-						runner.getOdds().getPlace() - joePlaceOdds * 2.5 > 0 &&
+						runner.getOdds().getPlace() - joePlaceOdds * 1.5 > 0 &&
 						!runner.isEmergency() &&
 						horse.getNumberOfRaces() > 1 &&
 						horse.getSpell() < model.getAttributes().getLongSpell() &&

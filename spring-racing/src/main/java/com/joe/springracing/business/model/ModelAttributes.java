@@ -14,7 +14,7 @@ public class ModelAttributes {
 	public static final Punt.Type[] DEFAULT_GOOD_PUNT_TYPES = new Punt.Type[]{Punt.Type.WIN};
 	public static final int DEFAULT_NUMBER_OF_PUNTS = 10;
 	public static final double DEFAULT_HIGH_JOE_CONFIDENCE = 3;
-	public static final double DEFAULT_HIGH_BOOKIE_CONFIDENCE = 20;
+	public static final double DEFAULT_HIGH_BOOKIE_CONFIDENCE = 30;
 	public static final double DEFAULT_MAXIMUM_PERCENTAGE_STAKE = 1;
 	public static final double DEFAULT_MINIMUM_PERCENTAGE_STAKE = 0.5;
 	public static final double DEFAULT_MINIMUM_DOLLAR_STAKE = 1;
