@@ -152,7 +152,7 @@ public class PuntingServiceImpl implements PuntingService {
 						!runner.isEmergency() &&
 						horse.getNumberOfRaces() > 1 &&
 						horse.getSpell() < model.getAttributes().getLongSpell() &&
-						joeWinOdds < 5) {
+						joeWinOdds < 3) {
 					Confidence c = calcConfidence(joeWinOdds, runner.getOdds().getWin());
 					Punt p = new Punt(r.getRaceCode(), r.getDate(), Type.WIN, joeWinOdds, runner.getOdds().getWin(), c, State.OPEN);
 					p.setRaceNumber(r.getRaceNumber());
