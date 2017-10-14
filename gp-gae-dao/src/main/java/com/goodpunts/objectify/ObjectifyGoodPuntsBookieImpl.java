@@ -2,7 +2,9 @@ package com.goodpunts.objectify;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.googlecode.objectify.ObjectifyService;
 import com.joe.springracing.SpringRacingServices;
@@ -112,11 +114,15 @@ public class ObjectifyGoodPuntsBookieImpl implements BookieAccount {
 	public List<Stake> getSettledBets(Date from) throws Exception {
 		List<Stake> stakes = SpringRacingServices.getPuntingDAO().fetchOpenStakes();
 		List<Stake> result = new ArrayList<Stake>();
+		Set<String> settledRaces = new HashSet<String>();
 		for (Stake stake : stakes) {
 			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(stake.getRaceCode());
 			//Only settle races that have been run
-			if (race.getResult() != null) {
+			//Only settle the race once. avoid duplicates
+			if (race.getResult() != null && 
+					!settledRaces.contains(race.getRaceCode())) {
 				result.addAll(settleRace(race));
+				settledRaces.add(race.getRaceCode());
 			}
 		}
 		return result;
