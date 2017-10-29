@@ -38,12 +38,15 @@
 				<%=runner.getOdds().getWin()%>,
 				<%=runner.isScratched()%>,
 				<%=runner.isEmergency()%>,
+				<%=runner.getBarrier() %>,
 				<%if (result != null) {
 					for (int i = 0; i < result.length; i++) {
 						if (runner.getNumber() == result[i]) {%>
 						<%=i+1 %>
 					   <%}
 					}%>
-		        <br>
-<%				}
-		}%>
+<%				} else {%>
+					<%=-1 %>
+<% 				}%>
+				<br>
+<%		}%>
