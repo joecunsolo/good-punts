@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Pick;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
@@ -47,5 +48,7 @@ public interface PuntingDAO {
 	void updateStake(Stake stake);
 
 	List<Stake> fetchStakesForRace(Race race);
+
+	void storePicks(Race race, List<Pick> picks);
 
 }
