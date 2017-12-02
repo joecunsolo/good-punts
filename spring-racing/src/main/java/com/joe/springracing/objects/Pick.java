@@ -2,7 +2,7 @@ package com.joe.springracing.objects;
 
 public class Pick {
 	private Runner runner;
-	private double win;
+	private double win; 
 	private double bookieOdds;
 	private String raceCode;
 	
