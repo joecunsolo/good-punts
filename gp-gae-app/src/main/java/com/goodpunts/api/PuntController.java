@@ -13,7 +13,7 @@ import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 
 @RestController
-@RequestMapping("/punts")
+@RequestMapping("/punts/good")
 public class PuntController {
 
 	@RequestMapping(method = RequestMethod.GET, headers="Accept=application/json")

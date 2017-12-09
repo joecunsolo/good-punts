@@ -77,4 +77,13 @@ public class PuntingBusiness {
 		}
 	}
 
+	public List<Punt> fetchSurePunts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void generateSurePunts() {
+		//SurePuntService service = SpringRacingServices.getSurePuntingService();
+	}
+
 }
