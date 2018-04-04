@@ -11,6 +11,7 @@ import com.joe.springracing.business.model.stats.SingleVariateStatistic;
 import com.joe.springracing.business.probability.Probability;
 import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Pick;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
@@ -501,6 +502,43 @@ public class ObjectifyPuntingDaoImpl extends ObjectifyBaseDaoImpl implements Pun
 			result.add(s);
 		}
 		return result;
+	}
+
+	public void storePicks(Race race, List<Pick> picks) {
+		Key<ObjRace> raceKey = getRaceKey(race.getRaceCode());
+		
+		List<Key<ObjPick>> oldKeys = ObjectifyService.ofy()
+			.load()
+	    	.type(ObjPick.class) // We want only Picks
+	    	.ancestor(raceKey)
+	    	.keys()
+	    	.list();
+		
+		//Delete any existing Picks for this race
+		ObjectifyService.ofy()
+        	.delete()
+        	.keys(oldKeys);
+		
+		//And add the new ones
+		for (Pick pick : picks) {
+			storePick(raceKey, pick);
+		}
+	}
+
+	private void storePick(Key<ObjRace> raceKey, Pick pick) {
+		ObjPick oPick = toObjPick(raceKey, pick);
+		ObjectifyService.ofy().save().entity(oPick).now();
+	}
+	
+	private ObjPick toObjPick(Key<ObjRace> raceKey, Pick pick) {
+		ObjPick oPick = new ObjPick();
+		oPick.setRaceKey(raceKey);
+		oPick.setBookieOdds(pick.getBookieOdds());
+		oPick.setRaceCode(pick.getRaceCode());
+		oPick.setRunner(pick.getRunner());
+		oPick.setWin(pick.getWin());
+		
+		return oPick;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.joe.springracing.dao.PuntingDAO;
 import com.joe.springracing.objects.Meeting;
+import com.joe.springracing.objects.Pick;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.State;
 import com.joe.springracing.objects.Race;
@@ -107,6 +108,11 @@ public class MockPuntingDao implements PuntingDAO {
 	public List<Stake> fetchStakesForRace(Race race) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void storePicks(Race race, List<Pick> picks) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

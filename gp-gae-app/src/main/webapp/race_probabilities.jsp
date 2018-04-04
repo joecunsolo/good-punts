@@ -33,7 +33,10 @@
 			Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
 			String meetCode = race.getMeetCode();
 			Meeting meet = SpringRacingServices.getSpringRacingDAO().fetchMeet(meetCode); %>
-						
+			<p align="left">
+			<a href="/api/races/<%=raceCode %>/import">import race</a><br>
+			<a href="/api/races/<%=raceCode %>/import?histories=true">import histories</a><br>
+			<a href="/api/races/<%=raceCode %>/probabilities/generate">generate probabilities</a></p>			
 			<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
 <%			List<Race> races =  SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meet);
 			MeetBusiness mb = new MeetBusiness();
@@ -105,7 +108,7 @@
 							} %>
 						</td>
 					</tr>
-<%				//}
+<%	
 			}%>
 				</tbody>
 			</table>
