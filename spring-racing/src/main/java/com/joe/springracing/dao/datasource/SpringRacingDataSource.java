@@ -10,17 +10,10 @@ import com.joe.springracing.objects.RunnerResult;
 
 public interface SpringRacingDataSource {
 
-//	public List<Meeting> fetchUpcomingMeets() throws Exception;
-	
 	public List<Race> fetchRaces() throws Exception;
 	
-//	public List<Meeting> fetchMeet(String meetCode) throws Exception;
-	
-//	public List<RunnerResult> fetchPastResultsForHorse(Horse horse) throws Exception;
 	public List<RunnerResult> fetchPastResultsForHorse(String horseCode) throws Exception;
 	
-//	public void updateRaceResults(Race race);
-
 	public Meeting fetchMeet(String meetCode);
 	
 	public Race fetchRace(String racecode) throws Exception;
