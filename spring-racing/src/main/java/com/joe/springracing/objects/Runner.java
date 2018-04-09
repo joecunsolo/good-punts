@@ -14,6 +14,11 @@ public class Runner { //implements Simulatable {
 	private String raceCode;
 	private double weight;	
 	private int barrier;
+	private boolean goodAtDistance;
+	private boolean goodAtTrackCondition;
+	private boolean goodAtTrack;
+	private boolean goodAtClass;
+	
 	
 	//TODO Move these out
 //	private List<AnalysableObjectStatistic> statistics;
@@ -149,5 +154,37 @@ public class Runner { //implements Simulatable {
 
 	public void setBarrier(int barrier) {
 		this.barrier = barrier;
+	}
+
+	public boolean isGoodAtDistance() {
+		return goodAtDistance;
+	}
+
+	public void setGoodAtDistance(boolean goodAtDistance) {
+		this.goodAtDistance = goodAtDistance;
+	}
+
+	public boolean isGoodAtTrackCondition() {
+		return goodAtTrackCondition;
+	}
+
+	public void setGoodAtTrackCondition(boolean goodAtTrackCondition) {
+		this.goodAtTrackCondition = goodAtTrackCondition;
+	}
+
+	public boolean isGoodAtTrack() {
+		return goodAtTrack;
+	}
+
+	public void setGoodAtTrack(boolean goodAtTrack) {
+		this.goodAtTrack = goodAtTrack;
+	}
+
+	public boolean isGoodAtClass() {
+		return goodAtClass;
+	}
+
+	public void setGoodAtClass(boolean goodAtClass) {
+		this.goodAtClass = goodAtClass;
 	}
 }

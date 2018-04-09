@@ -33,6 +33,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	
 	public static final String DELIMITTER_COMMA = ",";
 	public static final String DELIMITTER_CLOSE_PARENTHESES = ")";
+	public static final String TRUE = "true";
 	
 	public static final String KEY_RUNNERS = "runners";
 	public static final String KEY_HORSE = "horse";
@@ -41,7 +42,11 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_ODDS = "odds";
 	public static final String KEY_URL = "Url";
 	public static final String KEY_CAREER = "career";
-	public static final String KEY_GOODATFILTERS = "goodAtFilters";
+	public static final String KEY_GOODATFILTERS = "goodatfilters";
+	public static final String KEY_GOODAT_TRACK = "isgoodattrack";
+	public static final String KEY_GOODAT_CLASS = "isgoodatclass";
+	public static final String KEY_GOODAT_CONDITION = "isgoodattrackcondition";
+	public static final String KEY_GOODAT_DISTANCE = "isgoodatdistance";
 	public static final String KEY_RACE_RESULTS = "resultCollection";
 	public static final String KEY_RACE = "race";
 	public static final String KEY_RACE_NUMBER = "number";
@@ -185,6 +190,15 @@ public class RacingDotComParser extends JsonReaderIO {
 			if (odds != null & odds instanceof JsonObject) {
 				runner.setOdds(parseOdds((JsonObject)odds));
 			}
+			JsonValue goodat = jObject.get(KEY_GOODATFILTERS);
+			if (goodat != null & goodat instanceof JsonObject) {
+				Properties goodAtProps = parseProperties(goodat);
+				runner.setGoodAtClass(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CLASS)));
+				runner.setGoodAtDistance(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_DISTANCE)));
+				runner.setGoodAtTrack(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_TRACK)));
+				runner.setGoodAtTrackCondition(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CONDITION)));
+			}
+			
 			runner.setHorseObject(horse);	
 			result.add(runner);
 		}

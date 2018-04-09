@@ -136,6 +136,10 @@ public class ObjectifyBaseDaoImpl {
 		r.setRaceCode(oRunner.getRaceCode());
 		r.setWeight(oRunner.getWeight());
 		r.setBarrier(oRunner.getBarrier());
+		r.setGoodAtDistance(oRunner.isGoodAtDistance());
+		r.setGoodAtClass(oRunner.isGoodAtClass());
+		r.setGoodAtTrack(oRunner.isGoodAtTrack());
+		r.setGoodAtTrackCondition(oRunner.isGoodAtTrackCondition());
 	
 		return r;
 	}
@@ -151,6 +155,10 @@ public class ObjectifyBaseDaoImpl {
 		o.setTrainer(runner.getTrainer());
 		o.setWeight(runner.getWeight());
 		o.setBarrier(runner.getBarrier());
+		o.setGoodAtClass(runner.isGoodAtClass());
+		o.setGoodAtDistance(runner.isGoodAtDistance());
+		o.setGoodAtTrack(runner.isGoodAtTrack());
+		o.setGoodAtTrackCondition(runner.isGoodAtTrackCondition());
 		return o;
 	}
 

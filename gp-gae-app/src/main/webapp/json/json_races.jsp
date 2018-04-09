@@ -7,7 +7,7 @@
 <%-- //[END imports]--%>
 {"races":[<%List<Race> races = SpringRacingServices.getSpringRacingDAO().fetchRacesWithResults(); 
   int i = 0;
-  for (; i < races.size() - 1; i++) {
+  for (i = 0; i < races.size() - 1; i++) {
   	Race race = races.get(i);%>
     <%=race.getRaceCode() %>,
 <%}

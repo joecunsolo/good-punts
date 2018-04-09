@@ -47,7 +47,7 @@
 	<body>
 		<jsp:include page="menu.jsp" />
 		<div id="csv-content">
-		Date,RaceCode,Distance,Runners,Venue,PrizeMoney,Jockey,Trainer,Number,Horse,# Races,Mean,SD,Weight,Win%,WinOdds,Scratched,Emergency,Barrier,Result<br>
+		Date,RaceCode,Distance,Runners,Venue,PrizeMoney,Jockey,Trainer,Number,Horse,# Races,Mean,SD,Weight,Win%,WinOdds,Scratched,Emergency,Barrier,GoodAtDistance,GoodAtClass,GoodAtTrack,GoodAtTrackCondition,Result<br>
 		</div>
 	</body>
 </html>

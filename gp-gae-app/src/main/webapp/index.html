@@ -9,9 +9,9 @@
 
     <script>
 $(document).ready(function() {
-  //$.getJSON('/demo', function(data) {
-    $('#result').html("Hello, Travis");// + data.name);
-  //});
+  $.getJSON('/api/meetings', function(data) {
+    $('#result').html("Hello, Travis " + data[0].venue);
+  });
 });
     </script>
   </body>
