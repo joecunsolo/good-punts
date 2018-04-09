@@ -11,7 +11,9 @@
   	Race race = races.get(i);%>
     <%=race.getRaceCode() %>,
 <%}
-  Race race = races.get(i);%>
-  <%=race.getRaceCode() %>
+  if (races.size() != 0) {
+	  Race race = races.get(i);%>
+	  <%=race.getRaceCode() %>
+  <%}%>
 ]}
 <%-- //[END all]--%>
