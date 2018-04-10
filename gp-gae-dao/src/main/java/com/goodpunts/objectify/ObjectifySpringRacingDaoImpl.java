@@ -1,10 +1,12 @@
 package com.goodpunts.objectify;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.cmd.Query;
 import com.joe.springracing.dao.SpringRacingDAO;
 import com.joe.springracing.exporter.Exporter;
 import com.joe.springracing.objects.Horse;
@@ -181,29 +183,36 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		}
 		return result;
 	}
-
 	
 	public List<Race> fetchRacesWithoutResults() throws Exception {
-		List<ObjRace> races = ObjectifyService.ofy()
-		          .load()
-		          .type(ObjRace.class) // We want only Races
-		          .filter("results", false) //without results
-		          .list();
-	
-		List<Race> result = new ArrayList<Race>();
-		for (ObjRace oRace : races) {
-			Race r = toRace(oRace);
-			result.add(r);
-		}
-		return result;
+		return fetchRaces(false, null, null);
 	}
-
+	
+	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception {
+		return fetchRaces(false, from, to);
+	}
+	
 	public List<Race> fetchRacesWithResults() throws Exception {
-		List<ObjRace> races = ObjectifyService.ofy()
+		return fetchRaces(true, null, null);
+	}
+	
+	public List<Race> fetchRacesWithResults(Date from, Date to) throws Exception {
+		return fetchRaces(true, from, to);
+	}
+	
+	public List<Race> fetchRaces(boolean results, Date from, Date to) throws Exception {
+		Query<ObjRace> query = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRace.class) // We want only Races
-		          .filter("results", true) //with results
-		          .list();
+		          .filter("results", results); //with/out results
+		//in the range
+		if (from != null) {
+			query = query.filter("date >", from);
+		}
+		if (to != null) {
+			query = query.filter("date <", to);
+		}
+		List<ObjRace> races = query.list();
 	
 		List<Race> result = new ArrayList<Race>();
 		for (ObjRace oRace : races) {

@@ -11,12 +11,11 @@
 	    });
     	
     	function loadRaces() {
-    		$.ajax({ url: 'json/json_races.jsp', 
+    		$.ajax({ url: 'api/races/', 
 				//dataType: 'html',
-	        	success: function(data) { 
-	        		var races = data.races;
+	        	success: function(races) { 
 	        		for (i = 0; i < races.length; i++) {
-	        			loadRace(races[i]);
+	        			loadRace(races[i].raceCode);
 	        		}
 	             } })
 	    	.fail(function( xhr, status, errorThrown ) {

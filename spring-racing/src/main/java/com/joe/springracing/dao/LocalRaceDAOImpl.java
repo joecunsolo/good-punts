@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -554,6 +555,16 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 	}
 
 	public List<Race> fetchRacesWithResults() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Race> fetchRacesWithResults(Date from, Date to) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

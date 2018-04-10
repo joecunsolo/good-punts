@@ -1,5 +1,6 @@
 package com.joe.springracing.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.joe.springracing.exporter.CSVExporter;
@@ -58,4 +59,8 @@ public interface SpringRacingDAO {
 	public void exportRunners(Exporter<Runner> exporter) throws Exception;
 
 	public List<Race> fetchRacesWithResults() throws Exception;
+
+	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception;
+
+	public List<Race> fetchRacesWithResults(Date from, Date to) throws Exception;
 }

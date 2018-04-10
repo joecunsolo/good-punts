@@ -42,7 +42,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_ODDS = "odds";
 	public static final String KEY_URL = "Url";
 	public static final String KEY_CAREER = "career";
-	public static final String KEY_GOODATFILTERS = "goodatfilters";
+	public static final String KEY_GOODATFILTERS = "goodAtFilters";
 	public static final String KEY_GOODAT_TRACK = "isgoodattrack";
 	public static final String KEY_GOODAT_CLASS = "isgoodatclass";
 	public static final String KEY_GOODAT_CONDITION = "isgoodattrackcondition";

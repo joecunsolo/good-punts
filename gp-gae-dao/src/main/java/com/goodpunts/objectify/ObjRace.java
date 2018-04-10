@@ -14,6 +14,7 @@ public class ObjRace  {
 	@Index
 	private boolean results;
 	private double[] prizeMoney;
+	@Index
 	private Date date;
 	private int raceNumber;
 	@Index

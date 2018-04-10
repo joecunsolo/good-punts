@@ -2,6 +2,7 @@ package com.joe.springracing.test.mock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,16 @@ public class MockRacingDao implements SpringRacingDAO {
 	}
 
 	public List<Race> fetchRacesWithResults() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Race> fetchRacesWithResults(Date from, Date to) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
