@@ -11,7 +11,7 @@
 	    });
     	
     	function loadRaces() {
-    		$.ajax({ url: 'api/races/', 
+    		$.ajax({ url: 'api/races/?results=true', 
 				//dataType: 'html',
 	        	success: function(races) { 
 	        		for (i = 0; i < races.length; i++) {

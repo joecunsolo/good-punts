@@ -30,7 +30,7 @@
 			    <%=runner.getTrainer() %>,
 				<%=runner.getNumber()%>,
 				<%=runner.getHorse() %>,
-				<%=SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse()).getPastResults().size()%>
+				<%=SpringRacingServices.getSpringRacingDAO().fetchHorse(runner.getHorse()).getPastResults().size()%>,
 				<%=df.format(runner.getProbability().getMean())%>,
 				<%=df.format(runner.getProbability().getStandardDeviation())%>,
 				<%=df.format(runner.getWeight())%>,
