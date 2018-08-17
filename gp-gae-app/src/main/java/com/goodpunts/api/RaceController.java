@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.appengine.repackaged.org.joda.time.LocalDate;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.business.ProbabilityBusiness;
 import com.joe.springracing.business.RaceBusiness;
@@ -24,20 +23,11 @@ public class RaceController {
 
 	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
 	public List<Race> races(@RequestParam(value="results", defaultValue="false") boolean results, 
-			@RequestParam(value="from", required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-			@RequestParam(value="to", required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-		//convert the dates
-		Date dateFrom = null;
-		if (from != null) {
-			dateFrom = from.toDate();
-		}
-		Date dateTo = null;
-		if (to != null) {
-			dateTo = to.toDate();
-		}
+			@RequestParam(value="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
+			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
 		
 		RaceBusiness business = new RaceBusiness();
-		return business.fetchRaces(results, dateFrom, dateTo);
+		return business.fetchRaces(results, from, to);
 	}
 	
 	@RequestMapping (value = "/{race}", method = RequestMethod.GET, headers="Accept=application/json")
