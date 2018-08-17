@@ -35,7 +35,17 @@
     	function loadRaces() {
     		var query = window.location.search.substring(1);
     		var qs = parse_query_string(query);
-    		var url = 'api/races/?results=true&from=' + qs.from + '&to=' + qs.to;
+    		var url = 'api/races/?';
+    		//add the parameters if they exist
+    		if (qs.results != "undefined") {
+    			url += 'results='+ qs.results;
+    		}
+    		if (qs.from != "undefeined") {
+    			url += '&from=' + qs.from;
+    		}
+    		if (qs.to != "undefeined") {
+    			url += '&to=' + qs.to;
+    		}
     		
     		$.ajax({ url: url, 
 				//dataType: 'html',

@@ -1,6 +1,8 @@
 package com.joe.springracing.dao.datasource;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
@@ -62,6 +64,30 @@ public class RacingDotComReader  {
 		String html = HTMLReaderIO.getHTML(urlToRead);			
 		try {
 			return parser.parseRaceResults(html);
+		} catch (javax.json.stream.JsonParsingException jpe) {
+			return null;
+		}
+	}
+	
+	public Map<Integer, List<Double>> readSplits(String urlToRead) throws Exception {
+		String HTTP_PREFIX = "http:";
+		
+		String html = HTMLReaderIO.getHTML(urlToRead);			
+		try {
+			String dataURL = parser.parseSplitsAndSectionals(html);
+			if (dataURL != null && dataURL.length() > 1) {
+				return readSectionalTimes(HTTP_PREFIX + dataURL);
+			}
+			return new HashMap<Integer, List<Double>>();
+		} catch (javax.json.stream.JsonParsingException jpe) {
+			return null;
+		}
+	}
+
+	private Map<Integer, List<Double>> readSectionalTimes(String urlToRead) throws Exception {
+		String html = HTMLReaderIO.getHTML(urlToRead);			
+		try {
+			return parser.parseSectionalTimes(html);
 		} catch (javax.json.stream.JsonParsingException jpe) {
 			return null;
 		}

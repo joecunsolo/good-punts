@@ -1,12 +1,11 @@
 package com.joe.springracing.importer;
 
 import java.util.List;
+import java.util.Map;
 
 import com.joe.springracing.SpringRacingServices;
-import com.joe.springracing.business.MeetBusiness;
 import com.joe.springracing.dao.datasource.SpringRacingDataSource;
 import com.joe.springracing.objects.Horse;
-import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
 import com.joe.springracing.objects.RunnerResult;
@@ -76,12 +75,15 @@ public class Importer {
 					result.setRaceName(raceResult.getName());
 					result.setHorse(h.getId());
 					result.setResultsFetched(true);
+		
 				} catch (Exception ex) {
 					ex.printStackTrace();
 	//				result.setResultsFetched(false);
 				}
+				Map<Integer, List<Double>> splits = datasource.fetchSplitsAndSectionals(result.getMeetCode(), result.getRaceNumber());
+				result.setSplits(splits.get(result.getNumber()));
 			} catch (Exception ex) {
-				
+				ex.printStackTrace();
 			}
 		}
 		

@@ -102,4 +102,10 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 		pastResultsForHorse.put(aRunner.getHorse(), somePastResults);
 	}
 
+	@Override
+	public Map<Integer, List<Double>> fetchSplitsAndSectionals(String meetCode, int raceNumber) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

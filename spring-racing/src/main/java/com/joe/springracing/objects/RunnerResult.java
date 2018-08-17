@@ -22,12 +22,15 @@ public class RunnerResult {
 	private String venueName;
 	private String meetCode;
 	private double distance;
+	//the race number
 	private int raceNumber;
 	private String raceName;
 	//TODO Splits and Sectionals
 	private boolean resultsFetched;
 	private double weight;
 	private boolean trial;
+	//the horses number
+	private int number;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -256,6 +259,14 @@ public class RunnerResult {
 
 	public void setTrial(boolean trial) {
 		this.trial = trial;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
+	public int getNumber() {
+		return this.number;
 	}
 
 }

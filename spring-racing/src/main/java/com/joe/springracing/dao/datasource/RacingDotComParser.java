@@ -5,7 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.json.Json;
@@ -33,6 +35,8 @@ public class RacingDotComParser extends JsonReaderIO {
 	
 	public static final String DELIMITTER_COMMA = ",";
 	public static final String DELIMITTER_CLOSE_PARENTHESES = ")";
+	public static final String DELIMITTER_COLON = ":";
+	
 	public static final String TRUE = "true";
 	
 	public static final String KEY_RUNNERS = "runners";
@@ -76,6 +80,8 @@ public class RacingDotComParser extends JsonReaderIO {
     BD - Brought Down
     RO - Ran Off */
 	public static final int VALUE_RESULT_SCRACTHED = 100;
+	public static final int VALUE_SECTIONAL_DISTANCE = 200;
+	public static final String VALUE_SECTIONALTIMES_CALLBACK = "sectionaltimes_callback(";
 	
 	public static final String KEY_RESULT_PRIZEMONEY_DETAILS = "PrizeMoneyDetails";
 	public static final String KEY_RESULT_RACE = "Race";
@@ -83,8 +89,12 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RESULT_TRAINER = "Trainer";
 	public static final String KEY_RESULT_JOCKEY = "Jockey";
 	public static final String KEY_RESULT_WEIGHT = "carriedweight";
+	public static final String KEY_RESULT_RACE_ENTRY_NUMBER = "raceentrynumber";
 	public static final String KEY_SECTIONAL_HORSES = "Horses";
 	public static final String KEY_SECTIONAL_SPLITS = "SplitTimes";
+	public static final String KEY_SECTIONAL_TIMES = "SectionalTimes";
+	public static final String KEY_SECTIONAL_SADDLE = "SaddleNumber";
+	public static final String KEY_SECTIONAL_SPLITS_DISTANCE = "distance";
 	public static final String KEY_SECTIONAL_SPLITS_TIME = "time";
 	public static final String KEY_SECTIONAL_RACETIME = "racetime";
 	public static final String KEY_MEETCODE = "meetcode";
@@ -108,7 +118,7 @@ public class RacingDotComParser extends JsonReaderIO {
 
 //	private static SimpleDateFormat raceTimeFormat = new SimpleDateFormat("mm:ss.SS");
 	private SimpleDateFormat raceDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
+	
 	public List<Race> parseRaces(String html) throws Exception { 
 		List<Race> result = new ArrayList<Race>();
 		JsonReader jsonReader = Json.createReader(new StringReader(html));
@@ -148,6 +158,98 @@ public class RacingDotComParser extends JsonReaderIO {
 		}
 		return race;
 	}
+	
+	//returns the 200m sectionals for all the horses in the race - indexed by saddle number
+	public Map<Integer, List<Double>> parseSectionalTimes(String html) throws Exception {
+		Map<Integer, List<Double>> result = new HashMap<Integer, List<Double>>();
+		if (html == null) {
+			return result;
+		}
+		//remove the sectionaltimes_callback wrapper
+		html = html.substring(VALUE_SECTIONALTIMES_CALLBACK.length(), html.length() -1);
+		
+		JsonReader jsonReader = Json.createReader(new StringReader(html));
+		JsonObject object = jsonReader.readObject();
+		JsonValue value = object.get(KEY_SECTIONAL_HORSES);
+		if (!(value instanceof JsonArray)) {
+			return null;
+		}
+		JsonArray horses = (JsonArray)value;
+		for (int i = 0; i < horses.size(); i++) {
+			JsonObject horseObject = horses.getJsonObject(i);
+			int number = horseObject.getInt(KEY_SECTIONAL_SADDLE);
+			JsonValue sectionalsValue = horseObject.get(KEY_SECTIONAL_TIMES);
+			//get this horses sectionals
+			List<Double> sectionals = parseSectionalTimes(sectionalsValue);
+			result.put(new Integer(number), sectionals);
+		}
+		
+		return result;
+	}
+	
+	//takes a sectionals JSON object and turns it into a List of Double
+	private List<Double> parseSectionalTimes(JsonValue sectionalsValue) throws ParseException {
+		if (!(sectionalsValue instanceof JsonArray)) {
+			return null;
+		}
+		JsonArray sectionals = (JsonArray)sectionalsValue;
+		
+		Double[] rawResult = new Double[sectionals.size() - 1]; //ignore the FINISH
+		for (int i = 0; i < sectionals.size(); i++) {
+			try {
+				JsonObject jObject = sectionals.getJsonObject(i);
+				Properties props = parseProperties(jObject);
+				String distance = props.getProperty(KEY_SECTIONAL_SPLITS_DISTANCE);
+				
+				int index = distanceToIndex(distance);
+				if (index != -1) {
+					double time = parseSplitTime(props.getProperty(KEY_SECTIONAL_SPLITS_TIME));
+					rawResult[index] = time;	
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return Arrays.asList(rawResult);
+	}
+	
+	//mm:ss.SS
+	private Double parseSplitTime(String sTime) {
+		int minutes = 0;
+		if (sTime.length() > 5) {
+			int minuteIndex = sTime.indexOf(DELIMITTER_COLON);
+			String sMinutes = sTime.substring(0, minuteIndex);
+			minutes = Integer.parseInt(sMinutes);
+			
+			sTime = sTime.substring(minuteIndex+1);
+		}
+		
+		double time = Double.parseDouble(sTime);
+		time += minutes*60;
+		
+		return time;
+	}
+	
+	public int distanceToIndex(String distance) {
+		try {
+			distance = distance.substring(0, distance.length() - 1);
+			int index = Integer.parseInt(distance);
+			return (index / VALUE_SECTIONAL_DISTANCE) - 1;
+		} catch (Exception ex) {
+			return -1;
+		}
+	}
+	
+	public String parseSplitsAndSectionals(String html) {
+		if (html == null) {
+			return null;
+		}
+		JsonReader jsonReader = Json.createReader(new StringReader(html));
+		JsonObject object = jsonReader.readObject();
+		Properties props = parseProperties(object);
+		return props.getProperty(KEY_DATA_URL);
+	}
+
 	
 	public List<Runner> parseRunners(String html) {
 		List<Runner> result = new ArrayList<Runner>();
@@ -236,6 +338,7 @@ public class RacingDotComParser extends JsonReaderIO {
 				result.setDistance(race.getDistance());
 				result.setWeight(Double.parseDouble(props.getProperty(KEY_RESULT_WEIGHT)));
 				result.setTrial(race.isTrial());
+				result.setNumber(Integer.parseInt(props.getProperty(KEY_RESULT_RACE_ENTRY_NUMBER)));
 				
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);
@@ -367,5 +470,4 @@ public class RacingDotComParser extends JsonReaderIO {
 		}
 		return race;
 	}
-
 }

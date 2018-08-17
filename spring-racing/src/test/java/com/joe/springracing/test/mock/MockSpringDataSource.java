@@ -2,6 +2,7 @@ package com.joe.springracing.test.mock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.joe.springracing.dao.datasource.SpringRacingDataSource;
 import com.joe.springracing.objects.Horse;
@@ -58,5 +59,10 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 	public Horse fetchHorse(String horseCode) throws Exception {
 		// TODO Auto-generated method stub
 		return new Horse();
+	}
+
+	public Map<Integer, List<Double>> fetchSplitsAndSectionals(String meetCode, int raceNumber) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

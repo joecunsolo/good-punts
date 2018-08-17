@@ -2,6 +2,7 @@ package com.joe.springracing.dao.datasource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.objects.Horse;
@@ -57,9 +58,16 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 			
 	public List<RunnerResult> fetchPastResultsForHorse(String horseCode) throws Exception {
 		String urlToRead = getHorseURL(horseCode);
-		return reader.readResults(urlToRead);
+		List<RunnerResult> result = reader.readResults(urlToRead);
+
+		return result;
 	}
-		
+	
+	public Map<Integer, List<Double>> fetchSplitsAndSectionals(String meetCode, int raceNumber) throws Exception {
+		String splitsURL = getSplitsAndSectionalsURL(meetCode, raceNumber);
+		return reader.readSplits(splitsURL);
+	}
+			
 	public Race fetchRace(String racecode) throws Exception {
 		String urlToRead = getRaceURL(racecode);
 		return reader.readRace(urlToRead);
@@ -92,6 +100,9 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 		return PREFIX_RACE_RESULTS_URL + race.getMeetCode() + "/" + race.getRaceNumber();
 	}
 
+	public String getSplitsAndSectionalsURL(String meeting, int race) {
+		return SpringRacingServices.getRacingDotComURL() + PREFIX_SPLIT_SECTION_URL + meeting + "/" + race;
+	}
 
 	public String getRaceDayURL(int page, int resultsPerPage) {
 		return SpringRacingServices.getRacingDotComURL() + PREFIX_RACE_DAY_URL + page + "/" + resultsPerPage;

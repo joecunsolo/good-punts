@@ -46,6 +46,12 @@
 					<%=r.getPosition() %>&nbsp;
 					<%=r.getPrizeMoney() %>&nbsp;
 					<%=r.getWeight() %>&nbsp;
+<%					if (r.getSplits() != null) {
+						for (Double split : r.getSplits()) { %>
+							<%=split %>&nbsp;
+<%						}
+					}
+					%>
 				</p>
 <% 			}%>
 <!-- @TODO Need to be able to get upcoming races for a horse -->

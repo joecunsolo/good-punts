@@ -59,12 +59,13 @@
 	<p>
 		<form name="dates">
 			from: <input name="from" type="text" value=""> <br />
-			to: <input name="to" type="text" value="">
+			to: <input name="to" type="text" value=""><br />
+			results: <input name="results" type="text" value="true">
 		</form>	
 	</p>
 	<p>
 		<a href="/histories/export">Horse Histories</a><br />					
-		<a onclick="window.location='/runners_export.jsp?from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Runner Results</a>
+		<a onclick="window.location='/runners_export.jsp?results='+ document.dates.results.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Runner Results</a>
 	</p>					
 	
 </body>
