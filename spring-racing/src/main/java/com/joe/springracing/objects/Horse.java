@@ -12,6 +12,7 @@ public class Horse extends AnalysableRacePropertyObject {
 	private boolean histories = false;
 	private int numberOfRaces;
 	private int spell;
+	private List<Double> splits;
 	
 	public Horse() {
 		results = new ArrayList<RunnerResult>();
@@ -93,5 +94,13 @@ public class Horse extends AnalysableRacePropertyObject {
 
 	public void setSpell(int spell) {
 		this.spell = spell;
+	}
+
+	public void setSplits(List<Double> splits) {
+		this.splits = splits;
+	}
+	
+	public List<Double> getSplits() {
+		return splits;
 	}
 }

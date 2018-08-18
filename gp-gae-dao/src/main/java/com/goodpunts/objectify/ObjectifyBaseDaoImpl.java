@@ -195,6 +195,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setHistories(horse.hasHistories());
 		result.setNumberOfRaces(horse.getNumberOfRaces());
 		result.setSpell(horse.getSpell());
+		result.setSplits(horse.getSplits());
 		return result;
 	}
 	
@@ -223,6 +224,7 @@ public class ObjectifyBaseDaoImpl {
 		horse.setHistories(objHorse.hasHistories());
 		horse.setNumberOfRaces(objHorse.getNumberOfRaces());
 		horse.setSpell(objHorse.getSpell());
+		horse.setSplits(objHorse.getSplits());
 		return horse;
 	}
 	protected Key<ObjMeet> getMeetKey(Meeting meet) {

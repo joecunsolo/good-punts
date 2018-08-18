@@ -202,7 +202,7 @@ public class RacingDotComParser extends JsonReaderIO {
 				String distance = props.getProperty(KEY_SECTIONAL_SPLITS_DISTANCE);
 				
 				int index = distanceToIndex(distance);
-				if (index != -1) {
+				if (index != -1 && index < rawResult.length) {
 					double time = parseSplitTime(props.getProperty(KEY_SECTIONAL_SPLITS_TIME));
 					rawResult[index] = time;	
 				}
@@ -224,10 +224,13 @@ public class RacingDotComParser extends JsonReaderIO {
 			sTime = sTime.substring(minuteIndex+1);
 		}
 		
-		double time = Double.parseDouble(sTime);
-		time += minutes*60;
-		
-		return time;
+		try {
+			double time = Double.parseDouble(sTime);
+			time += minutes*60;
+			return time;
+		} catch (Exception ex) {
+			return new Double(0);
+		}
 	}
 	
 	public int distanceToIndex(String distance) {
@@ -338,8 +341,11 @@ public class RacingDotComParser extends JsonReaderIO {
 				result.setDistance(race.getDistance());
 				result.setWeight(Double.parseDouble(props.getProperty(KEY_RESULT_WEIGHT)));
 				result.setTrial(race.isTrial());
-				result.setNumber(Integer.parseInt(props.getProperty(KEY_RESULT_RACE_ENTRY_NUMBER)));
-				
+				try {
+					result.setNumber(Integer.parseInt(props.getProperty(KEY_RESULT_RACE_ENTRY_NUMBER)));
+				} catch (Exception ex) {
+					
+				}
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);
 			}

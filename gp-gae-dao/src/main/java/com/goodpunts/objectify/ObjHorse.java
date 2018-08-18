@@ -1,5 +1,7 @@
 package com.goodpunts.objectify;
 
+import java.util.List;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -15,6 +17,7 @@ public class ObjHorse {
 	private boolean histories;
 	private int numberOfRaces;
 	private int spell;
+	private List<Double> splits;
 	
 	public ObjHorse() {}
 	
@@ -59,6 +62,14 @@ public class ObjHorse {
 
 	public void setSpell(int spell) {
 		this.spell = spell;
+	}
+
+	public void setSplits(List<Double> splits) {
+		this.splits = splits;
+	}
+	
+	public List<Double> getSplits() {
+		return splits;
 	}
 
 }

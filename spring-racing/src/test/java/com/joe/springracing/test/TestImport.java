@@ -1,9 +1,13 @@
 package com.joe.springracing.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.objects.Race;
 import com.joe.springracing.objects.Runner;
+import com.joe.springracing.objects.RunnerResult;
 import com.joe.springracing.test.mock.MockRacingDao;
 import com.joe.springracing.test.mock.MockSpringDataSource;
 
@@ -62,6 +66,13 @@ public class TestImport extends TestCase {
 
 		ImportBusiness importer = new ImportBusiness();
 		importer.importRace(race, true);
+	}
+	
+	public void testCalculateSplits() {
+		List<RunnerResult> results = new ArrayList<RunnerResult>();
+		
+		ImportBusiness biz = new ImportBusiness();
+		biz.calculateSplits(results);
 	}
 	
 	/**

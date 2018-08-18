@@ -193,10 +193,39 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			System.out.println("Races: " + horse.getNumberOfRaces());
 			horse.setSpell(calculateSpell(results));
 			System.out.println("Spell: " + horse.getSpell());
+			horse.setSplits(calculateSplits(results));
 			races = results.size();
 		}
 		SpringRacingServices.getSpringRacingDAO().storeHorse(horse);
 		return races;
+	}
+
+	public List<Double> calculateSplits(List<RunnerResult> results) {
+		double[] rawSplits = new double[50];
+		int[] counts = new int[50];
+		
+		//generate the sums
+		for (RunnerResult result : results) {
+			if (result.getSplits() != null) {
+				for (int i = 0; i < result.getSplits().size(); i++) {
+					if (result.getSplits().get(i) != null) {
+						rawSplits[i] += result.getSplits().get(i);
+						counts[i]++;
+					}
+				}
+			}
+		}
+		//calc the averages
+		List<Double> splits = new ArrayList<Double>();
+		for (int i = 0; i < rawSplits.length; i++) {
+			double split = rawSplits[i];
+			if (split == 0) {
+				break;
+			}
+			splits.add(split/counts[i]);
+		}
+		
+		return splits;
 	}
 
 	//How long since this horse last raced in days
