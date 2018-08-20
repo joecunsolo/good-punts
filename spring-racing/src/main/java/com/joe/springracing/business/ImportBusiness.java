@@ -208,7 +208,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		for (RunnerResult result : results) {
 			if (result.getSplits() != null) {
 				for (int i = 0; i < result.getSplits().size(); i++) {
-					if (result.getSplits().get(i) != null) {
+					if (result.getSplits().get(i) != null && result.getSplits().get(i) > 0) {
 						rawSplits[i] += result.getSplits().get(i);
 						counts[i]++;
 					}
