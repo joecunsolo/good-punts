@@ -74,17 +74,21 @@ public class Importer {
 				}try {
 					result.setRaceName(raceResult.getName());
 					result.setHorse(h.getId());
-					result.setResultsFetched(true);
-		
 				} catch (Exception ex) {
 					ex.printStackTrace();
 	//				result.setResultsFetched(false);
 				}
-				Map<Integer, List<Double>> splits = datasource.fetchSplitsAndSectionals(result.getMeetCode(), result.getRaceNumber());
-				result.setSplits(splits.get(result.getNumber()));
+				try {
+					Map<Integer, List<Double>> splits = datasource.fetchSplitsAndSectionals(result.getMeetCode(), result.getRaceNumber());
+					result.setSplits(splits.get(result.getNumber()));
+					result.setSplitsFetched(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();					
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
+			result.setResultsFetched(true);
 		}
 		
 		return results;

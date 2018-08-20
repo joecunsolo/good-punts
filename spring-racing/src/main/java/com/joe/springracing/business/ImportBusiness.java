@@ -180,7 +180,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		horse.setHistories(!newRace && horse.hasHistories());
 		getWriter().println(horse.getName());
 		getWriter().flush();
-		
+				
 		//Import the horse History
 		int races = 0;
 		if (histories) {

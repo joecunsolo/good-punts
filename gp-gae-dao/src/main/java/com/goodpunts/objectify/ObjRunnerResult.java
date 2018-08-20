@@ -28,6 +28,11 @@ public class ObjRunnerResult {
 	private String venueName;
 	private double distance;
 	private double weight;
+	private int barrier;
+	private double rating;
+	private boolean trial;
+	private double racePrizeMoney;
+	private int trackCondition;
 
 	public ObjRunnerResult() {}
 	
@@ -110,6 +115,46 @@ public class ObjRunnerResult {
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public int getBarrier() {
+		return barrier;
+	}
+	
+	public void setBarrier(int barrier) {
+		this.barrier = barrier;
+	}
+
+	public double getHorseRating() {
+		return rating;
+	}
+	
+	public void setHorseRating(double rating) {
+		this.rating = rating;
+	}
+
+	public boolean isTrial() {
+		return trial;
+	}
+	
+	public void setTrial(boolean trial) {
+		this.trial = trial;
+	}
+
+	public void setRacePrizeMoney(double racePrizeMoney) {
+		this.racePrizeMoney = racePrizeMoney;
+	}
+	
+	public double getRacePrizeMoney() {
+		return racePrizeMoney;
+	}
+
+	public int getTrackCondition() {
+		return trackCondition;
+	}
+
+	public void setTrackCondition(int trackCondition) {
+		this.trackCondition = trackCondition;
 	}
 
 }

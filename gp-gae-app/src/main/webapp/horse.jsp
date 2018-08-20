@@ -23,8 +23,29 @@
 
 <% 			String horseCode = request.getParameter("horse_code");
 			Horse horse = SpringRacingServices.getSpringRacingDAO().fetchHorse(horseCode); %>
-						
-			<p><%=horse.getName() %></p>					
+			<p><%=horse.getName() %></p>
+			<table>
+				<thead>
+					<tr>
+						<td>Date</td>
+						<td>Venue</td>
+						<td>Barrier</td>
+						<td>Weight</td>
+						<td>Rating</td>
+						<td>Jockey</td>
+						<td>Trainer</td>
+						<td>Distance</td>
+						<td>Track Condition</td>
+						<td>Trial</td>
+						<td>Race Prize Money</td>
+						<td>Position</td>
+						<td>Prize Money</td>
+						<td>Race Time</td>
+						<td>Scratched</td>
+						<td>Splits</td>
+					</tr>
+				</thead>	
+				<tbody>				
 <%			List<RunnerResult> results =  horse.getPastResults();
 			Collections.sort(results, new Comparator<RunnerResult>() {
 				public int compare(RunnerResult o1, RunnerResult o2) {
@@ -39,21 +60,36 @@
 					}
 					return (int)(o2.getRaceDate().getTime() - o1.getRaceDate().getTime());
 				}});
+			
  			for (RunnerResult r : results) {%>
-				<p style="margin-left:40px">
-					<%=r.getRaceDate() %>&nbsp;
-					<%=r.getVenueName()%>&nbsp;
-					<%=r.getPosition() %>&nbsp;
-					<%=r.getPrizeMoney() %>&nbsp;
-					<%=r.getWeight() %>&nbsp;
+					<tr>
+					<td><%=r.getRaceDate() %></td>
+					<td><%=r.getVenueName()%></td>
+					<td><%=r.getBarrier() %></td>
+					<td><%=r.getWeight() %></td>
+					<td><%=r.getRating() %></td>
+					<td><%=r.getJockey()%></td>
+					<td><%=r.getTrainer()%></td>
+					<td><%=r.getDistance()%></td>
+					<td><%=r.getTrackCondition()%></td>
+					<td><%=r.isTrial() %></td>
+					<td><%=r.getRacePrizeMoney() %></td>
+					<td><%=r.getPosition() %></td>
+					<td><%=r.getPrizeMoney() %></td>
+					<td><%=r.getRaceTime() %></td>
+					<td><%=r.isScratched() %></td>
+					<td>		
 <%					if (r.getSplits() != null) {
 						for (Double split : r.getSplits()) { %>
 							<%=split %>&nbsp;
 <%						}
 					}
 					%>
-				</p>
+					</td>
+					</tr>
 <% 			}%>
+				</tbody>
+			</table>
 <!-- @TODO Need to be able to get upcoming races for a horse -->
 
 </body>

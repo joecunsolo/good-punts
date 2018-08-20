@@ -63,6 +63,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RACE_DISTANCE = "distance";
 	public static final String KEY_RACE_PRIZEMONEY = "prizemoneydetails";
 	public static final String KEY_RACE_ISTRIAL = "istrial";
+	public static final String KEY_RACE_TRACKCONDITION = "trackconditionratingsource";
 	
 	public static final String KEY_RESULT_NUMBER = "raceentrynumber";
 	public static final String KEY_RESULT_POSITION = "position";
@@ -90,6 +91,11 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RESULT_JOCKEY = "Jockey";
 	public static final String KEY_RESULT_WEIGHT = "carriedweight";
 	public static final String KEY_RESULT_RACE_ENTRY_NUMBER = "raceentrynumber";
+	public static final String KEY_RESULT_BARNUMBER = "barnumber";
+	public static final String KEY_RESULT_RATING = "horserating";
+	public static final String KEY_RESULT_PRIZEMONEY = "prizemoney";
+	public static final String KEY_RESULT_TRACKCONDITION = "trackconditionratingsource";
+	
 	public static final String KEY_SECTIONAL_HORSES = "Horses";
 	public static final String KEY_SECTIONAL_SPLITS = "SplitTimes";
 	public static final String KEY_SECTIONAL_TIMES = "SectionalTimes";
@@ -343,9 +349,19 @@ public class RacingDotComParser extends JsonReaderIO {
 				result.setTrial(race.isTrial());
 				try {
 					result.setNumber(Integer.parseInt(props.getProperty(KEY_RESULT_RACE_ENTRY_NUMBER)));
-				} catch (Exception ex) {
-					
-				}
+				} catch (Exception ex) {}
+				try {
+					result.setBarrier(Integer.parseInt(props.getProperty(KEY_RESULT_BARNUMBER)));
+				} catch (Exception ex) {}
+				try {
+					result.setHorseRating(Double.parseDouble(props.getProperty(KEY_RESULT_RATING)));
+				} catch (Exception ex) {}
+				try {
+					result.setRacePrizeMoney(Double.parseDouble(props.getProperty(KEY_RESULT_PRIZEMONEY)));
+				} catch (Exception ex) {}
+				try {
+					result.setTrackCondition(Integer.parseInt(props.getProperty(KEY_RESULT_TRACKCONDITION)));
+				} catch (Exception ex) {}
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);
 			}

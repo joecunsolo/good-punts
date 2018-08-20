@@ -27,10 +27,15 @@ public class RunnerResult {
 	private String raceName;
 	//TODO Splits and Sectionals
 	private boolean resultsFetched;
+	private boolean splitsFetched = false;
 	private double weight;
 	private boolean trial;
 	//the horses number
 	private int number;
+	private int barrier;
+	private double rating;
+	private double racePrizeMoney;
+	private int trackCondition;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -267,6 +272,46 @@ public class RunnerResult {
 	
 	public int getNumber() {
 		return this.number;
+	}
+
+	public void setSplitsFetched(boolean splitsFetched) {
+		this.splitsFetched = splitsFetched;
+	}
+	
+	public boolean getSplitsFetched() {
+		return splitsFetched;
+	}
+
+	public void setBarrier(int barrier) {
+		this.barrier = barrier;
+	}
+	
+	public int getBarrier() {
+		return barrier;
+	}
+
+	public void setHorseRating(double rating) {
+		this.rating = rating;
+	}
+	
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRacePrizeMoney(double prizeMoney) {
+		this.racePrizeMoney = prizeMoney;
+	}	
+
+	public double getRacePrizeMoney() {
+		return racePrizeMoney;
+	}
+
+	public void setTrackCondition(int trackCondition) {
+		this.trackCondition = trackCondition;
+	}
+	
+	public int getTrackCondition() {
+		return trackCondition;
 	}
 
 }

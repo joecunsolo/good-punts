@@ -213,6 +213,11 @@ public class ObjectifyBaseDaoImpl {
 		result.setTrainer(runner.getTrainer());
 		result.setVenueName(runner.getVenueName());
 		result.setWeight(runner.getWeight());
+		result.setBarrier(runner.getBarrier());
+		result.setTrial(runner.isTrial());
+		result.setHorseRating(runner.getRating());
+		result.setRacePrizeMoney(runner.getRacePrizeMoney());
+		result.setTrackCondition(runner.getTrackCondition());
 		return result;
 	}
 
