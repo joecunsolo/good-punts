@@ -194,6 +194,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 			horse.setSpell(calculateSpell(results));
 			System.out.println("Spell: " + horse.getSpell());
 			horse.setSplits(calculateSplits(results));
+			horse.setHasSplits(horse.getSplits() != null & horse.getSplits().size() > 0);
 			races = results.size();
 		}
 		SpringRacingServices.getSpringRacingDAO().storeHorse(horse);

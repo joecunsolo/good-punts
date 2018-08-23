@@ -13,6 +13,49 @@ public class Horse extends AnalysableRacePropertyObject {
 	private int numberOfRaces;
 	private int spell;
 	private List<Double> splits;
+	private boolean hasSplits;
+	private double prizeMoney;
+	private double averagePrizeMoney;
+	private String colour;
+	private String sex;
+	private int age;
+	
+	private boolean goodAtDistance;
+	private boolean goodAtTrackCondition;
+	private boolean goodAtTrack;
+	private boolean goodAtClass;
+	
+	public boolean isGoodAtDistance() {
+		return goodAtDistance;
+	}
+
+	public void setGoodAtDistance(boolean goodAtDistance) {
+		this.goodAtDistance = goodAtDistance;
+	}
+
+	public boolean isGoodAtTrackCondition() {
+		return goodAtTrackCondition;
+	}
+
+	public void setGoodAtTrackCondition(boolean goodAtTrackCondition) {
+		this.goodAtTrackCondition = goodAtTrackCondition;
+	}
+
+	public boolean isGoodAtTrack() {
+		return goodAtTrack;
+	}
+
+	public void setGoodAtTrack(boolean goodAtTrack) {
+		this.goodAtTrack = goodAtTrack;
+	}
+
+	public boolean isGoodAtClass() {
+		return goodAtClass;
+	}
+
+	public void setGoodAtClass(boolean goodAtClass) {
+		this.goodAtClass = goodAtClass;
+	}
 	
 	public Horse() {
 		results = new ArrayList<RunnerResult>();
@@ -102,5 +145,53 @@ public class Horse extends AnalysableRacePropertyObject {
 	
 	public List<Double> getSplits() {
 		return splits;
+	}
+
+	public boolean hasSplits() {
+		return hasSplits;
+	}
+	
+	public void setHasSplits(boolean splits) {
+		this.hasSplits = splits;
+	}
+
+	public double getPrizeMoney() {
+		return prizeMoney;
+	}
+
+	public void setPrizeMoney(double prizeMoney) {
+		this.prizeMoney = prizeMoney;
+	}
+
+	public double getAveragePrizeMoney() {
+		return averagePrizeMoney;
+	}
+
+	public void setAveragePrizeMoney(double averagePrizeMoney) {
+		this.averagePrizeMoney = averagePrizeMoney;
+	}
+
+	public String getColour() {
+		return colour;
+	}
+
+	public void setColour(String colour) {
+		this.colour = colour;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 }

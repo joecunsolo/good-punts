@@ -131,4 +131,14 @@ public class MockRacingDao implements SpringRacingDAO {
 		return null;
 	}
 
+	public List<Horse> fetchHorses() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Horse> fetchHorses(boolean histories, boolean splits) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

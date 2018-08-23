@@ -64,7 +64,7 @@
 		</form>	
 	</p>
 	<p>
-		<a href="/histories/export">Horse Histories</a><br />					
+		<a href="history_export.jsp">Horse Histories</a><br />					
 		<a onclick="window.location='/runners_export.jsp?results='+ document.dates.results.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Runner Results</a>
 	</p>					
 	

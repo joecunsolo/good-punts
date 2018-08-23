@@ -1,8 +1,11 @@
 package com.goodpunts.api;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joe.springracing.business.HorseBusiness;
@@ -13,8 +16,14 @@ import com.joe.springracing.objects.Horse;
 public class HorseController {
 
 	@RequestMapping (value = "/{horse}", method = RequestMethod.GET, headers="Accept=application/json")
-	public Horse meet(@PathVariable String horse) {
+	public Horse fetchHorse(@PathVariable String horse) {
 		HorseBusiness business = new HorseBusiness();
 		return business.fetchHorse(horse);
+	}
+	
+	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
+	public List<Horse> fetchHorses(@RequestParam(value="splits", defaultValue="true") boolean splits) {
+		HorseBusiness business = new HorseBusiness();
+		return business.fetchHorses(true, splits);
 	}
 }

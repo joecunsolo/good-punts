@@ -120,6 +120,21 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 			return null;
 		}
 	}
+	
+
+	public List<Horse> fetchHorses(boolean histories, boolean splits) throws Exception {
+		List<ObjHorse> objHorses = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjHorse.class) // We want only Horses
+		          .filter("histories", histories)
+		          .filter("hasSplits", splits)
+		          .list();
+		List<Horse> result = new ArrayList<Horse>();
+		for (ObjHorse horse : objHorses) {
+			result.add(toHorse(horse));
+		}
+		return result;
+	}
 
 	private List<RunnerResult> fetchPastResults(String horse) {
 		List<ObjRunnerResult> objResults = ObjectifyService.ofy()

@@ -1,43 +1,27 @@
 package com.goodpunts.objectify;
 
-import java.util.List;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.joe.springracing.objects.Horse;
 
 @Entity
-public class ObjHorse {
+public class ObjHorse extends Horse {
 
-	private String name;
-	private String code;
 	@Id
-	private String id;
+	private String id2;
 	@Index
 	private boolean histories;
-	private int numberOfRaces;
-	private int spell;
-	private List<Double> splits;
+	@Index
+	private boolean hasSplits = false;
 	
 	public ObjHorse() {}
 	
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public String getId() {
-		return id;
+		return id2;
 	}
 	public void setId(String id) {
-		this.id = id;
+		this.id2 = id;
 	}
 
 	public void setHistories(boolean histories) {
@@ -48,28 +32,12 @@ public class ObjHorse {
 		return histories;
 	}
 
-	public int getNumberOfRaces() {
-		return numberOfRaces;
-	}
-
-	public void setNumberOfRaces(int numberOfRaces) {
-		this.numberOfRaces = numberOfRaces;
-	}
-
-	public int getSpell() {
-		return spell;
-	}
-
-	public void setSpell(int spell) {
-		this.spell = spell;
-	}
-
-	public void setSplits(List<Double> splits) {
-		this.splits = splits;
+	public void setHasSplits(boolean splits) {
+		this.hasSplits = splits;
 	}
 	
-	public List<Double> getSplits() {
-		return splits;
+	public boolean hasSplits() {
+		return hasSplits;
 	}
 
 }

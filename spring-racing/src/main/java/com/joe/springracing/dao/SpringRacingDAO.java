@@ -63,4 +63,6 @@ public interface SpringRacingDAO {
 	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception;
 
 	public List<Race> fetchRacesWithResults(Date from, Date to) throws Exception;
+
+	public List<Horse> fetchHorses(boolean histories, boolean splits) throws Exception;
 }

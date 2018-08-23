@@ -136,10 +136,6 @@ public class ObjectifyBaseDaoImpl {
 		r.setRaceCode(oRunner.getRaceCode());
 		r.setWeight(oRunner.getWeight());
 		r.setBarrier(oRunner.getBarrier());
-		r.setGoodAtDistance(oRunner.isGoodAtDistance());
-		r.setGoodAtClass(oRunner.isGoodAtClass());
-		r.setGoodAtTrack(oRunner.isGoodAtTrack());
-		r.setGoodAtTrackCondition(oRunner.isGoodAtTrackCondition());
 	
 		return r;
 	}
@@ -155,10 +151,7 @@ public class ObjectifyBaseDaoImpl {
 		o.setTrainer(runner.getTrainer());
 		o.setWeight(runner.getWeight());
 		o.setBarrier(runner.getBarrier());
-		o.setGoodAtClass(runner.isGoodAtClass());
-		o.setGoodAtDistance(runner.isGoodAtDistance());
-		o.setGoodAtTrack(runner.isGoodAtTrack());
-		o.setGoodAtTrackCondition(runner.isGoodAtTrackCondition());
+		
 		return o;
 	}
 
@@ -196,6 +189,18 @@ public class ObjectifyBaseDaoImpl {
 		result.setNumberOfRaces(horse.getNumberOfRaces());
 		result.setSpell(horse.getSpell());
 		result.setSplits(horse.getSplits());
+		result.setHasSplits(horse.hasSplits());
+		result.setAge(horse.getAge());
+		result.setAveragePrizeMoney(horse.getAveragePrizeMoney());
+		result.setPrizeMoney(horse.getPrizeMoney());
+		result.setColour(horse.getColour());
+		result.setSex(horse.getSex());
+		
+		result.setGoodAtDistance(horse.isGoodAtDistance());
+		result.setGoodAtClass(horse.isGoodAtClass());
+		result.setGoodAtTrack(horse.isGoodAtTrack());
+		result.setGoodAtTrackCondition(horse.isGoodAtTrackCondition());
+
 		return result;
 	}
 	
@@ -230,6 +235,17 @@ public class ObjectifyBaseDaoImpl {
 		horse.setNumberOfRaces(objHorse.getNumberOfRaces());
 		horse.setSpell(objHorse.getSpell());
 		horse.setSplits(objHorse.getSplits());
+		horse.setHasSplits(objHorse.hasSplits());
+		horse.setAge(objHorse.getAge());
+		horse.setColour(objHorse.getColour());
+		horse.setAveragePrizeMoney(objHorse.getAveragePrizeMoney());
+		horse.setPrizeMoney(objHorse.getPrizeMoney());
+		horse.setSex(objHorse.getSex());
+		
+		horse.setGoodAtClass(objHorse.isGoodAtClass());
+		horse.setGoodAtDistance(objHorse.isGoodAtDistance());
+		horse.setGoodAtTrack(objHorse.isGoodAtTrack());
+		horse.setGoodAtTrackCondition(objHorse.isGoodAtTrackCondition());
 		return horse;
 	}
 	protected Key<ObjMeet> getMeetKey(Meeting meet) {

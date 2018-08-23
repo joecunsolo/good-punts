@@ -1,6 +1,7 @@
 package com.joe.springracing.dao.datasource;
 
 import java.io.StringReader;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -121,10 +122,16 @@ public class RacingDotComParser extends JsonReaderIO {
 	
 	public static final String KEY_ODDS_WIN = "returnwin";
 	public static final String KEY_ODDS_PLACE = "returnplace";
+	public static final String KEY_HORSE_TOTALPRIZEMONEY = "totalprizemoney";
+	public static final String KEY_HORSE_AVERAGEPRIZEMONEY = "averageprize";
+	public static final String KEY_HORSE_COLOUR = "colour";
+	public static final String KEY_HORSE_SEX = "sex";
+	public static final String KEY_HORSE_AGE = "age";
 
 //	private static SimpleDateFormat raceTimeFormat = new SimpleDateFormat("mm:ss.SS");
 	private SimpleDateFormat raceDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	
+	private DecimalFormat df = new DecimalFormat("#,000");
+
 	public List<Race> parseRaces(String html) throws Exception { 
 		List<Race> result = new ArrayList<Race>();
 		JsonReader jsonReader = Json.createReader(new StringReader(html));
@@ -304,10 +311,10 @@ public class RacingDotComParser extends JsonReaderIO {
 			JsonValue goodat = jObject.get(KEY_GOODATFILTERS);
 			if (goodat != null & goodat instanceof JsonObject) {
 				Properties goodAtProps = parseProperties(goodat);
-				runner.setGoodAtClass(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CLASS)));
-				runner.setGoodAtDistance(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_DISTANCE)));
-				runner.setGoodAtTrack(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_TRACK)));
-				runner.setGoodAtTrackCondition(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CONDITION)));
+				horse.setGoodAtClass(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CLASS)));
+				horse.setGoodAtDistance(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_DISTANCE)));
+				horse.setGoodAtTrack(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_TRACK)));
+				horse.setGoodAtTrackCondition(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CONDITION)));
 			}
 			
 			runner.setHorseObject(horse);	
@@ -475,6 +482,18 @@ public class RacingDotComParser extends JsonReaderIO {
 		result.setCode(props.getProperty(KEY_HORSE_CODE));
 		result.setName(props.getProperty(KEY_HORSE_NAME));
 		result.setId(props.getProperty(KEY_HORSE_URL));
+		try {
+			result.setPrizeMoney(df.parse(props.getProperty(KEY_HORSE_TOTALPRIZEMONEY).substring(1)).doubleValue()); //totalprizemoney
+		} catch (Exception ex) {}
+		try {
+			result.setAveragePrizeMoney(df.parse(props.getProperty(KEY_HORSE_AVERAGEPRIZEMONEY).substring(1)).doubleValue()); //averageprize
+		} catch (Exception ex) {}
+		result.setColour(props.getProperty(KEY_HORSE_COLOUR)); //colour
+		result.setSex(props.getProperty(KEY_HORSE_SEX)); //sex
+		try {
+			result.setAge(Integer.parseInt(props.getProperty(KEY_HORSE_AGE))); //age
+		} catch (Exception ex) {}
+		
 		return result;
 	}
 	

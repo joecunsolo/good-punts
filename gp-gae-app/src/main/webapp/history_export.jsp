@@ -7,7 +7,7 @@
     <script>
 	    $( document ).ready(function() {
 	        console.log( "ready!" );
-	        loadRaces();
+	        loadHorses();
 	    });
 	    
 	    function parse_query_string(query) {
@@ -32,26 +32,20 @@
     	  return query_string;
     	}
     	
-    	function loadRaces() {
+    	function loadHorses() {
     		var query = window.location.search.substring(1);
     		var qs = parse_query_string(query);
-    		var url = 'api/races/?';
+    		var url = 'api/horses/?';
     		//add the parameters if they exist
-    		if (qs.results != "undefined") {
-    			url += 'results='+ qs.results;
-    		}
-    		if (qs.from != "undefeined") {
-    			url += '&from=' + qs.from;
-    		}
-    		if (qs.to != "undefeined") {
-    			url += '&to=' + qs.to;
+    		if (typeof qs.splits !== "undefined") {
+    			url += 'splits='+ qs.splits;
     		}
     		
     		$.ajax({ url: url, 
 				//dataType: 'html',
-	        	success: function(races) { 
-	        		for (i = 0; i < races.length; i++) {
-	        			loadRace(races[i].raceCode);
+	        	success: function(horses) { 
+	        		for (i = 0; i < horses.length; i++) {
+	        			loadHorse(horses[i].id);
 	        		}
 	             } })
 	    	.fail(function( xhr, status, errorThrown ) {
@@ -62,9 +56,9 @@
 			  });
     	}
     	
-    	function loadRace(raceCode) {
-    		console.log( raceCode );
-   			$.ajax({ url: 'json/json_probabilities.jsp?race_code=' + raceCode, 
+    	function loadHorse(id) {
+    		console.log( id );
+   			$.ajax({ url: 'json/json_horse.jsp?id=' + id, 
    				dataType: 'html',
    	        	success: function(data) { 
    	        		$( "#csv-content" ).append(data);
@@ -82,7 +76,7 @@
 	<body>
 		<jsp:include page="menu.jsp" />
 		<div id="csv-content">
-		Date,RaceCode,Distance,Runners,Venue,PrizeMoney,Jockey,Trainer,Number,Horse,# Races,Mean,SD,Weight,Win%,WinOdds,Scratched,Emergency,Barrier,Result<br>
+		Horse,Avg Prize Money,Tot Prize Money,Colour,Age,Sex,Date,Venue,Barrier,Weight,Rating,Jockey,Trainer,Distance,TrackCondition,GoodAtClass,GoodAtDistance,GoodAtTrack,GoodAtTrackCondition,Trial,RacePrizeMoney,Position,PrizeMoney,RaceTime,Scratched,200m,400m,600m,800m,1000m,1200m,1400m,1600m,1800m,2000m,2200m,2400m,2600m,2800m,3000m,3200m<br/>
 		</div>
 	</body>
 </html>

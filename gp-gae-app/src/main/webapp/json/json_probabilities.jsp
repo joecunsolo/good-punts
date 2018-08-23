@@ -39,10 +39,6 @@
 				<%=runner.isScratched()%>,
 				<%=runner.isEmergency()%>,
 				<%=runner.getBarrier() %>,
-				<%=runner.isGoodAtDistance()%>,
-				<%=runner.isGoodAtClass()%>,
-				<%=runner.isGoodAtTrack()%>,
-				<%=runner.isGoodAtTrackCondition()%>,
 				<%if (result != null) {
 					for (int i = 0; i < result.length; i++) {
 						if (runner.getNumber() == result[i]) { %>
