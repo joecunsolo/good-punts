@@ -10,6 +10,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.Comparator" %>
+<%@ page import="java.util.Calendar" %>
  
 <%-- //[END imports]--%>
 <% 			String horseCode = request.getParameter("id");
@@ -25,6 +26,7 @@
 			    <%=horse.getAge() %>,
 			    <%=horse.getSex() %>,
 				<%=r.getRaceDate() %>,
+				<%=System.currentTimeMillis() - r.getRaceDate().getTime() %>,
 				<%=r.getVenueName()%>,
 				<%=r.getBarrier() %>,
 				<%=r.getWeight() %>,
