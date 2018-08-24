@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import com.joe.springracing.AbstractSpringRacingBusiness;
@@ -254,7 +255,7 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	
 	public void importRaceResults() {
 		try {
-			List<Race> races = fetchRacesWithoutResults();
+			List<Race> races = fetchRacesWithoutResults(null, null);
 			for (Race race : races) {
 				importRaceResults(race);
 			}
@@ -263,8 +264,15 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		}
 	}
 	
-	public List<Race> fetchRacesWithoutResults() throws Exception {
-		return SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults();
+	/**
+	 * Gets races with out results or splits
+	 * @param from
+	 * @param to
+	 * @return the races without results or splits in the range	
+	 * @throws Exception
+	 */
+	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception {
+		return SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults(from, to);
 	}
 	
 	public void importRaceResults(String raceCode) {
@@ -284,10 +292,10 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		getWriter().println(race.getVenue() + " "  + race.getRaceNumber() + " " + race.getDate());
 		getWriter().flush();
 		
-		int[] result = importer.importRaceResults(race);
-		race.setResult(result);
+		race = importer.importRaceResults(race);
+		//race.setResult(result);
 		SpringRacingServices.getSpringRacingDAO().storeRace(race);
-		if (result != null) {
+		if (race.getResult() != null) {
 			punts.settlePunts(race);
 		}
 	}

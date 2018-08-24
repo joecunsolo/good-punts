@@ -579,4 +579,14 @@ public class LocalRaceDAOImpl implements SpringRacingDAO {
 		return null;
 	}
 
+	public List<Race> fetchRacesWithoutSplits(Date from, Date to) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Race> fetchRacesWithSplits(Date from, Date to) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

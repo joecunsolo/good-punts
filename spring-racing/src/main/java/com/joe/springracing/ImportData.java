@@ -17,7 +17,7 @@ public class ImportData {
 			importer.importUpcomingRaces(true);
 		} else
 		if (IMPORT_FLAG == IMPORT_RACE_RESULTS) {
-			importer.importRaceResults();
+//			importer.importRaceResults();
 		} else 
 		if (IMPORT_FLAG == IMPORT_EXISTING_MEETS) {
 //			importer.importExistingMeets();

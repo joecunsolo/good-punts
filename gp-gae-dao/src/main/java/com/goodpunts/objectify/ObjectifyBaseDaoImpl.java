@@ -114,6 +114,7 @@ public class ObjectifyBaseDaoImpl {
 		race.setVenue(r.getVenue());
 		race.setHistories(r.hasHistories());
 		race.setNumberOfRunnersLessThan3Races(r.getLessThan3Races());
+		race.setSplits(r.getSplits());
 		return race;
 	}
 	
@@ -177,6 +178,8 @@ public class ObjectifyBaseDaoImpl {
 		result.setVenue(race.getVenue());
 		result.setHistories(race.hasHistories());
 		result.setLessThan3Races(race.getNumberOfRunnersLessThan3Races());
+		result.setSplits(race.getSplits());
+		result.setHasSplits(race.getSplits() != null && race.getSplits().size() > 0);
 		return result;
 	}
 	

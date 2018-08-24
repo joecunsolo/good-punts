@@ -1,6 +1,8 @@
 package com.goodpunts.servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.GenericServlet;
@@ -24,15 +26,29 @@ import com.joe.springracing.objects.Race;
 public class ImportRaceResultsQueueServlet extends GenericServlet {
 
 	private static final long serialVersionUID = -5725479682605823516L;
-
 	public static final String URL = "/queue/results";
-
+	
+	private Date fromDate;
+	private Date toDate;
+	
+	@Override
+	public void init() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, -1);
+		fromDate = c.getTime();
+		
+		Calendar c2 = Calendar.getInstance();
+		c2.add(Calendar.MONTH, 1);
+		toDate = c2.getTime();
+	}
+	
 	@Override
 	public void service(ServletRequest req, ServletResponse resp)
 			throws ServletException, IOException {
 		ImportBusiness importer = new ImportBusiness();
+
 		try {
-			List<Race> races = importer.fetchRacesWithoutResults();
+			List<Race> races = importer.fetchRacesWithoutResults(fromDate, toDate);
 			for (Race race : races) {
 				Queue queue = QueueFactory.getDefaultQueue();
 				queue.

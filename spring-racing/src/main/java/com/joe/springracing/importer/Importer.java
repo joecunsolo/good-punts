@@ -94,8 +94,9 @@ public class Importer {
 		return results;
 	}
 	
-	public int[] importRaceResults(Race race) throws Exception {
-		return datasource.fetchRaceResult(race.getRaceCode()).getResult();
+	//TODO Should this be a RaceResult?
+	public Race importRaceResults(Race race) throws Exception {
+		return datasource.fetchRaceResult(race.getRaceCode());
 	}
 
 //	public SplitsAndSectionals fetchSplits(RunnerResult result) throws Exception {

@@ -22,12 +22,14 @@ public class RaceController {
 
 
 	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
-	public List<Race> races(@RequestParam(value="results", defaultValue="false") boolean results, 
+	public List<Race> races(
+			@RequestParam(value="results", defaultValue="false") boolean results, 
+			@RequestParam(value="splits", defaultValue="false") boolean splits, 
 			@RequestParam(value="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
 			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
 		
 		RaceBusiness business = new RaceBusiness();
-		return business.fetchRaces(results, from, to);
+		return business.fetchRaces(results, splits, from, to, true);
 	}
 	
 	@RequestMapping (value = "/{race}", method = RequestMethod.GET, headers="Accept=application/json")

@@ -14,6 +14,7 @@ public class Runner { //implements Simulatable {
 	private String raceCode;
 	private double weight;	
 	private int barrier;	
+	private int rating;
 	
 	//TODO Move these out
 //	private List<AnalysableObjectStatistic> statistics;
@@ -149,6 +150,14 @@ public class Runner { //implements Simulatable {
 
 	public void setBarrier(int barrier) {
 		this.barrier = barrier;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 }

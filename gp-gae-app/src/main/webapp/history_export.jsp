@@ -7,7 +7,7 @@
     <script>
 	    $( document ).ready(function() {
 	        console.log( "ready!" );
-	        loadHorses();
+	        loadRaces();
 	    });
 	    
 	    function parse_query_string(query) {
@@ -32,20 +32,27 @@
     	  return query_string;
     	}
     	
-    	function loadHorses() {
+	    function loadRaces() {
     		var query = window.location.search.substring(1);
     		var qs = parse_query_string(query);
-    		var url = 'api/horses/?';
+    		var url = 'api/races/?results=true';
     		//add the parameters if they exist
-    		if (typeof qs.splits !== "undefined") {
-    			url += 'splits='+ qs.splits;
+    		if (qs.splits != "undefeined") {
+    			url += '&splits=' + qs.splits;
     		}
-    		
+    		if (qs.from != "undefeined") {
+    			url += '&from=' + qs.from;
+    		}
+    		if (qs.to != "undefeined") {
+    			url += '&to=' + qs.to;
+    		}
+    		console.log(url);
     		$.ajax({ url: url, 
 				//dataType: 'html',
-	        	success: function(horses) { 
-	        		for (i = 0; i < horses.length; i++) {
-	        			loadHorse(horses[i].id);
+	        	success: function(races) { 
+	        		for (i = 0; i < races.length; i++) {
+	        			console.log( races[i].raceCode );
+	        			loadHorses(races[i].runners);
 	        		}
 	             } })
 	    	.fail(function( xhr, status, errorThrown ) {
@@ -54,6 +61,12 @@
 			    console.log( "Status: " + status );
 			    console.dir( xhr );
 			  });
+    	}
+	    
+    	function loadHorses(runners) {
+    		for (j = 0; j < runners.length; j++) {
+    			loadHorse(runners[j].horse);
+    		}
     	}
     	
     	function loadHorse(id) {

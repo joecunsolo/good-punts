@@ -84,6 +84,7 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 		
 		int[] result = reader.readRaceResult(urlToRead);
 		race.setResult(result);
+		race.setSplits(fetchSplitsAndSectionals(race.getMeetCode(), race.getRaceNumber()));
 		return race;
 	}
 	

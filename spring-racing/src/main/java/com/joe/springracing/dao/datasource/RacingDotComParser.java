@@ -63,6 +63,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RACE_RESULT = "result";
 	public static final String KEY_RACE_DISTANCE = "distance";
 	public static final String KEY_RACE_PRIZEMONEY = "prizemoneydetails";
+	public static final String KEY_RACE_RACEPRIZEMONEY = "prizemoney";
 	public static final String KEY_RACE_ISTRIAL = "istrial";
 	public static final String KEY_RACE_TRACKCONDITION = "trackconditionratingsource";
 	
@@ -127,6 +128,8 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_HORSE_COLOUR = "colour";
 	public static final String KEY_HORSE_SEX = "sex";
 	public static final String KEY_HORSE_AGE = "age";
+	private static final Object KEY_RATING = "rating";
+	private static final String KEY_RUNNER_HANDICAPRATING = "handicaprating";
 
 //	private static SimpleDateFormat raceTimeFormat = new SimpleDateFormat("mm:ss.SS");
 	private SimpleDateFormat raceDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -166,9 +169,13 @@ public class RacingDotComParser extends JsonReaderIO {
 		race.setTrial(Boolean.TRUE.toString().equals(props.getProperty(KEY_RACE_ISTRIAL)));
 		try {
 			race.setDate(raceDateFormat.parse(props.getProperty(KEY_RACE_TIME)));
-		} catch (ParseException pe) {
-			pe.printStackTrace();
-		}
+		} catch (ParseException pe) {}
+		try {
+			race.setRacePrizeMoney(Double.parseDouble(props.getProperty(KEY_RACE_RACEPRIZEMONEY)));
+		} catch (Exception ex) {}
+		try {
+			race.setTrackCondition(Integer.parseInt(props.getProperty(KEY_RACE_TRACKCONDITION)));
+		} catch (Exception ex) {}
 		return race;
 	}
 	
@@ -315,6 +322,13 @@ public class RacingDotComParser extends JsonReaderIO {
 				horse.setGoodAtDistance(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_DISTANCE)));
 				horse.setGoodAtTrack(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_TRACK)));
 				horse.setGoodAtTrackCondition(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CONDITION)));
+			}
+			JsonValue rating = jObject.get(KEY_RATING);
+			if (rating != null & rating instanceof JsonObject) {
+				Properties ratingProps = parseProperties(rating);
+				try {
+					runner.setRating(Integer.parseInt(ratingProps.getProperty(KEY_RUNNER_HANDICAPRATING)));
+				} catch (Exception ex) {}
 			}
 			
 			runner.setHorseObject(horse);	

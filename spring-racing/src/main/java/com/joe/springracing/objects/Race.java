@@ -3,6 +3,7 @@ package com.joe.springracing.objects;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class Race { //extends RacingObject {
@@ -22,6 +23,9 @@ public class Race { //extends RacingObject {
 	private boolean histories;
 	private int lessThan3Races;
 	private boolean trial;
+	private Map<Integer, List<Double>> splits;
+	private double racePrizeMoney;
+	private int trackCondition;
 	
 	public Race() {
 		runners = new ArrayList<Runner>();
@@ -138,6 +142,9 @@ public class Race { //extends RacingObject {
 		if (prizeMoney == null) {
 			return 0;
 		}
+		if (position < 0) {
+			return 0;
+		}
 		if (position - 1 < prizeMoney.length) {
 			return prizeMoney[position - 1];
 		}
@@ -174,6 +181,30 @@ public class Race { //extends RacingObject {
 
 	public void setTrial(boolean trial) {
 		this.trial = trial;
+	}
+
+	public void setSplits(Map<Integer, List<Double>> splits) {
+		this.splits = splits;
+	}	
+	
+	public Map<Integer, List<Double>> getSplits() {
+		return splits;
+	}
+
+	public double getRacePrizeMoney() {
+		return racePrizeMoney;
+	}
+
+	public void setRacePrizeMoney(double racePrizeMoney) {
+		this.racePrizeMoney = racePrizeMoney;
+	}
+
+	public int getTrackCondition() {
+		return trackCondition;
+	}
+
+	public void setTrackCondition(int trackCondition) {
+		this.trackCondition = trackCondition;
 	}
 
 }

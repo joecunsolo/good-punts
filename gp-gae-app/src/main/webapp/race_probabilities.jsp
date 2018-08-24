@@ -67,11 +67,11 @@
 						<td>Odds</td>
 						<td>Spell</td>
 						<td># Races</td>
+						<td></td>
 <%						int splits = (int)race.getDistance()/200;
 						for (int i = 0; i < splits; i++) { %>
 						<td><%=(i+1)*200 %>m</td>
 <% 						}%>
-						<td></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -100,12 +100,6 @@
 						<td><%=runner.getOdds().getWin()%></td>
 						<td><%=h.getSpell()%></td>
 						<td><%=h.getNumberOfRaces()%> </td>
-<% 						splits = (int)race.getDistance()/200;
-						for (int i = 0; i < splits; i++) { 
-							if (h.getSplits() != null && h.getSplits().size() > i) { %>
-							<td><%=df.format(h.getSplits().get(i))%></td>
-<% 							}
-						}%>
 						<td>
 							<%=runner.isScratched() ? "SCR" : ""%>
 							<%=runner.isEmergency() ? "EMG" : ""%>
@@ -117,6 +111,12 @@
 								}
 							} %>
 						</td>
+<% 						splits = (int)race.getDistance()/200;
+						for (int i = 0; i < splits; i++) { 
+							if (h.getSplits() != null && h.getSplits().size() > i) { %>
+							<td><%=df.format(h.getSplits().get(i))%></td>
+<% 							}
+						}%>
 					</tr>
 <%	
 			}%>

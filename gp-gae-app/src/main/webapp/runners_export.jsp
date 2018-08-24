@@ -46,7 +46,7 @@
     		if (qs.to != "undefeined") {
     			url += '&to=' + qs.to;
     		}
-    		
+    		console.log(url);
     		$.ajax({ url: url, 
 				//dataType: 'html',
 	        	success: function(races) { 
@@ -82,7 +82,7 @@
 	<body>
 		<jsp:include page="menu.jsp" />
 		<div id="csv-content">
-		Date,RaceCode,Distance,Runners,Venue,PrizeMoney,Jockey,Trainer,Number,Horse,# Races,Mean,SD,Weight,Win%,WinOdds,Scratched,Emergency,Barrier,Result<br>
+		Horse,AvgPrizeMoney,TotPrizeMoney,Colour,Age,Sex,Date,DaysAgo,Venue,Barrier,Weight,Rating,Jockey,Trainer,Distance,TrackCondition,GoodAtClass,GoodAtDistance,GoodAtTrack,GoodAtTrackCondition,Trial,RacePrizeMoney,Position,PrizeMoney,RaceTime,Scratched,200m,400m,600m,800m,1000m,1200m,1400m,1600m,1800m,2000m,2200m,2400m,2600m,2800m,3000m,3200m<br/>
 		</div>
 	</body>
 </html>

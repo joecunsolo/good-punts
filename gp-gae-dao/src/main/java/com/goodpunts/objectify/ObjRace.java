@@ -1,11 +1,15 @@
 package com.goodpunts.objectify;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
+import com.googlecode.objectify.annotation.Stringify;
+import com.googlecode.objectify.stringifier.Stringifier;
 
 @Entity
 public class ObjRace  {
@@ -27,6 +31,10 @@ public class ObjRace  {
 	@Index
 	private boolean histories;
 	private int lessThan3Races;
+	@Index
+	private boolean hasSplits;
+	@Stringify(IntStringifier.class)
+	private Map<Integer, List<Double>> splits;
 	
 	public ObjRace() {}
 	
@@ -114,4 +122,30 @@ public class ObjRace  {
 		this.lessThan3Races = lessThan3Races;
 	}
 
+	public Map<Integer, List<Double>> getSplits() {
+		return splits;
+	}
+
+	public void setSplits(Map<Integer, List<Double>> splits) {
+		this.splits = splits;
+	}
+
+	public boolean hasSplits() {
+		return hasSplits;
+	}
+
+	public void setHasSplits(boolean hasSplits) {
+		this.hasSplits = hasSplits;
+	}
+
+	static class IntStringifier implements Stringifier<Integer> {
+	    public String toString(Integer obj) {
+	        return obj.toString();
+	    }
+
+	    public Integer fromString(String str) {
+	        return Integer.parseInt(str);
+	    }
+
+	}
 }

@@ -61,10 +61,11 @@
 			from: <input name="from" type="text" value=""> <br />
 			to: <input name="to" type="text" value=""><br />
 			results: <input name="results" type="text" value="true">
+			splits: <input name="splits" type="text" value="true">
 		</form>	
 	</p>
 	<p>
-		<a href="history_export.jsp">Horse Histories</a><br />					
+		<a onclick="window.location='/history_export.jsp?splits='+ document.dates.splits.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Horse Histories</a><br />					
 		<a onclick="window.location='/runners_export.jsp?results='+ document.dates.results.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Runner Results</a>
 	</p>					
 	

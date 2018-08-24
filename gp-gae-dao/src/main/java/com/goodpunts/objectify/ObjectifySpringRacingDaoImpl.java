@@ -206,26 +206,60 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 	}
 	
 	public List<Race> fetchRacesWithoutResults() throws Exception {
-		return fetchRaces(false, null, null);
+		return fetchRacesByResult(false, null, null);
 	}
 	
 	public List<Race> fetchRacesWithoutResults(Date from, Date to) throws Exception {
-		return fetchRaces(false, from, to);
+		return fetchRacesByResult(false, from, to);
 	}
 	
 	public List<Race> fetchRacesWithResults() throws Exception {
-		return fetchRaces(true, null, null);
+		return fetchRacesByResult(true, null, null);
 	}
 	
 	public List<Race> fetchRacesWithResults(Date from, Date to) throws Exception {
-		return fetchRaces(true, from, to);
+		return fetchRacesByResult(true, from, to);
 	}
 	
-	public List<Race> fetchRaces(boolean results, Date from, Date to) throws Exception {
+	public List<Race> fetchRacesByResult(boolean results, Date from, Date to) throws Exception {
 		Query<ObjRace> query = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjRace.class) // We want only Races
-		          .filter("results", results); //with/out results
+				  .filter("results", results);
+
+		return fetchRaces(query, from, to);
+	}
+	
+	public List<Race> fetchRacesWithoutSplits(Date from, Date to) throws Exception {
+		return fetchRacesBySplit(false, from, to);		
+	}
+
+	public List<Race> fetchRacesWithSplits(Date from, Date to) throws Exception {
+		return fetchRacesBySplit(true, from, to);
+	}
+	
+	public List<Race> fetchRacesBySplit(boolean splits, Date from, Date to) throws Exception {
+		Query<ObjRace> query = ObjectifyService.ofy()
+		          .load()
+		          .type(ObjRace.class) // We want only Races
+				  .filter("hasSplits", splits);
+
+		return fetchRaces(query, from, to);
+	}
+	
+//	private List<Race> fetchRaces() {
+//		// TODO Auto-generated method stub
+//		Query<ObjRace> query = ObjectifyService.ofy()
+//		          .load()
+//		          .type(ObjRace.class) // We want only Races
+//				  .filter("results", results);
+//		
+//		Query<ObjRace> q2 = query.filter("hasSplits", results); //with/out splits
+//
+//		return null;
+//	}
+	
+	public List<Race> fetchRaces(Query<ObjRace> query, Date from, Date to) throws Exception {
 		//in the range
 		if (from != null) {
 			query = query.filter("date >", from);
@@ -233,6 +267,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		if (to != null) {
 			query = query.filter("date <", to);
 		}
+
 		List<ObjRace> races = query.list();
 	
 		List<Race> result = new ArrayList<Race>();
