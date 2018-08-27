@@ -32,26 +32,26 @@ public class RaceController {
 		return business.fetchRaces(results, splits, from, to, true);
 	}
 	
-	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
-	public List<Race> racesFromResults(
-			@RequestParam(value="results", defaultValue="false") boolean results, 
-			@RequestParam(value="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
-			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
-		
-		RaceBusiness business = new RaceBusiness();
-		return business.fetchRacesWithResult(results, from, to, true);
-	}
-	
-	
-	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
-	public List<Race> racesFromSplits(
-			@RequestParam(value="splits", defaultValue="false") boolean splits, 
-			@RequestParam(value="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
-			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
-		
-		RaceBusiness business = new RaceBusiness();
-		return business.fetchRacesWithSplits(splits, from, to, true);
-	}
+//	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
+//	public List<Race> racesFromResults(
+//			@RequestParam(value="results", defaultValue="false") boolean results, 
+//			@RequestParam(value="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
+//			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
+//		
+//		RaceBusiness business = new RaceBusiness();
+//		return business.fetchRacesWithResult(results, from, to, true);
+//	}
+//	
+//	
+//	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
+//	public List<Race> racesFromSplits(
+//			@RequestParam(value="splits", defaultValue="false") boolean splits, 
+//			@RequestParam(value="from", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date from,
+//			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
+//		
+//		RaceBusiness business = new RaceBusiness();
+//		return business.fetchRacesWithSplits(splits, from, to, true);
+//	}
 	
 	@RequestMapping (value = "/{race}", method = RequestMethod.GET, headers="Accept=application/json")
 	public Race race(@PathVariable String race) {
