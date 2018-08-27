@@ -58,7 +58,7 @@ public class ImportRaceResultsQueueServlet extends GenericServlet {
 							.retryOptions(RetryOptions.Builder.withTaskRetryLimit(0)));
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to queue race results");
+			throw new RuntimeException("Unable to queue race results", e);
 		}
 		
 	}
