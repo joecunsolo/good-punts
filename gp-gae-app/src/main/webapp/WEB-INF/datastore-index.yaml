@@ -1,0 +1,21 @@
+indexes:
+
+    - kind: Greeting
+        ancestor: yes
+        properties:
+    - name: date
+        direction: desc
+
+    - kind: ObjRace
+        properties:
+    - name: results
+    - name: date
+        direction: asc
+
+# This pound sign is the syntax for a comment.
+
+    - kind: ObjPuntEvent
+        ancestor: yes
+        properties:
+    - name: date
+        direction: desc

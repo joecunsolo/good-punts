@@ -37,8 +37,11 @@
     		var qs = parse_query_string(query);
     		var url = 'api/races/?';
     		//add the parameters if they exist
+    		if (qs.splits != "undefined") {
+    			url += 'splits='+ qs.splits;
+    		}
     		if (qs.results != "undefined") {
-    			url += 'results='+ qs.results;
+    			url += '&results='+ qs.results;
     		}
     		if (qs.from != "undefeined") {
     			url += '&from=' + qs.from;

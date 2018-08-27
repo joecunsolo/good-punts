@@ -65,8 +65,8 @@
 		</form>	
 	</p>
 	<p>
-		<a onclick="window.location='/history_export.jsp?splits='+ document.dates.splits.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Horse Histories</a><br />					
-		<a onclick="window.location='/runners_export.jsp?results='+ document.dates.results.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Runner Results</a>
+		<a onclick="window.location='/history_export.jsp?splits='+ document.dates.splits.value +'&results='+ document.dates.results.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Horse Histories</a><br />					
+		<a onclick="window.location='/runners_export.jsp?splits='+ document.dates.splits.value +'&results='+ document.dates.results.value +'&from='+ document.dates.from.value +'&to='+ document.dates.to.value" href="#">Race Results</a>
 	</p>					
 	
 </body>

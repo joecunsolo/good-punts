@@ -33,7 +33,7 @@ public class RaceBusiness {
 		List<Race> result = null;
 		List<Race> spr = null;
 		try {
-			//Does an AND
+			//Does an AND	
 			if (splits) {
 				//Get the races with splits
 				spr = SpringRacingServices.getSpringRacingDAO().fetchRacesWithSplits(from, to);
@@ -43,7 +43,7 @@ public class RaceBusiness {
 					//use an XOR for results && hasResults..
 					//results = true && hasResults, OR
 					//results = false = !hasResults
-					if (results ^ r.getResult() != null) {
+					if (!(results ^ r.getResult() != null)) {
 						result.add(r);
 					}
 				}
