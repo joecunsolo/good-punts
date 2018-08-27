@@ -12,6 +12,12 @@ indexes:
     - name: date
       direction: asc
 
+  - kind: ObjRace
+    properties:
+    - name: hasSplits
+    - name: date
+      direction: asc
+
 # This pound sign is the syntax for a comment.
 
   - kind: ObjPuntEvent

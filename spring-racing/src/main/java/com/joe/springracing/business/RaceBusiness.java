@@ -20,8 +20,8 @@ public class RaceBusiness {
 
 	/**
 	 * Not perfect but assumes that splits come in after results...
-	 * So if you want where splits = true does an AND results = true/false
-	 * If you want where splits = false does an OR results = true/false
+	 * So if you want where splits = true: does an AND results = true/false
+	 * If you want where splits = false: does an OR results = true/false
 	 * @param results the positional results
 	 * @param splits the 200m sectional splits
 	 * @param from date
@@ -75,5 +75,15 @@ public class RaceBusiness {
 			}
 		}
 		return result;
+	}
+
+	public List<Race> fetchRacesWithSplits(boolean splits, Date from, Date to, boolean b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Race> fetchRacesWithResult(boolean results, Date from, Date to, boolean b) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
