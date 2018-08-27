@@ -1,5 +1,6 @@
 package com.joe.springracing.business;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,21 +18,48 @@ public class RaceBusiness {
 		}	
 	}
 
+	/**
+	 * Not perfect but assumes that splits come in after results...
+	 * So if you want where splits = true does an AND results = true/false
+	 * If you want where splits = false does an OR results = true/false
+	 * @param results the positional results
+	 * @param splits the 200m sectional splits
+	 * @param from date
+	 * @param to date
+	 * @param fetchRunners get the runner details as well?
+	 * @return
+	 */
 	public List<Race> fetchRaces(boolean results, boolean splits, Date from, Date to, boolean fetchRunners) {
 		List<Race> result = null;
+		List<Race> spr = null;
 		try {
-			if (results) {
-				result = SpringRacingServices.getSpringRacingDAO().fetchRacesWithResults(from, to);
-			} else {
-				result = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults(from, to);				
-			}
-			List<Race> spr = null;
+			//Does an AND
 			if (splits) {
+				//Get the races with splits
 				spr = SpringRacingServices.getSpringRacingDAO().fetchRacesWithSplits(from, to);
+				//AND filter out the races with/without results...
+				result = new ArrayList<Race>();
+				for (Race r : spr) {
+					//use an XOR for results && hasResults..
+					//results = true && hasResults, OR
+					//results = false = !hasResults
+					if (results ^ r.getResult() != null) {
+						result.add(r);
+					}
+				}
+			//Does an OR
 			} else {
-				spr = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutSplits(from, to);				
+				spr = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutSplits(from, to);	
+				if (results) {
+					result = SpringRacingServices.getSpringRacingDAO().fetchRacesWithResults(from, to);
+				} else {
+					result = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults(from, to);
+				}
+				//Add both sets together races without splits and races with/without results
+				result.addAll(spr);
 			}
-			result.addAll(spr);
+			
+			
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to fetch races", e);
 		}
