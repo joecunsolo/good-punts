@@ -97,6 +97,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RESULT_RATING = "horserating";
 	public static final String KEY_RESULT_PRIZEMONEY = "prizemoney";
 	public static final String KEY_RESULT_TRACKCONDITION = "trackconditionratingsource";
+	public static final String KEY_RESULT_MARGIN = "margin";
 	
 	public static final String KEY_SECTIONAL_HORSES = "Horses";
 	public static final String KEY_SECTIONAL_SPLITS = "SplitTimes";
@@ -382,6 +383,9 @@ public class RacingDotComParser extends JsonReaderIO {
 				} catch (Exception ex) {}
 				try {
 					result.setTrackCondition(Integer.parseInt(props.getProperty(KEY_RESULT_TRACKCONDITION)));
+				} catch (Exception ex) {}
+				try {
+					result.setMargin(Double.parseDouble(props.getProperty(KEY_RESULT_MARGIN)));
 				} catch (Exception ex) {}
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);

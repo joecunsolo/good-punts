@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.objects.Horse;
-import com.joe.springracing.objects.RunnerResult;
 
 public class HorseBusiness {
 

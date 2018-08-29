@@ -226,6 +226,7 @@ public class ObjectifyBaseDaoImpl {
 		result.setHorseRating(runner.getRating());
 		result.setRacePrizeMoney(runner.getRacePrizeMoney());
 		result.setTrackCondition(runner.getTrackCondition());
+		result.setMargin(runner.getMargin());
 		return result;
 	}
 

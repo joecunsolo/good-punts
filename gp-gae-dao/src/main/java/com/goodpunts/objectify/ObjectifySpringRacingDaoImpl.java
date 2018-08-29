@@ -172,6 +172,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		result.setTrial(objResult.isTrial());
 		result.setRacePrizeMoney(objResult.getRacePrizeMoney());
 		result.setTrackCondition(objResult.getTrackCondition());
+		result.setMargin(objResult.getMargin());
 		return result;
 	}
 

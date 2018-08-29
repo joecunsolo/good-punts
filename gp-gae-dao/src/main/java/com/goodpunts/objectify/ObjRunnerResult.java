@@ -33,6 +33,7 @@ public class ObjRunnerResult {
 	private boolean trial;
 	private double racePrizeMoney;
 	private int trackCondition;
+	private double margin;
 
 	public ObjRunnerResult() {}
 	
@@ -155,6 +156,14 @@ public class ObjRunnerResult {
 
 	public void setTrackCondition(int trackCondition) {
 		this.trackCondition = trackCondition;
+	}
+
+	public double getMargin() {
+		return margin;
+	}
+
+	public void setMargin(double margin) {
+		this.margin = margin;
 	}
 
 }

@@ -23,8 +23,8 @@ public class HorseController {
 	
 	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")
 	public List<Horse> fetchHorses(@RequestParam(value="splits", defaultValue="true") boolean splits,
-			@RequestParam(value="results", defaultValue="true") boolean results) {
+			@RequestParam(value="histories", defaultValue="true") boolean histories) {
 		HorseBusiness business = new HorseBusiness();
-		return business.fetchHorses(results, splits);
+		return business.fetchHorses(histories, splits);
 	}
 }
