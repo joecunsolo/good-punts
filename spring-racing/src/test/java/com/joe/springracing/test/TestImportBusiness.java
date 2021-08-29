@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.joe.springracing.business.ImportBusiness;
 import com.joe.springracing.objects.RunnerResult;
@@ -83,7 +84,7 @@ public class TestImportBusiness extends TestCase {
 	}
 	
 	public static void testCalculateSpellWithLongDates() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd HH:mm:ss yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd HH:mm:ss yyyy", Locale.ENGLISH);
 		List<RunnerResult> results = new ArrayList<RunnerResult>();
 		
 		results.add(aResult(sdf.parse("Dec 04 19:15:00 2015")));
