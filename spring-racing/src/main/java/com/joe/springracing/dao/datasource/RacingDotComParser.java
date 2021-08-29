@@ -476,7 +476,7 @@ public class RacingDotComParser extends JsonReaderIO {
 		if (jsonObject != null) {
 			
 			Odds odds = new Odds();
-			try {
+			try { 
 				setOdds(odds, jsonObject, KEY_FIXED_ODDS);
 			} catch (Exception ex) {}
 			if (odds.getWin() == 0)

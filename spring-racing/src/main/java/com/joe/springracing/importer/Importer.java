@@ -81,7 +81,7 @@ public class Importer {
 				try {
 					//Map<Integer, List<Double>> splits = datasource.fetchSplitsAndSectionals(result.getMeetCode(), result.getRaceNumber());
 					//result.setSplits(splits.get(result.getNumber()));
-					//						result.setSplitsFetched(true);
+		//			//						result.setSplitsFetched(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();					
 				}
