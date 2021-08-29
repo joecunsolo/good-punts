@@ -479,7 +479,7 @@ public class RacingDotComParser extends JsonReaderIO {
 			try { 
 				setOdds(odds, jsonObject, KEY_FIXED_ODDS);
 			} catch (Exception ex) {}
-			if (odds.getWin() == 0)
+			if (odds.getWin() == 0) //
 			try {
 				setOdds(odds, jsonObject, KEY_PARIMUTEL_ODDS);
 			} catch (Exception ex2) {}
