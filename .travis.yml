@@ -20,6 +20,7 @@ before_install:
 
 #- mkdir -p lib
 # Here we use the decrypted service account credentials to authenticate the command line tool
+# [AUTH]
 - echo $HOME
 - echo $PATH
 - ls /home/travis
