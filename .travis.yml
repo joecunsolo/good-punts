@@ -32,7 +32,7 @@ install:
 #not sure about this
 # Optionally, install any of these additional components:
 #- gcloud components install app-engine-java
-- google-cloud-sdk-app-engine-java
+- sudo apt-get install google-cloud-sdk-app-engine-java
 - gcloud config set project good-punts
 script:
 - mvn install
