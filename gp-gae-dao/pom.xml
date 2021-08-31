@@ -12,6 +12,8 @@
       <objectify.version>5.1.13</objectify.version>
 	  <guava.version>18.0</guava.version>
 	  <appengine.target.version>1.9.46</appengine.target.version>
+	  <maven.compiler.source>6</maven.compiler.source>
+      <maven.compiler.target>1.6</maven.compiler.target>
     </properties>
 	
 	<dependencies>
