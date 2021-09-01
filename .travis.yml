@@ -28,7 +28,7 @@ before_install:
 - ls /home/travis/google-cloud-sdk
 - ls ${HOME}/google-cloud-sdk/bin
 - gcloud auth activate-service-account --key-file client-secret.json
-# [END auth]
+# [END auth] 
 install:
 #not sure about this
 # Optionally, install any of these additional components:
