@@ -36,7 +36,7 @@ install:
 #- sudo apt-get install google-cloud-sdk-app-engine-java
 - gcloud config set project good-punts
 script:
-- mvn install
+#- mvn install
 - cd gp-gae-app
 - ls
 - mvn appengine:deploy -Dapp.deploy.projectId=good-punts
