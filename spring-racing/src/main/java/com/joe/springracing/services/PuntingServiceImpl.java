@@ -9,7 +9,6 @@ import com.joe.springracing.SpringRacingServices;
 import com.joe.springracing.business.model.Model;
 import com.joe.springracing.business.model.ModelAttributes;
 import com.joe.springracing.objects.Horse;
-import com.joe.springracing.objects.Meeting;
 import com.joe.springracing.objects.Punt;
 import com.joe.springracing.objects.Punt.State;
 import com.joe.springracing.objects.Race;
@@ -52,6 +51,31 @@ public class PuntingServiceImpl implements PuntingService {
 		}
 		
 		return puntsForRace;
+	}
+	
+
+	@Override
+	public Punt punt(Punt.Type valueOf,
+			String raceCode, String[] horseCodes) throws Exception {
+		
+		Race race = SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
+		List<Runner> runners = SpringRacingServices.getPuntingDAO().fetchProbabilitiesForRace(race);
+		race.setRunners(runners);
+		Runner runner = race.getRunner(horseCodes[0]);
+		
+		double winProbability = runner.getProbability().getWin();
+//		double placeProbability = runner.getProbability().getPlace();
+		
+		double joeWinOdds = probabilityToOdds(winProbability);
+//		double joePlaceOdds = probabilityToOdds(placeProbability);
+		
+		Confidence c = calcConfidence(joeWinOdds, runner.getOdds().getWin());
+		Punt p = new Punt(race.getRaceCode(), race.getDate(), Type.WIN, joeWinOdds, runner.getOdds().getWin(), c, State.OPEN);
+		p.setRaceNumber(race.getRaceNumber());
+		p.setVenue(race.getVenue());
+		p.getRunners().add(runner);
+		
+		return p;
 	}
 	
 //	public List<Punt> generate(Meeting meet) throws Exception {
@@ -415,4 +439,5 @@ public class PuntingServiceImpl implements PuntingService {
 			return -1;
 		}
 	}
+
 }

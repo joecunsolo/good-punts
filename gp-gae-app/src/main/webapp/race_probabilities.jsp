@@ -35,6 +35,7 @@
 			Meeting meet = SpringRacingServices.getSpringRacingDAO().fetchMeet(meetCode); %>
 			<p align="left">
 			<a href="/api/races/<%=raceCode %>/import">import race</a><br>
+			<a href="/race-results/import?racecode=<%=raceCode %>">import race results</a><br>
 			<a href="/api/races/<%=raceCode %>/import?histories=true">import histories</a><br>
 			<a href="/api/races/<%=raceCode %>/probabilities/generate">generate probabilities</a></p>			
 			<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
@@ -97,7 +98,9 @@
 						<td><%=df.format(runner.getProbability().getStandardDeviation())%></td>
 						<td><%=df.format(runner.getWeight())%></td>
 						<td><%=df.format(runner.getProbability().getWin() * 100)%></td> 
-						<td><%=runner.getOdds().getWin()%></td>
+						<td><a href="/api/punts/good/place?race=<%=race.getRaceCode()%>&horses=<%=runner.getHorse()%>&type=WIN&amount=100">
+							<%=runner.getOdds().getWin()%></a>
+						</td>
 						<td><%=h.getSpell()%></td>
 						<td><%=h.getNumberOfRaces()%> </td>
 						<td>

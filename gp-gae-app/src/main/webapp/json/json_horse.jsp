@@ -44,7 +44,8 @@
 				<%=r.getPosition() %>,
 				<%=r.getPrizeMoney() %>,
 				<%=r.getRaceTime() %>,
-				<%=r.isScratched() %>,		
+				<%=r.isScratched() %>,	
+				<%=r.getOddsStart() %>,	
 <%				if (r.getSplits() != null) {
 					for (Double split : r.getSplits()) { %>
 						<%=split %>,

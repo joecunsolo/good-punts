@@ -34,6 +34,8 @@
 
 <body>
 	<jsp:include page="menu.jsp" />
+	<div>
+	<div align="right"><a href="/stakes/settle">Settle Stakes</a></div>
 	<table>
 		<thead>
 			<tr>
@@ -108,6 +110,7 @@
 <%			}%>
 		</tbody>
 	</table>
+	</div>
 </body>
 </html>
 <%-- //[END all]--%>

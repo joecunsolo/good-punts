@@ -69,6 +69,15 @@ public class Race { //extends RacingObject {
 		}
 		return max;
 	}
+	
+	public Runner getRunner(String horseCode) {
+		for (Runner runner : getRunners()) {
+			if (runner.getHorse().equalsIgnoreCase(horseCode)) {
+				return runner;
+			}
+		}
+		return null;
+	}
 
 	public int[] getResult() {
 		return result;

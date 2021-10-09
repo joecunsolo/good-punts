@@ -38,7 +38,9 @@
 			
 			mb.sortMeetingsByDate(upcoming);
 			for (Meeting meet : upcoming) {%>
-				<p><%=meet.getDate() %> <%=meet.getVenue() %></p>					
+				<p><%=meet.getDate() %> <%=meet.getVenue() %> <br />
+				<a href="/api/meetings/<%=meet.getMeetCode() %>/import?histories=true">histories</a><br />
+			    <a href="/api/meetings/<%=meet.getMeetCode() %>/probabilities/generate">probabilities</a></p>							
 <%				List<Race> races =  SpringRacingServices.getSpringRacingDAO().fetchRacesForMeet(meet);
 				mb.sortRacesByNumber(races);
 				for (Race race : races) {%>

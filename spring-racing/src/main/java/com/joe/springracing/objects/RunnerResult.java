@@ -37,6 +37,7 @@ public class RunnerResult {
 	private double racePrizeMoney;
 	private int trackCondition;
 	private double margin;
+	private double oddsStart;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -321,6 +322,14 @@ public class RunnerResult {
 
 	public void setMargin(double margin) {
 		this.margin = margin;
+	}
+
+	public void setOddsStart(double oddsStart) {
+		this.oddsStart = oddsStart;
+	}
+	
+	public double getOddsStart() {
+		return oddsStart;
 	}
 
 }

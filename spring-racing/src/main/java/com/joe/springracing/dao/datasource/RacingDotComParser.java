@@ -37,7 +37,8 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String DELIMITTER_COMMA = ",";
 	public static final String DELIMITTER_CLOSE_PARENTHESES = ")";
 	public static final String DELIMITTER_COLON = ":";
-	
+
+	public static final String DOLLAR = "$";
 	public static final String TRUE = "true";
 	
 	public static final String KEY_RUNNERS = "runners";
@@ -98,6 +99,7 @@ public class RacingDotComParser extends JsonReaderIO {
 	public static final String KEY_RESULT_PRIZEMONEY = "prizemoney";
 	public static final String KEY_RESULT_TRACKCONDITION = "trackconditionratingsource";
 	public static final String KEY_RESULT_MARGIN = "margin";
+	public static final String KEY_RESULT_ODDS_START = "oddsstart";
 	
 	public static final String KEY_SECTIONAL_HORSES = "Horses";
 	public static final String KEY_SECTIONAL_SPLITS = "SplitTimes";
@@ -386,6 +388,11 @@ public class RacingDotComParser extends JsonReaderIO {
 				} catch (Exception ex) {}
 				try {
 					result.setMargin(Double.parseDouble(props.getProperty(KEY_RESULT_MARGIN)));
+				} catch (Exception ex) {}
+				try {
+					String strOddsStart = props.getProperty(KEY_RESULT_ODDS_START).substring(DOLLAR.length());
+					double oddsStart = Double.parseDouble(strOddsStart); 
+					result.setOddsStart(oddsStart);
 				} catch (Exception ex) {}
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);
