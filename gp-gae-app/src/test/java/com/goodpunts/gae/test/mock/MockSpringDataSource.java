@@ -107,6 +107,11 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 		return null;
 	}
 
+	@Override
+	public List<Race> fetchRaces(int daysAgo, int daysTo) throws Exception {
+		return races;
+	}
+
 //	@Override
 //	public Map<Integer, List<Double>> fetchSplitsAndSectionals(String meetCode, int raceNumber) throws Exception {
 //		// TODO Auto-generated method stub

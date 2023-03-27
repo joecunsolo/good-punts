@@ -34,6 +34,12 @@ public class ObjRunnerResult {
 	private double racePrizeMoney;
 	private int trackCondition;
 	private double margin;
+	private double oddsStart;
+	private boolean firstUp;
+	private boolean secondUp;
+	private boolean thirdUp;
+	private boolean fourthUp;
+	private int spell;
 
 	public ObjRunnerResult() {}
 	
@@ -164,6 +170,54 @@ public class ObjRunnerResult {
 
 	public void setMargin(double margin) {
 		this.margin = margin;
+	}
+
+	public void setOddsStart(double oddsStart) {	
+		this.oddsStart = oddsStart;
+	}
+	
+	public double getOddsStart() {
+		return oddsStart;
+	}
+
+	public void setFirstUp(boolean firstUp) {
+		this.firstUp = firstUp;
+	}
+
+	public void setSecondUp(boolean secondUp) {
+		this.secondUp = secondUp;
+	}
+
+	public void setThirdUp(boolean thirdUp) {
+		this.thirdUp = thirdUp;		
+	}
+	
+	public boolean getFirstUp() {
+		return firstUp;
+	}
+
+	public boolean getSecondUp() {
+		return secondUp;
+	}
+
+	public boolean getThirdUp() {
+		return thirdUp;
+	}
+
+	public void setSpell(int spell) {
+		this.spell = spell;
+	}
+	
+	public int getSpell() {
+		return spell;
+	}
+
+	public boolean isFourthUp() {
+		return fourthUp;
+	}
+
+	public void setFourthUp(boolean fourthUp) {
+		this.fourthUp = fourthUp;
 	}
 
 }

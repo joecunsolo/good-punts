@@ -12,7 +12,10 @@ public class RaceBusiness {
 
 	public Race fetchRace(String raceCode) {
 		try {
-			return SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
+			Race race =  SpringRacingServices.getSpringRacingDAO().fetchRace(raceCode);
+			List<Runner> runners = SpringRacingServices.getSpringRacingDAO().fetchRunnersForRace(race);
+			race.setRunners(runners);
+			return race;
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to fetch race " + raceCode, e);
 		}	
@@ -49,14 +52,14 @@ public class RaceBusiness {
 				}
 			//Does an OR
 			} else {
-				spr = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutSplits(from, to);	
+				//spr = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutSplits(from, to);	
 				if (results) {
 					result = SpringRacingServices.getSpringRacingDAO().fetchRacesWithResults(from, to);
 				} else {
 					result = SpringRacingServices.getSpringRacingDAO().fetchRacesWithoutResults(from, to);
 				}
 				//Add both sets together races without splits and races with/without results
-				result.addAll(spr);
+				//result.addAll(spr);
 			}
 			
 			

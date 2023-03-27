@@ -20,15 +20,16 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 
 	//The number of milliseconds in a day
 	public static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+	public static final int FRESHEN_UP = 5 * 7;
 
 	public ImportBusiness() {
 		super(new PrintWriter(System.out));
 	}
 	
-	public void importUpcomingRaces(boolean histories) {
+	public void importUpcomingRaces(int daysAgo, int daysTo, boolean histories) {
 		try {
 			Importer importer = new Importer();
-			List<Race> races = importer.importUpcomingRaces();	
+			List<Race> races = importer.importUpcomingRaces(daysAgo, daysTo);	
 			List<Meeting> meets = organiseRacesByMeeting(races);
 
 			for (Meeting meet : meets) {
@@ -91,23 +92,26 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		getWriter().println("Race: " + race.getRaceNumber() + " " + race.getName() + " " + race.getVenue());
 		getWriter().flush();
 
-		Importer importer = new Importer();
-		List<Runner> runners = importer.fetchRunners(race);
+		List<Runner> runners = SpringRacingServices.getSpringRacingDAO().fetchRunnersForRace(race);
+		if (runners == null || runners.size() == 0) {
+			Importer importer = new Importer();
+			runners = importer.fetchRunners(race);
+		}
 		race.setRunners(runners);
-		if (runners != null) {
-			Race existing = SpringRacingServices.getSpringRacingDAO().fetchRace(race.getRaceCode());
-			if (existing != null) {
-				race.setHistories(existing.hasHistories());
-			}
-			//import the runners
-			int lessThan3Races = importRunners(runners, histories, existing == null);			
-			race.setHistories(histories || race.hasHistories());
-			//calculate the meta-data
-			if (histories) {
-				race.setNumberOfRunnersLessThan3Races(lessThan3Races);
-			}
-			SpringRacingServices.getSpringRacingDAO().storeRace(race);
-		}	
+		//if (runners != null) {
+		Race existing = SpringRacingServices.getSpringRacingDAO().fetchRace(race.getRaceCode());
+		if (existing != null) {
+			race.setHistories(existing.hasHistories());
+		}
+		//import the runners
+		int lessThan3Races = importRunners(runners, histories, existing == null);			
+		race.setHistories(histories || race.hasHistories());
+		//calculate the meta-data
+		if (histories) {
+			race.setNumberOfRunnersLessThan3Races(lessThan3Races);
+		}
+		SpringRacingServices.getSpringRacingDAO().storeRace(race);
+		//}	
 	}
 
 	/**
@@ -119,6 +123,10 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 	 * @throws Exception when one of the imports fails
 	 */
 	private int importRunners(List<Runner> runners, boolean histories, boolean newRace) throws Exception {
+		//don't bother if there are no runners.
+		if (runners == null)
+			return 0;
+		
 		Importer importer = new Importer();
 		int runnersLessThan3 = 0;
 		for (Runner runner : runners) {
@@ -186,13 +194,14 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		int races = 0;
 		if (histories) {
 			List<RunnerResult> results = importer.fetchPastResults(horse);
+			int spell = calculateSpell(results);
 			SpringRacingServices.getSpringRacingDAO().storeResults(results);			
 			//We've just successfully imported the history of this horse
 			horse.setHistories(true);
 			//add some meta-data about the horse			
 			horse.setNumberOfRaces(results.size());
 			System.out.println("Races: " + horse.getNumberOfRaces());
-			horse.setSpell(calculateSpell(results));
+			horse.setSpell(spell);
 			System.out.println("Spell: " + horse.getSpell());
 			horse.setSplits(calculateSplits(results));
 			horse.setHasSplits(horse.getSplits() != null & horse.getSplits().size() > 0);
@@ -245,10 +254,39 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 				}
 				return o2.getRaceDate().compareTo(o1.getRaceDate());
 			}});
-		if (results.size() > 0 &&
-				results.get(0).getRaceDate() != null) {
-			long timeSinceLastRace = System.currentTimeMillis() - results.get(0).getRaceDate().getTime();
-			return (int)(timeSinceLastRace / MILLIS_IN_A_DAY);			
+		if (results.size() > 0) {
+			//Previous race and time are initially set as this horses first race
+			long previousRaceTime = 0;
+			RunnerResult previous = results.get(results.size() - 1);
+			if (previous.getRaceDate() != null) {
+				previousRaceTime = previous.getRaceDate().getTime();
+				previous.setFirstUp(true);
+			}
+			//start from the second last race and compare to previous
+			for (int i = results.size() - 2; i >= 0; i--) {	
+				RunnerResult result = results.get(i);
+				if (result.getRaceDate() != null) {
+					long raceTime = result.getRaceDate().getTime();
+					long timeSinceLastRace = raceTime - previousRaceTime;
+					int spell = (int)(timeSinceLastRace / MILLIS_IN_A_DAY);
+					result.setSpell(spell);
+					if (spell > FRESHEN_UP) {
+						result.setFirstUp(true);
+					} else if (previous.isFirstUp()) {
+						result.setSecondUp(true);
+					} else if (previous.isSecondUp()) {
+						result.setThirdUp(true);						
+					} else if (previous.isThirdUp()) {
+						result.setFourthUp(true);
+					}
+					previous = result;
+					previousRaceTime = raceTime;
+				}
+			}
+			if (results.get(0).getRaceDate() != null) {
+				long timeSinceLastRace = System.currentTimeMillis() - results.get(0).getRaceDate().getTime();
+				return (int)(timeSinceLastRace / MILLIS_IN_A_DAY);
+			}
 		}
 		return 0;
 	}
@@ -293,7 +331,8 @@ public class ImportBusiness extends AbstractSpringRacingBusiness {
 		getWriter().flush();
 		
 		race = importer.importRaceResults(race);
-		//race.setResult(result);
+		System.out.println("Has Runners " + (race.getRunners() != null && race.getRunners().size() > 0));
+		importRunners(race.getRunners(), false, false);
 		SpringRacingServices.getSpringRacingDAO().storeRace(race);
 		if (race.getResult() != null) {
 			punts.settlePunts(race);

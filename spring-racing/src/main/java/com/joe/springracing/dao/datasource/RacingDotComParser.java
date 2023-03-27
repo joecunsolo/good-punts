@@ -150,7 +150,7 @@ public class RacingDotComParser extends JsonReaderIO {
 			//Dont worry about
 			if ((!result.contains(race)) && //races we already have
 					race.getDate() != null && //races not scheduled
-					race.getDate().getTime() > System.currentTimeMillis() - (1000 * 60 * 60 * 24) && //races in the past
+					//race.getDate().getTime() > System.currentTimeMillis() - (1000 * 60 * 60 * 24) && //races in the past
 					props.getProperty(KEY_TIME) != null) { //races not scheduled
 				JsonObject jUrl = jObject.getJsonObject(KEY_URL);
 				race.setURL(parseProperties(jUrl));
@@ -292,52 +292,57 @@ public class RacingDotComParser extends JsonReaderIO {
 		
 		for (int i = 0; i < array.size(); i++) {
 			JsonObject jObject = array.getJsonObject(i);
-			Properties props = parseProperties(jObject);
 		
-			//need a map to the horse
-			Horse horse = parseHorse(jObject.get(KEY_HORSE)); 
-		
-			RacingDotComRunner runner = new RacingDotComRunner();
-			String weight = props.getProperty(KEY_RUNNER_WEIGHT);
-			try {
-				weight = weight.substring(0, weight.length() - 2);
-				runner.setWeight(Double.parseDouble(weight));
-			} catch (Exception ex) {
-				//do nothing - it's ok if it doesn't have a weight
-			}
-			runner.setEmergency(Boolean.valueOf(props.getProperty(KEY_RUNNER_EMEGENCY)));
-			runner.setScratched(Boolean.valueOf(props.getProperty(KEY_RUNNER_SCRATCHED)));
-			runner.setNumber(Integer.parseInt(props.getProperty(KEY_RUNNER_NUMBER)));
-			runner.setHorse(horse.getId());
-			runner.setTrainer(parseTrainer(jObject.get(KEY_TRAINER)));
-			runner.setJockey(parseJockey(jObject.get(KEY_JOCKEY)));
-			runner.setBarrier(Integer.parseInt(props.getProperty(KEY_RUNNER_BARRIER)));
-//			runner.setRaceCode(raceCode);
-			
-			JsonValue odds = jObject.get(KEY_ODDS);
-			if (odds != null & odds instanceof JsonObject) {
-				runner.setOdds(parseOdds((JsonObject)odds));
-			}
-			JsonValue goodat = jObject.get(KEY_GOODATFILTERS);
-			if (goodat != null & goodat instanceof JsonObject) {
-				Properties goodAtProps = parseProperties(goodat);
-				horse.setGoodAtClass(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CLASS)));
-				horse.setGoodAtDistance(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_DISTANCE)));
-				horse.setGoodAtTrack(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_TRACK)));
-				horse.setGoodAtTrackCondition(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CONDITION)));
-			}
-			JsonValue rating = jObject.get(KEY_RATING);
-			if (rating != null & rating instanceof JsonObject) {
-				Properties ratingProps = parseProperties(rating);
-				try {
-					runner.setRating(Integer.parseInt(ratingProps.getProperty(KEY_RUNNER_HANDICAPRATING)));
-				} catch (Exception ex) {}
-			}
-			
-			runner.setHorseObject(horse);	
+			Runner runner = parseRunner(jObject);
 			result.add(runner);
 		}
 		return result;
+	}
+	
+	private Runner parseRunner(JsonObject jObject) {
+		Properties props = parseProperties(jObject);
+		//need a map to the horse
+		Horse horse = parseHorse(jObject.get(KEY_HORSE)); 
+	
+		RacingDotComRunner runner = new RacingDotComRunner();
+		String weight = props.getProperty(KEY_RUNNER_WEIGHT);
+		try {
+			weight = weight.substring(0, weight.length() - 2);
+			runner.setWeight(Double.parseDouble(weight));
+		} catch (Exception ex) {
+			//do nothing - it's ok if it doesn't have a weight
+		}
+		runner.setEmergency(Boolean.valueOf(props.getProperty(KEY_RUNNER_EMEGENCY)));
+		runner.setScratched(Boolean.valueOf(props.getProperty(KEY_RUNNER_SCRATCHED)));
+		runner.setNumber(Integer.parseInt(props.getProperty(KEY_RUNNER_NUMBER)));
+		runner.setHorse(horse.getId());
+		runner.setTrainer(parseTrainer(jObject.get(KEY_TRAINER)));
+		runner.setJockey(parseJockey(jObject.get(KEY_JOCKEY)));
+		runner.setBarrier(Integer.parseInt(props.getProperty(KEY_RUNNER_BARRIER)));
+//		runner.setRaceCode(raceCode);
+		
+		JsonValue odds = jObject.get(KEY_ODDS);
+		if (odds != null & odds instanceof JsonObject) {
+			runner.setOdds(parseOdds((JsonObject)odds));
+		}
+		JsonValue goodat = jObject.get(KEY_GOODATFILTERS);
+		if (goodat != null & goodat instanceof JsonObject) {
+			Properties goodAtProps = parseProperties(goodat);
+			horse.setGoodAtClass(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CLASS)));
+			horse.setGoodAtDistance(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_DISTANCE)));
+			horse.setGoodAtTrack(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_TRACK)));
+			horse.setGoodAtTrackCondition(TRUE.equals(goodAtProps.getProperty(KEY_GOODAT_CONDITION)));
+		}
+		JsonValue rating = jObject.get(KEY_RATING);
+		if (rating != null & rating instanceof JsonObject) {
+			Properties ratingProps = parseProperties(rating);
+			try {
+				runner.setRating(Integer.parseInt(ratingProps.getProperty(KEY_RUNNER_HANDICAPRATING)));
+			} catch (Exception ex) {}
+		}
+		
+		runner.setHorseObject(horse);
+		return runner;
 	}
 
 	public List<RunnerResult> parseResults(String html) {
@@ -390,9 +395,7 @@ public class RacingDotComParser extends JsonReaderIO {
 					result.setMargin(Double.parseDouble(props.getProperty(KEY_RESULT_MARGIN)));
 				} catch (Exception ex) {}
 				try {
-					String strOddsStart = props.getProperty(KEY_RESULT_ODDS_START).substring(DOLLAR.length());
-					double oddsStart = Double.parseDouble(strOddsStart); 
-					result.setOddsStart(oddsStart);
+					result.setOddsStart(Double.parseDouble(props.getProperty(KEY_RESULT_ODDS_START).substring(DOLLAR.length())));
 				} catch (Exception ex) {}
 			} catch (NullPointerException nex) {
 				throw new RuntimeException(nex);
@@ -426,37 +429,30 @@ public class RacingDotComParser extends JsonReaderIO {
 		return null;
 	}
 
-	public int[] parseRaceResults(String html) {
+	public List<Runner> parseRaceResults(String html) {
 		JsonReader jsonReader = Json.createReader(new StringReader(html));
 		JsonObject jObject = jsonReader.readObject();
 		
+		List<Runner> runners = new ArrayList<Runner>();
 		JsonArray array = jObject.getJsonArray(KEY_RACE_RESULTS);
-		int[] results = new int[array.size()];
-		int scratchings = 0;
-		
 		for (int i = 0; i < array.size(); i++) {
 			JsonObject jRunner = array.getJsonObject(i);
 			Properties props = parseProperties(jRunner);
 			
-			JsonObject jPosition = jRunner.getJsonObject(KEY_RESULT_POSITION);
-			props.putAll(parseProperties(jPosition));
+			Runner runner = parseRunner(jRunner);
 			
 			int finish = -1;
-			int number = 0;
 			try {
-				number = Integer.parseInt(props.getProperty(KEY_RESULT_NUMBER));
+				JsonObject jPosition = jRunner.getJsonObject(KEY_RESULT_POSITION);
+				props.putAll(parseProperties(jPosition));
 				finish = Integer.parseInt(props.getProperty(KEY_RESULT_POSITION_FINISH));
+				runner.setResult(finish);
 			} catch (Exception ex) {}
 			
-			//Racing.com's method of handling exceptions
-			if (finish <= results.length && finish > 0) {
-				results[finish-1] = number;
-			} else {
-				scratchings++;
-			}
+			runners.add(runner);
 		}
 		
-		return Arrays.copyOf(results, results.length - scratchings);
+		return runners;
 	}
 
 

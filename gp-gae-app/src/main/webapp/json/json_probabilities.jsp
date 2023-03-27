@@ -24,50 +24,27 @@
 			DecimalFormat df = new DecimalFormat("0.0");
 			HorseBusiness hb = new HorseBusiness();
 			for (Runner runner : runners) {
-				Horse horse = hb.fetchHorse(runner.getHorse());
-				int position = -1;
-				if (result != null) {
-					for (int i = 0; i < result.length; i++) {
-						if (runner.getNumber() == result[i]) { 
-							position = i+1;
-					   }
-					}
- 				}
+				if (runner.getOdds().getWin() != 0) {
+				  Horse horse = hb.fetchHorse(runner.getHorse());
 			%>	
-				<%=runner.getHorse() %>,
-				<%=horse.getAveragePrizeMoney() %>,
-			    <%=horse.getPrizeMoney() %>,
-			    <%=horse.getColour() %>,
-			    <%=horse.getAge() %>,
-			    <%=horse.getSex() %>,
-				<%=race.getDate() %>,
-				0,
-				<%=race.getVenue() %>,
-			    <%=runner.getBarrier() %>,
-			    <%=df.format(runner.getWeight())%>,
-				<%=runner.getRating() %>,
-				<%=runner.getJockey() %>,
-			    <%=runner.getTrainer() %>,
-				<%=race.getDistance() %>,
-				<%=race.getTrackCondition() %>,
-			    <%=horse.isGoodAtClass() %>,
-				<%=horse.isGoodAtDistance() %>,
-				<%=horse.isGoodAtTrack() %>,
-				<%=horse.isGoodAtTrackCondition() %>,
-				<%=race.isTrial() %>,				
-				<%=race.getRacePrizeMoney() %>,
-				<%//Position,PrizeMoney,RaceTime,Scratched,200m,400m,600m,800m,1000m,1200m,1400m,1600m,1800m,2000m,2200m,2400m,2600m,2800m,3000m,3200m%>
-				<%=position %>,
-				<%=race.getPrizeMoney(position) %>,
-				0,
-			    <%=runner.isScratched()%>,
-				<%if (race.getSplits() != null) {
-				  	List<Double> splits = race.getSplits().get(runner.getNumber());
-				  	if (splits != null) {
-				  		for (Double split : splits) { %>
-						<%=split %>,
-				<%		}
-				  	}
-				  }%>
+				  <%=runner.getHorse() %>,
+				  <%=horse.getAveragePrizeMoney() %>,
+			      <%=horse.getPrizeMoney() %>,
+			      <%=horse.getColour() %>,
+			      <%=horse.getAge() %>,
+			      <%=horse.getSex() %>,
+				  <% if (race.getDate() != null) {%><%=race.getDate().getTime() %>
+				  <%} else {%><%=-1 %><%} %>
+				  <%=race.getVenue() %>,
+			      <%=runner.getBarrier() %>,
+			      <%=df.format(runner.getWeight())%>,
+				  <%=runner.getRating() %>,
+				  <%=runner.getJockey() %>,
+			      <%=runner.getTrainer() %>,
+				  <%=race.getDistance() %>,
+				  <%=race.getTrackCondition() %>,<%=race.isTrial() %>,				
+				  <%=race.getRacePrizeMoney() %>,<%=runner.isScratched()%>,
+			      <%=runner.getOdds().getWin() %>
 				<br>
-<%		}%>
+<%				}
+			}%>

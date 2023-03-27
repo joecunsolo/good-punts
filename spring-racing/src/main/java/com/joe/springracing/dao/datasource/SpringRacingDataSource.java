@@ -13,6 +13,8 @@ public interface SpringRacingDataSource {
 
 	public List<Race> fetchRaces() throws Exception;
 	
+	public List<Race> fetchRaces(int daysAgo, int daysTo) throws Exception;
+	
 	public List<RunnerResult> fetchPastResultsForHorse(String horseCode) throws Exception;
 	
 	public Meeting fetchMeet(String meetCode);

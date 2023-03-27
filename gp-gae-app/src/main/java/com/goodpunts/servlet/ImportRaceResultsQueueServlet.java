@@ -34,7 +34,7 @@ public class ImportRaceResultsQueueServlet extends GenericServlet {
 	@Override
 	public void init() {
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.MONTH, -1);
+		c.add(Calendar.MONTH, -12);
 		fromDate = c.getTime();
 		
 		Calendar c2 = Calendar.getInstance();

@@ -37,16 +37,16 @@
     		var qs = parse_query_string(query);
     		var url = 'api/races/?';
     		//add the parameters if they exist
-    		if (qs.splits != "undefined") {
+    		if (typeof qs.splits !== 'undefined') {
     			url += 'splits='+ qs.splits;
     		}
-    		if (qs.results != "undefined") {
+    		if (typeof qs.results !== 'undefined') {
     			url += '&results='+ qs.results;
     		}
-    		if (qs.from != "undefeined") {
+    		if (typeof qs.from !== 'undefined') {
     			url += '&from=' + qs.from;
     		}
-    		if (qs.to != "undefeined") {
+    		if (typeof qs.to !== 'undefined') {
     			url += '&to=' + qs.to;
     		}
     		console.log(url);
@@ -83,9 +83,8 @@
 </head>
 
 	<body>
-		<jsp:include page="menu.jsp" />
 		<div id="csv-content">
-		Horse,AvgPrizeMoney,TotPrizeMoney,Colour,Age,Sex,Date,DaysAgo,Venue,Barrier,Weight,Rating,Jockey,Trainer,Distance,TrackCondition,GoodAtClass,GoodAtDistance,GoodAtTrack,GoodAtTrackCondition,Trial,RacePrizeMoney,Position,PrizeMoney,RaceTime,Scratched,200m,400m,600m,800m,1000m,1200m,1400m,1600m,1800m,2000m,2200m,2400m,2600m,2800m,3000m,3200m<br/>
+		Horse,AvgPrizeMoney,TotPrizeMoney,Colour,Age,Sex,Date,Venue,Barrier,Weight,Rating,Jockey,Trainer,Distance,TrackCondition,Trial,RacePrizeMoney,Position,PrizeMoney,RaceTime,Scratched,OddStart<br/>
 		</div>
 	</body>
 </html>

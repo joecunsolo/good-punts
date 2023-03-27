@@ -227,6 +227,12 @@ public class ObjectifyBaseDaoImpl {
 		result.setRacePrizeMoney(runner.getRacePrizeMoney());
 		result.setTrackCondition(runner.getTrackCondition());
 		result.setMargin(runner.getMargin());
+		result.setOddsStart(runner.getOddsStart());
+		result.setFirstUp(runner.isFirstUp());
+		result.setSecondUp(runner.isSecondUp());
+		result.setThirdUp(runner.isThirdUp());
+		result.setFourthUp(runner.isFourthUp());
+		result.setSpell(runner.getSpell());
 		return result;
 	}
 

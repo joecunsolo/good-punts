@@ -29,7 +29,7 @@ public class RaceController {
 			@RequestParam(value="to", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date to) {
 		
 		RaceBusiness business = new RaceBusiness();
-		return business.fetchRaces(results, splits, from, to, true);
+		return business.fetchRaces(results, splits, from, to, false);
 	}
 	
 //	@RequestMapping (value = "/", method = RequestMethod.GET, headers="Accept=application/json")

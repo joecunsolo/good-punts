@@ -1,6 +1,7 @@
 package com.joe.springracing.dao.datasource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,15 +37,19 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 	}
 	
 	public List<Race> fetchRaces() throws Exception {
+		return fetchRaces(10, 5);
+	}
+	
+	public List<Race> fetchRaces(int daysAgo, int daysTo) throws Exception {
 		List<Race> races = new ArrayList<Race>();
-		for (int i = 0; i < 10; i += RACE_RESULTS_PER_PAGE) {
-			String urlToRead = getRaceDayURL(i, RACE_RESULTS_PER_PAGE);
-			races.addAll(reader.readRaces(urlToRead));
-		}
+		String urlToRead = getRaceDayURL(daysAgo, daysTo);
+		System.out.println(urlToRead);
+		races.addAll(reader.readRaces(urlToRead));
 		return races;
 	}
 	
 	public List<Runner> fetchRunnnersForRace(Race race) throws Exception {
+		
 		String urlToRead = getRunnerURL(race.getMeetCode(), race.getRaceNumber());
 		List<Runner> runners = reader.readRunners(urlToRead);
 		if (runners != null) {
@@ -59,7 +64,7 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 	public List<RunnerResult> fetchPastResultsForHorse(String horseCode) throws Exception {
 		String urlToRead = getHorseURL(horseCode);
 		List<RunnerResult> result = reader.readResults(urlToRead);
-
+		
 		return result;
 	}
 	
@@ -78,12 +83,33 @@ public class RacingDotComDataSource implements SpringRacingDataSource {
 		return null;
 	}
 	
+	/**
+	 * Update the runners 
+	 */
 	public Race fetchRaceResult(String raceCode) throws Exception {
 		Race race = fetchRace(raceCode);
 		String urlToRead = getRaceResultURL(race);
 		
-		int[] result = reader.readRaceResult(urlToRead);
-		race.setResult(result);
+		race.setRunners(reader.readRaceResult(urlToRead));
+		System.out.println("Runners " + race.getRunners().size());
+		System.out.println("Has Runners " + (race.getRunners() != null && race.getRunners().size() > 0));
+		
+		int[] results = new int[race.getRunners().size()];
+		int scratchings = 0;
+		for (Runner runner : race.getRunners()) {
+			System.out.println(runner.getHorse());
+			int number = runner.getNumber();
+			int finish = runner.getResult();
+			
+			//Racing.com's method of handling exceptions
+			if (finish <= results.length && finish > 0) {
+				results[finish-1] = number;
+			} else {
+				scratchings++;
+			}
+		}
+
+		race.setResult(Arrays.copyOf(results, results.length - scratchings));
 		race.setSplits(fetchSplitsAndSectionals(race.getMeetCode(), race.getRaceNumber()));
 		return race;
 	}

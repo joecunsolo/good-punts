@@ -91,7 +91,7 @@ public class TestGAEEndToEnd {
 		result.setRaceDate(c.getTime());
 		return result;
 	}
-
+	
 	private static Runner aRunner() {
 		Runner runner = new Runner();
 		runner.setHorse(KEY_HORSECODE);

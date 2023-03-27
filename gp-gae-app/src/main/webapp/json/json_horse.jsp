@@ -16,17 +16,20 @@
 <% 			String horseCode = request.getParameter("id");
 			HorseBusiness business = new HorseBusiness();
 			Horse horse = business.fetchHorse(horseCode);
+			if (horse == null)
+				return;
 			List<RunnerResult> results =  horse.getPastResults();
 			
-			for (RunnerResult r : results) {%>
+			for (RunnerResult r : results) {
+				if (r != null && r.getOddsStart() != 0) {%>
 			    <%=r.getHorse() %>,
 			    <%=horse.getAveragePrizeMoney() %>,
 			    <%=horse.getPrizeMoney() %>,
 			    <%=horse.getColour() %>,
 			    <%=horse.getAge() %>,
 			    <%=horse.getSex() %>,
-				<%=r.getRaceDate() %>,
-				<%=System.currentTimeMillis() - r.getRaceDate().getTime() %>,
+				<% if (r.getRaceDate() != null) {%><%=r.getRaceDate().getTime() %>
+				<%} else {%><%=-1 %><%} %>,
 				<%=r.getVenueName()%>,
 				<%=r.getBarrier() %>,
 				<%=r.getWeight() %>,
@@ -34,21 +37,10 @@
 				<%=r.getJockey()%>,
 				<%=r.getTrainer()%>,
 				<%=r.getDistance()%>,
-				<%=r.getTrackCondition()%>,
-				<%=r.isTrial() %>,
-				<%=horse.isGoodAtClass()%>,
-				<%=horse.isGoodAtDistance()%>,
-				<%=horse.isGoodAtTrack()%>,
-				<%=horse.isGoodAtTrackCondition()%>,
-				<%=r.getRacePrizeMoney() %>,
-				<%=r.getPosition() %>,
-				<%=r.getPrizeMoney() %>,
-				<%=r.getRaceTime() %>,
-				<%=r.isScratched() %>,	
-				<%=r.getOddsStart() %>,	
-<%				if (r.getSplits() != null) {
-					for (Double split : r.getSplits()) { %>
-						<%=split %>,
-<%					}
-				}%><br />
-<%			}%>
+				<%=r.getTrackCondition()%>,<%=r.isTrial() %>,
+				<%=r.getRacePrizeMoney() %>,<%=r.isScratched() %>,<%=r.isFirstUp() %>,<%=r.isSecondUp() %>,<%=r.isThirdUp() %>,<%=r.isFourthUp() %>
+				<%=r.getOddsStart() %>,
+				<%=r.getPosition() == 1? 0 : r.getMargin() %>
+				<br />
+<%				}
+			}%>

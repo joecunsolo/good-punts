@@ -4,6 +4,7 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,6 +100,57 @@ public class TestImportBusiness extends TestCase {
 		ImportBusiness biz = new ImportBusiness();
 		int spell = biz.calculateSpell(results);
 		System.out.println(spell);
+	}
+	
+	public static void testFirstUp() throws ParseException  {
+		List<RunnerResult> results = new ArrayList<RunnerResult>();
+		
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, (0-ImportBusiness.FRESHEN_UP-5));
+		results.add(aResult(c.getTime()));
+		results.add(aResult(new Date()));
+
+		ImportBusiness biz = new ImportBusiness();
+		biz.calculateSpell(results);
+		
+		Assert.assertTrue(results.get(0).isFirstUp());
+	}
+
+	public static void testSecondUp() throws ParseException {
+		List<RunnerResult> results = new ArrayList<RunnerResult>();
+		
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, (0-ImportBusiness.FRESHEN_UP-5));
+		results.add(aResult(c.getTime()));
+		c.add(Calendar.DATE, (ImportBusiness.FRESHEN_UP+1));
+		results.add(aResult(c.getTime()));
+		results.add(aResult(new Date()));
+
+		ImportBusiness biz = new ImportBusiness();
+		biz.calculateSpell(results);
+		
+		Assert.assertTrue(results.get(1).isFirstUp());
+		Assert.assertTrue(results.get(0).isSecondUp());
+	}
+
+	public static void testThirdUp() throws ParseException {
+		List<RunnerResult> results = new ArrayList<RunnerResult>();
+		
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, (0-ImportBusiness.FRESHEN_UP-5));
+		results.add(aResult(c.getTime()));
+		c.add(Calendar.DATE, (ImportBusiness.FRESHEN_UP+1));
+		results.add(aResult(c.getTime()));
+		c.add(Calendar.DATE, 1);
+		results.add(aResult(c.getTime()));
+		results.add(aResult(new Date()));
+
+		ImportBusiness biz = new ImportBusiness();
+		biz.calculateSpell(results);
+		
+		Assert.assertTrue(results.get(2).isFirstUp());
+		Assert.assertTrue(results.get(1).isSecondUp());
+		Assert.assertTrue(results.get(0).isThirdUp());
 	}
 			
 	private static RunnerResult aResultWithoutADate() {

@@ -37,13 +37,13 @@
     		var qs = parse_query_string(query);
     		var url = 'api/races/?results=true';
     		//add the parameters if they exist
-    		if (qs.splits != "undefeined") {
-    			url += '&splits=' + qs.splits;
+    		if (typeof qs.splits !== 'undefined') {
+    			url += 'splits='+ qs.splits;
     		}
-    		if (qs.from != "undefeined") {
+    		if (typeof qs.from !== 'undefined') {
     			url += '&from=' + qs.from;
     		}
-    		if (qs.to != "undefeined") {
+    		if (typeof qs.to !== 'undefined') {
     			url += '&to=' + qs.to;
     		}
     		console.log(url);
@@ -52,8 +52,9 @@
 	        	success: function(races) { 
 	        		for (i = 0; i < races.length; i++) {
 	        			console.log( races[i].raceCode );
-	        			loadHorses(races[i].runners);
+	        			loadHorses(races[i].raceCode);
 	        		}
+	        		console.log("Finished");
 	             } })
 	    	.fail(function( xhr, status, errorThrown ) {
 			    alert( "Sorry, there was a problem!" );
@@ -63,10 +64,22 @@
 			  });
     	}
 	    
-    	function loadHorses(runners) {
-    		for (j = 0; j < runners.length; j++) {
-    			loadHorse(runners[j].horse);
-    		}
+    	function loadHorses(race) {
+    		var url = 'api/races/' + race;
+    		console.log(url);
+    		$.ajax({ url: url, 
+				//dataType: 'html',
+	        	success: function(res) { 
+	        		for (j = 0; j < res.runners.length; j++) {
+	        			loadHorse(res.runners[j].horse);
+	        		}
+	             } })
+	    	.fail(function( xhr, status, errorThrown ) {
+			    alert( "Sorry, there was a problem!" );
+			    console.log( "Error: " + errorThrown );
+			    console.log( "Status: " + status );
+			    console.dir( xhr );
+			  });
     	}
     	
     	function loadHorse(id) {
@@ -77,7 +90,7 @@
    	        		$( "#csv-content" ).append(data);
    	             } })
    	    	.fail(function( xhr, status, errorThrown ) {
-   			    alert( "Sorry, there was a problem! " + racecode);
+   			    alert( "Sorry, there was a problem! " + id);
    			    console.log( "Error: " + errorThrown );
    			    console.log( "Status: " + status );
    			    console.dir( xhr );
@@ -87,9 +100,8 @@
 </head>
 
 	<body>
-		<jsp:include page="menu.jsp" />
 		<div id="csv-content">
-		Horse,AvgPrizeMoney,TotPrizeMoney,Colour,Age,Sex,Date,DaysAgo,Venue,Barrier,Weight,Rating,Jockey,Trainer,Distance,TrackCondition,GoodAtClass,GoodAtDistance,GoodAtTrack,GoodAtTrackCondition,Trial,RacePrizeMoney,Position,PrizeMoney,RaceTime,Scratched,OddStart,200m,400m,600m,800m,1000m,1200m,1400m,1600m,1800m,2000m,2200m,2400m,2600m,2800m,3000m,3200m<br/>
+		Horse,AvgPrizeMoney,TotPrizeMoney,Colour,Age,Sex,Date,Venue,Barrier,Weight,Rating,Jockey,Trainer,Distance,TrackCondition,Trial,RacePrizeMoney,Scratched,FirstUp,SecondUp,ThirdUp,FourthUp,OddStart,Margin<br/>
 		</div>
 	</body>
 </html>

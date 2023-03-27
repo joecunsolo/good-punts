@@ -27,14 +27,27 @@ import javax.servlet.ServletContextEvent;
  * required to let JSP's access Ofy.
  **/
 public class OfyHelper implements ServletContextListener {
+  private static String contextPath = null;
+
   public void contextInitialized(ServletContextEvent event) {
     // This will be invoked as part of a warm-up request, or the first user request if no warm-up
     // request.
 	  String folder = event.getServletContext().getRealPath("WEB-INF/../");
+	  System.out.println("****Initialising OfyHelper****");
+	  System.out.println(folder);
 	  init(folder);
   }
   
+  public static void init() {
+    System.out.println("****Initialising OfyHelper.init() ****");
+	  System.out.println(contextPath);
+	  	
+  	init(contextPath);
+  }
+
   public static void init(String folder) {
+  	  contextPath = folder;
+
 	    ObjectifyService.register(Guestbook.class);
 	    ObjectifyService.register(Greeting.class);
 	    ObjectifyService.register(ObjMeet.class);
@@ -50,10 +63,13 @@ public class OfyHelper implements ServletContextListener {
 	    ObjectifyService.register(ObjAccount.class);
 	    ObjectifyService.register(ObjStake.class);
 	    ObjectifyService.register(ObjPick.class);
-	    
+
 	    SpringRacingServices.setSpringRacingDAO(new ObjectifySpringRacingDaoImpl());
 	    SpringRacingServices.setPuntingDAO(new ObjectifyPuntingDaoImpl());
 	    SpringRacingServices.setBookieAccount(new ObjectifyGoodPuntsBookieImpl());
+
+	    ObjectifyService.begin();
+	    //System.out.println("Bookie $" + SpringRacingServices.getBookieAccount().fetchAccountAmount());
   }
 
   public void contextDestroyed(ServletContextEvent event) {

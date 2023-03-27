@@ -24,8 +24,8 @@ public class Importer {
 //		return meets;
 //	}
 	
-	public List<Race> importUpcomingRaces() throws Exception {
-		List<Race> races = datasource.fetchRaces();				
+	public List<Race> importUpcomingRaces(int daysAgo, int daysTo) throws Exception {
+		List<Race> races = datasource.fetchRaces(daysAgo, daysTo);				
 		return races;
 	}
 
@@ -52,32 +52,23 @@ public class Importer {
 				try {
 					int position = result.getPosition();
 					result.setPrizeMoney(raceResult.getPrizeMoney(position));	
-				} catch (Exception ex) {
-					ex.printStackTrace();				
-				}
+				} catch (Exception ex) {}
 				try {
 					result.setRaceDate(raceResult.getDate());
-				} catch (Exception ex) {
-					ex.printStackTrace();				
-				}try {
+				} catch (Exception ex) {}
+				try {
 					result.setMeetCode(raceResult.getMeetCode());
-				} catch (Exception ex) {
-					ex.printStackTrace();				
-				}try {
+				} catch (Exception ex) {}
+				try {
 					result.setRaceNumber(raceResult.getRaceNumber());
-				} catch (Exception ex) {
-					ex.printStackTrace();				
-				}try {
+				} catch (Exception ex) {}
+				try {
 					result.setVenueName(raceResult.getVenue());
-				} catch (Exception ex) {
-					ex.printStackTrace();				
-				}try {
+				} catch (Exception ex) {}
+				try {
 					result.setRaceName(raceResult.getName());
 					result.setHorse(h.getId());
-				} catch (Exception ex) {
-					ex.printStackTrace();
-	//				result.setResultsFetched(false);
-				}
+				} catch (Exception ex) {}
 				try {
 					//Map<Integer, List<Double>> splits = datasource.fetchSplitsAndSectionals(result.getMeetCode(), result.getRaceNumber());
 					//result.setSplits(splits.get(result.getNumber()));
@@ -85,9 +76,7 @@ public class Importer {
 				} catch (Exception ex) {
 					ex.printStackTrace();					
 				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			} catch (Exception ex) {}
 			result.setResultsFetched(true);
 		}
 		

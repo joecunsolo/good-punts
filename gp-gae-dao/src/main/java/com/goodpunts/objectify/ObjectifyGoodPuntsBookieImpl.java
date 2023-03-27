@@ -68,6 +68,7 @@ public class ObjectifyGoodPuntsBookieImpl implements BookieAccount {
 	}
 		
 	public double fetchAccountAmount() {
+		ObjectifyService.register(ObjAccount.class);
 		ObjAccount account = ObjectifyService.ofy()
 		          .load()
 		          .type(ObjAccount.class) // We want to get our account

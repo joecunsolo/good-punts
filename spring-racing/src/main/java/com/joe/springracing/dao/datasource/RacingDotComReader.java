@@ -60,7 +60,7 @@ public class RacingDotComReader  {
 		}
 	}
 	
-	public int[] readRaceResult(String urlToRead) throws Exception {
+	public List<Runner> readRaceResult(String urlToRead) throws Exception {
 		String html = HTMLReaderIO.getHTML(urlToRead);			
 		try {
 			return parser.parseRaceResults(html);

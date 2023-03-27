@@ -65,4 +65,9 @@ public class MockSpringDataSource implements SpringRacingDataSource {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Race> fetchRaces(int daysAgo, int daysTo) throws Exception {
+		return races;
+	}
 }

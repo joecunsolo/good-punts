@@ -53,4 +53,10 @@ public class GoodPuntsDataSource implements SpringRacingDataSource {
 		return null;
 	}
 
+	@Override
+	public List<Race> fetchRaces(int daysAgo, int daysTo) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

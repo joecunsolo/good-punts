@@ -38,6 +38,11 @@ public class RunnerResult {
 	private int trackCondition;
 	private double margin;
 	private double oddsStart;
+	private boolean firstUp;
+	private boolean secondUp;
+	private boolean thirdUp;
+	private boolean fourthUp;
+	private int spell;
 	
 	public RunnerResult() {
 //		horse = new Horse();
@@ -330,6 +335,39 @@ public class RunnerResult {
 	
 	public double getOddsStart() {
 		return oddsStart;
+	}
+	
+	public boolean isFirstUp() {
+		return firstUp;
+	}
+	public boolean isSecondUp() {
+		return secondUp;
+	}
+	public boolean isThirdUp() {
+		return thirdUp;
+	}	
+	public void setFirstUp(boolean firstUp) {
+		this.firstUp = firstUp;
+	}
+	public void setSecondUp(boolean secondUp) {
+		this.secondUp = secondUp;
+	}
+	public void setThirdUp(boolean thirdUp) {
+		this.thirdUp = thirdUp;
+	}
+	public void setSpell(int spell) {
+		this.spell = spell;
+	}
+	public int getSpell() {
+		return spell;
+	}
+
+	public boolean isFourthUp() {
+		return fourthUp;
+	}
+
+	public void setFourthUp(boolean fourthUp) {
+		this.fourthUp = fourthUp;
 	}
 
 }

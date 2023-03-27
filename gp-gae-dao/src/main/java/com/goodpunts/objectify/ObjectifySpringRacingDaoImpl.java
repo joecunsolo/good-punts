@@ -47,10 +47,7 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 	private void storeRunner(Runner runner, Race race) {
 		ObjRunner oRunner = toObjRunner(runner, race);
 		ObjectifyService.ofy().save().entity(oRunner).now();
-		if (runner.getOdds() != null &&
-				runner.getOdds().getWin() > 0) {
-			storeOdds(getRunnerKey(race, runner), runner);
-		}
+		storeOdds(getRunnerKey(race, runner), runner);
 	}
 
 	private void storeOdds(Key<ObjRunner> runnerKey, Runner runner) {
@@ -173,6 +170,13 @@ public class ObjectifySpringRacingDaoImpl extends ObjectifyBaseDaoImpl implement
 		result.setRacePrizeMoney(objResult.getRacePrizeMoney());
 		result.setTrackCondition(objResult.getTrackCondition());
 		result.setMargin(objResult.getMargin());
+		result.setOddsStart(objResult.getOddsStart());
+
+		result.setFirstUp(objResult.getFirstUp());
+		result.setSecondUp(objResult.getSecondUp());
+		result.setThirdUp(objResult.getThirdUp());
+		result.setFourthUp(objResult.isFourthUp());
+		result.setSpell(objResult.getSpell());
 		return result;
 	}
 

@@ -42,6 +42,7 @@
 						<td>Prize Money</td>
 						<td>Race Time</td>
 						<td>Scratched</td>
+						<td>Odds</td>
 						<td>Splits</td>
 					</tr>
 				</thead>	
@@ -78,6 +79,7 @@
 					<td><%=r.getPrizeMoney() %></td>
 					<td><%=r.getRaceTime() %></td>
 					<td><%=r.isScratched() %></td>
+					<td><%=r.getOddsStart() %></td>
 					<td>		
 <%					if (r.getSplits() != null) {
 						for (Double split : r.getSplits()) { %>
