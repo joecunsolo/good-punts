@@ -28,3 +28,8 @@ spring-racing/.settings/org.eclipse.m2e.core.prefs
 spring-racing/.settings/org.eclipse.wst.common.component
 spring-racing/.settings/org.eclipse.wst.common.project.facet.core.xml
 spring-racing/.settings/org.eclipse.wst.validation.prefs
+.externalToolBuilders/org.eclipse.m2e.core.maven2Builder.launch
+.settings/org.eclipse.wst.common.project.facet.core.xml
+spring-racing/.settings/org.eclipse.wst.jsdt.ui.superType.container
+spring-racing/.settings/.jsdtscope
+spring-racing/.settings/org.eclipse.wst.jsdt.ui.superType.name
