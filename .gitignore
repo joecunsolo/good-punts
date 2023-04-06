@@ -475,3 +475,5 @@ gp-ai/predict-api/node_modules/vary/package.json
 gp-ai/predict-api/node_modules/vary/README.md
 gp-ai/predict-api/package-lock.json
 gp-ai/predict-api/package.json
+gp-ai/predict-api/dict.json
+gp-ai/predict-api/model1.pkl
